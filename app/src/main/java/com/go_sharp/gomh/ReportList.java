@@ -28,14 +28,8 @@ public class ReportList extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                long idReport = new DaoReport().getIdReportIncomplete();
-                if (idReport > 0) {
-                    dtoBundle.setIdReportLocal(idReport);
-                } else {
-                    modelReport.createNewReport(ReportList.this);
-                }
                 startActivity(new Intent(ReportList.this, MenuReport.class)
-                        .putExtra("idReporte", dtoBundle.getIdReportLocal()));
+                        .putExtra(getString(R.string.app_bundle_name), dtoBundle));
             }
         });
     }

@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
+import com.go_sharp.gomh.dao.DaoReport;
 import com.go_sharp.gomh.dto.DtoBundle;
-import com.go_sharp.gomh.listener.OnDissmisDialogListener;
 import com.go_sharp.gomh.model.ModelAHBottomNavigationMenuReport;
 import com.go_sharp.gomh.model.ModelMenuReport;
 
@@ -33,6 +33,12 @@ public class MenuReport extends AppCompatActivity implements AHBottomNavigation.
     protected void onResume() {
         super.onResume();
         modelAHBottomNavigationMenuReport.onResume();
+        long idReport = new DaoReport().getIdReportIncomplete();
+        if (idReport > 0) {
+            dtoBundle.setIdReportLocal(idReport);
+        } else {
+            modelMenuReport.createNewReport(this);
+        }
     }
 
     @Override
