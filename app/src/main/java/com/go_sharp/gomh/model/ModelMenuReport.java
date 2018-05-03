@@ -12,6 +12,7 @@ import com.go_sharp.gomh.dto.DtoBundle;
 import com.go_sharp.gomh.dto.DtoReport;
 import com.go_sharp.gomh.geolocation.ServiceCheck;
 import com.go_sharp.gomh.util.Config;
+import com.go_sharp.gomh.util.SharePreferenceCustom;
 import com.gshp.api.utils.Crypto;
 
 /**
@@ -26,7 +27,6 @@ public class ModelMenuReport {
     public ModelMenuReport(DtoBundle dtoBundle) {
         this.dtoBundle = dtoBundle;
         context = ContextApp.context;
-
     }
 
     public void createNewReport(Activity activity) {
@@ -45,6 +45,8 @@ public class ModelMenuReport {
         activity.startService(new Intent(context, ServiceCheck.class).
                 putExtra(context.getString(R.string.app_bundle_name), dtoBundle).
                 putExtra("typeCheck", context.getResources().getInteger(R.integer.type_check_in)));
+
+        SharePreferenceCustom.write(R.string.app_share_preference_name, R.string.first_report, "false");
     }
 
 }
