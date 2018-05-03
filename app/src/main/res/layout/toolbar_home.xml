@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:id="@+id/txtTBDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin_middle"
+            android:layout_marginTop="@dimen/activity_horizontal_margin_middle"
+            android:drawableLeft="@drawable/calendar"
+            android:drawablePadding="@dimen/activity_horizontal_margin_middle" />
+
+
+        <TextView
+            android:id="@+id/txtTBTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_horizontal_margin_middle"
+            android:ellipsize="end"
+            android:maxLength="15"
+            android:textSize="@dimen/sizeTextBig" />
+
+        <TextView
+            android:id="@+id/txtTBSubTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtTBTitle"
+            android:layout_marginTop="@dimen/activity_horizontal_margin_middle"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin_middle"
+            android:textSize="@dimen/sizeTextNormal" />
+
+        <ImageButton
+            android:id="@+id/btnTBSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/txtTBDate"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin_middle"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin_middle"
+            android:background="@null"
+            android:src="@drawable/ic_more_vert_black_24dp" />
+
+        <ImageButton
+            android:id="@+id/btnTBHelp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtTBDate"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin_middle"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin_middle"
+            android:layout_toLeftOf="@id/btnTBSettings"
+            android:background="@null"
+            android:src="@drawable/help" />
+
+        <ImageButton
+            android:id="@+id/btnTBSync"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtTBDate"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin_middle"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin_middle"
+            android:layout_toLeftOf="@id/btnTBHelp"
+            android:background="@null"
+            android:src="@drawable/sync" />
+
+        <ImageButton
+            android:id="@+id/btnTBAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtTBDate"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin_middle"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin_middle"
+            android:layout_toLeftOf="@id/btnTBSync"
+            android:background="@null"
+            android:src="@drawable/key" />
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

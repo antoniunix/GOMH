@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:id="@+id/txtTBDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin_middle"
+            android:layout_marginTop="@dimen/activity_horizontal_margin_middle"
+            android:drawableLeft="@drawable/calendar"
+            android:drawablePadding="@dimen/activity_horizontal_margin_middle" />
+
+
+        <TextView
+            android:id="@+id/txtTBTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_horizontal_margin_middle"
+            android:ellipsize="end"
+            android:maxLength="15"
+            android:textSize="@dimen/sizeTextBig" />
+
+        <TextView
+            android:id="@+id/txtTBSubTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtTBTitle"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin_middle"
+            android:layout_marginTop="@dimen/activity_horizontal_margin_middle"
+            android:textSize="@dimen/sizeTextNormal" />
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

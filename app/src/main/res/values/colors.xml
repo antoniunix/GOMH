@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ab2527</color>
+    <color name="colorPrimaryDark">#86191a</color>
+    <color name="colorAccent">#ab2527</color>
+
+    <color name="colorProgressBarback">#FFFFFF</color>
+    <color name="colorProgressProgress">#c62828</color>
+
+    <color name="colorShapeBackgroundTitleDialogInit">#f2f2f2</color>
+    <color name="colorShapeBackgroundTitleDialogEnd">#f2f2f2</color>
+
+    <color name="colorShapeButtonInit">#ab2527</color>
+    <color name="colorShapeButtonFinish">#ab2527</color>
+
+    <color name="colorTextTitleBar">#ffffff</color>
+    <color name="colorTextTitleDialog">#000000</color>
+    <color name="colorTextButton">#ffffff</color>
+    <color name="colorTextEdt">#bebebe</color>
+
+    <color name="colorAHBottonDefaul">#000000</color>
+    <color name="colorAHBottonAccentColor">#b72a2b</color>
+    <color name="colorAHBottonInactive">#b6b6b6</color>
+    <color name="colorBottonNavigationBackground">#FFFFFF</color>
+
+</resources>
