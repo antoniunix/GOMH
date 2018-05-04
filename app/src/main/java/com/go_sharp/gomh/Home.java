@@ -107,9 +107,10 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_supervisor:
+            case R.id.action_training:
+                startActivity(new Intent(this, Training.class));
                 break;
-            case R.id.action_representative:
+            case R.id.action_task:
                 break;
             case R.id.action_exit:
                 finish();

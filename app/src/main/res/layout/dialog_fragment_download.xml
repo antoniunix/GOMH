@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/style_dialog"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/title_dialog_shape">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            style="@style/title_text_toolbar_style_dialog"
+            android:text="@string/dialog_download_file"
+            android:textAlignment="center" />
+
+    </android.support.v7.widget.Toolbar>
+
+
+    <ProgressBar
+        android:id="@+id/bar_down"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:max="100"
+        android:progress="1"
+        android:progressDrawable="@drawable/custom_progressbar" />
+
+    <TextView
+        android:id="@+id/txt_porcent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/btn_next"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_margin="5dp"
+        android:layout_weight="1"
+        android:contentDescription="@string/label_continue"
+        android:text="CONTINUAR"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:visibility="gone" />
+
+
+</LinearLayout>

@@ -3,10 +3,13 @@ package com.go_sharp.gomh.model;
 import android.os.Handler;
 import android.util.Log;
 
+import com.go_sharp.gomh.dao.DaoDownloadableFiles;
+import com.go_sharp.gomh.dto.DtoDownloadableFiles;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import net.gshp.APINetwork.NetworkTask;
+
 import com.go_sharp.gomh.dao.DaoAgenda;
 import com.go_sharp.gomh.dao.DaoCTypeReport;
 import com.go_sharp.gomh.dao.DaoCanal;
@@ -68,24 +71,6 @@ public class ModelDataBaseSync {
                 try {
 
                     if (nt.getTag().equals("pdv_pdv")) {
-
-//                        String json="[{\n" +
-//                                "\"address\":\"Dir\",\n" +
-//                                "\"idClient\":\"1\",\n" +
-//                                "\"idClientFormat\":\"1\",\n" +
-//                                "\"idRtm\":\"1\",\n" +
-//                                "\"lon\":\"0.0\",\n" +
-//                                "\"idState\":\"1\",\n" +
-//                                "\"type\":\"1\",\n" +
-//                                "\"idCountry\":\"1\",\n" +
-//                                "\"pdvCode\":\"POS1\",\n" +
-//                                "\"idRegion\":\"1\",\n" +
-//                                "\"name\":\"POS1\",\n" +
-//                                "\"location\":\"1\",\n" +
-//                                "\"id\":\"1\",\n" +
-//                                "\"lat\":\"0.0\"\n" +
-//                                "}]";
-//                        nt.setResponse(json);
 
                         Log.d("SYNC", "pdv_pdv " + nt.getResponse());
                         typeObjectGson = new TypeToken<List<DtoPdvPdv>>() {
@@ -251,10 +236,19 @@ public class ModelDataBaseSync {
                                 typeObjectGson);
                         new DaoEaAnswerPdv().delete();
                         new DaoEaAnswerPdv().Insert(lstCatalog);
+                    } else if (nt.getTag().equals("downloadable_files")) {
+                        Log.d("SYNC", "downloadable_files " + nt.getResponse());
+                        typeObjectGson = new TypeToken<List<DtoDownloadableFiles>>() {
+                        }.getType();
+
+                        List<DtoDownloadableFiles> lst = new Gson().fromJson(nt.getResponse(),
+                                typeObjectGson);
+                        new DaoDownloadableFiles().delete();
+                        new DaoDownloadableFiles().insert(lst);
                     }
 
                 } catch (Exception e) {
-                    STORAGE_OK = -1;
+                    STORAGE_OK = -1; 
                     e.printStackTrace();
                 }
 
