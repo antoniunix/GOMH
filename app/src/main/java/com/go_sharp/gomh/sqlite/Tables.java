@@ -184,5 +184,12 @@ public class Tables {
             "start_date TEXT," +
             "md5 TEXT)";
 
+    public final String TableMessage="CREATE TABLE message(" +
+            "id INTEGER," +
+            "id_type INTEGER," +
+            "description TEXT," +
+            "title TEXT," +
+            "content TEXT";
+
 
 }

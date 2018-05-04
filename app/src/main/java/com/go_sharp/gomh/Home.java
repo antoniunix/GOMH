@@ -111,6 +111,7 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
                 startActivity(new Intent(this, Training.class));
                 break;
             case R.id.action_task:
+                startActivity(new Intent(this, Task.class));
                 break;
             case R.id.action_exit:
                 finish();
