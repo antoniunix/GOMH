@@ -2,7 +2,6 @@ package com.go_sharp.gomh.dialog;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,6 +22,7 @@ import com.go_sharp.gomh.listener.OnDissmisDialogListener;
 import com.go_sharp.gomh.listener.OnProgressSync;
 import com.go_sharp.gomh.model.ModelSincronizar;
 import com.go_sharp.gomh.util.ChangeFontStyle;
+import com.go_sharp.gomh.util.SharePreferenceCustom;
 
 import org.apache.http.HttpStatus;
 
@@ -44,7 +44,6 @@ public class DialogSync extends DialogFragment implements View.OnClickListener, 
     private Button btn_next;
     private Integer statusSync;
     private ListView lst_no_content;
-    private SharedPreferences sharedPreferences;
     private OnDissmisDialogListener onDissmisDialogListener;
 
     @Nullable
@@ -58,7 +57,6 @@ public class DialogSync extends DialogFragment implements View.OnClickListener, 
 
     private void init() {
         context = ContextApp.context;
-        sharedPreferences = context.getSharedPreferences(getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
         modelSync = new ModelSincronizar(this, context);
         modelSync.setAuthentication();
         id_progressbar= view.findViewById(R.id.id_progressbar);
@@ -85,8 +83,8 @@ public class DialogSync extends DialogFragment implements View.OnClickListener, 
                 dialog.show(getFragmentManager(), "Dialog Change Password");
                 break;
             default:
-                if (sharedPreferences.getInt(getString(R.string.app_share_preference_first_synch), 0) > 0) {
-                    sharedPreferences.edit().putLong(getResources().getString(R.string.app_share_preference_time_synch), System.currentTimeMillis()).apply();
+                if (Long.valueOf(SharePreferenceCustom.read(R.string.app_share_preference_name, R.string.app_share_preference_first_synch, "0")) > 0) {
+                    SharePreferenceCustom.write(R.string.app_share_preference_name, R.string.app_share_preference_time_synch, System.currentTimeMillis() + "");
                 }
                 break;
         }
@@ -117,7 +115,7 @@ public class DialogSync extends DialogFragment implements View.OnClickListener, 
     public void onFinishSync(int httpstatus, String response, Object object) {
         switch (httpstatus) {
             case HttpStatus.SC_OK:
-                sharedPreferences.edit().putInt(getString(R.string.app_share_preference_first_synch), 1).apply();
+                SharePreferenceCustom.write(R.string.app_share_preference_name, R.string.app_share_preference_first_synch, "1");
                /* if (dto.getStatus() == 2) {
                     txtPorcent.setText("Su contraseña caducará el " + new SimpleDateFormat("dd MMMM").format(new Date(dto.getFecha())) + ", puede cambiarla en el menú principal");
                 }
@@ -134,7 +132,7 @@ public class DialogSync extends DialogFragment implements View.OnClickListener, 
 
                 break;
             case HttpStatus.SC_NO_CONTENT:
-                sharedPreferences.edit().putInt(getString(R.string.app_share_preference_first_synch), 1).apply();
+                SharePreferenceCustom.write(R.string.app_share_preference_name, R.string.app_share_preference_first_synch, "1");
                 txtPorcent.setText(getString(R.string.network_no_content));
                 lst_no_content.setVisibility(ListView.VISIBLE);
                 btn_next.setVisibility(Button.VISIBLE);
@@ -145,7 +143,7 @@ public class DialogSync extends DialogFragment implements View.OnClickListener, 
                 btn_next.setVisibility(Button.VISIBLE);
                 break;
             case HttpStatus.SC_METHOD_FAILURE:
-                sharedPreferences.edit().putInt(getString(R.string.app_share_preference_count_unauthorized), 1).apply();
+                SharePreferenceCustom.write(R.string.app_share_preference_name, R.string.app_share_preference_count_unauthorized, "1");
                 txtPorcent.setText(object.toString());
                 btn_next.setVisibility(Button.VISIBLE);
                 break;
@@ -156,11 +154,10 @@ public class DialogSync extends DialogFragment implements View.OnClickListener, 
         }
         statusSync = httpstatus;
         btn_next.setVisibility(View.VISIBLE);
-
     }
 
-    public DialogSync setOnDissmiDialogListener(OnDissmisDialogListener onDissmisDialogListener){
-        this.onDissmisDialogListener=onDissmisDialogListener;
+    public DialogSync setOnDissmiDialogListener(OnDissmisDialogListener onDissmisDialogListener) {
+        this.onDissmisDialogListener = onDissmisDialogListener;
         return this;
     }
 }

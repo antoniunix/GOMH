@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.go_sharp.gomh.util.SharePreferenceCustom;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -55,7 +56,6 @@ public class ModelSincronizar {
 
     private boolean flag = false;
     private int numReportGuardados = 0;
-    private SharedPreferences mySharedPreferences;
 
     private final int NUMCATALOGOS = 8; //se usa para saber cuando ya se descargaron todos los catalogos y enviar mensaje de terminado
     private int numReportDownload = 0;
@@ -69,7 +69,6 @@ public class ModelSincronizar {
         modelDataBaseSync = new ModelDataBaseSync(handlerStorage);
         networkConfig = new NetworkConfig(handlerTask, context);
         lstNoContent = new ArrayList<>();
-        mySharedPreferences = context.getSharedPreferences(context.getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
         regId = FirebaseInstanceId.getInstance().getToken();
         Log.e("RegId", "RegId " + regId);
     }
@@ -106,8 +105,6 @@ public class ModelSincronizar {
                 networkConfig.GET("multireport/catalog/ea_section", "ea_section");
                 networkConfig.GET("multireport/catalog/ea_answers_pdv", "ea_answers_pdv");
                 networkConfig.GET("multireport/catalog/downloadable_files", "downloadable_files");
-
-//                networkConfig.GET("user/regId/" + regId, "regid");
             }
         }.start();
     }
@@ -123,8 +120,7 @@ public class ModelSincronizar {
             }
             if (nt.getResponseStatus() == HttpStatus.SC_OK || nt.getResponseStatus() == HttpStatus.SC_CREATED) {
                 if (nt.getTag().equals("token")) {
-                    SharedPreferences prefs = context.getSharedPreferences(context.getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
-                    prefs.edit().putString(context.getString(R.string.app_share_preference_toke_webservices), nt.getResponse()).apply();
+                    SharePreferenceCustom.write(context.getString(R.string.app_share_preference_name), context.getString(R.string.app_share_preference_toke_webservices), nt.getResponse());
                     Actualizar();
                 } else if (nt.getTag().equals("version")) {
 
@@ -146,10 +142,9 @@ public class ModelSincronizar {
                                         Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sp.edit();
                         editor.putString("MD5", dtoUpdate.getMd5());
-                        editor.commit();
+                        editor.apply();
                         NUEVA_ACTUALIZACION = true;
                         infoUI();
-
                     }
                 } else {
                     // enviamos los datos recividos a base
@@ -250,16 +245,14 @@ public class ModelSincronizar {
             } else if (SC_METHOD_FAILURE) {
                 SC_FORBIDDEN = false;
                 listenerOnProgressSync.onFinishSync(HttpStatus.SC_METHOD_FAILURE, SC_METHOD_FAILURE_RESPONSE, SC_METHOD_FAILURE_RESPONSE);
-
             }
-
         }
     }
 
     private DtoAuthentication getDataToAuthentication() {
         return new DtoAuthentication()
-                .setUsername(mySharedPreferences.getString(context.getString(R.string.app_share_preference_user_account), ""))
-                .setPassword(mySharedPreferences.getString(context.getString(R.string.app_share_preference_user_pass), ""))
+                .setUsername(SharePreferenceCustom.read(R.string.app_share_preference_name, R.string.app_share_preference_user_account, ""))
+                .setPassword(SharePreferenceCustom.read(R.string.app_share_preference_name, R.string.app_share_preference_user_pass, ""))
                 .setImei(Config.getIMEI())
                 .setBrand(Config.getBrandDevice())
                 .setOs(Config.getOs())

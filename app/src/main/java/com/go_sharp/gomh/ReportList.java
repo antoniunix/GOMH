@@ -41,9 +41,9 @@ public class ReportList extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        /*List<DtoSimpleReport> reports = modelReport.getReports();
+        List<DtoSimpleReport> reports = modelReport.getReports();
         mAdapter = new ReportAdapter(reports);
-        mRecyclerView.setAdapter(mAdapter);*/
+        mRecyclerView.setAdapter(mAdapter);
 
         FloatingActionButton fab = findViewById(R.id.add_new);
         fab.setOnClickListener(new View.OnClickListener() {
