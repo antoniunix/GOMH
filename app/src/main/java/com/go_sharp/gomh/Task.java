@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.go_sharp.gomh.adapter.RVAdapter;
 import com.go_sharp.gomh.listener.OnItemClickListenerRV;
 import com.go_sharp.gomh.model.ModelTask;
+import com.go_sharp.gomh.util.ChangeFontStyle;
 
 public class Task extends AppCompatActivity implements OnItemClickListenerRV {
 
@@ -25,6 +26,8 @@ public class Task extends AppCompatActivity implements OnItemClickListenerRV {
         adapter = model.getAdapter(this);
         LinearLayoutManager lmy = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rcvMsg.setLayoutManager(lmy);
+        txtTBTitle.setText(R.string.label_task);
+        ChangeFontStyle.changeFont(txtTBTitle);
     }
 
     @Override

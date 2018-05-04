@@ -84,7 +84,7 @@ public class DaoMessage extends DAO {
                 "message.id_type,\n" +
                 "message.description,\n" +
                 "message.title,\n" +
-                "message.content,\n" +
+                "message.content\n" +
                 "FROM\n" +
                 TABLE_NAME, null);
 
