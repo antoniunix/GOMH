@@ -57,7 +57,7 @@ public class ModelSincronizar {
     private int numReportGuardados = 0;
     private SharedPreferences mySharedPreferences;
 
-    private final int NUMCATALOGOS = 7; //se usa para saber cuando ya se descargaron todos los catalogos y enviar mensaje de terminado
+    private final int NUMCATALOGOS = 8; //se usa para saber cuando ya se descargaron todos los catalogos y enviar mensaje de terminado
     private int numReportDownload = 0;
 
 
@@ -105,6 +105,7 @@ public class ModelSincronizar {
                 networkConfig.GET("multireport/catalog/ea_question_option", "ea_question_option");
                 networkConfig.GET("multireport/catalog/ea_section", "ea_section");
                 networkConfig.GET("multireport/catalog/ea_answers_pdv", "ea_answers_pdv");
+                networkConfig.GET("multireport/catalog/downloadable_files", "downloadable_files");
 
 //                networkConfig.GET("user/regId/" + regId, "regid");
             }

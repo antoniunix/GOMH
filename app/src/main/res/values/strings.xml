@@ -35,6 +35,10 @@
     <string name="label_accept">ACEPTAR</string>
     <string name="label_cancel">CANCELAR</string>
     <string name="label_into">ENTRAR</string>
+    <string name="label_training">CAPACITACIÓN</string>
+
+    <string name="erro_download">Error al descargar archivo.</string>
+    <string name="dialog_download_file">DESCARGANDO ARCHIVO</string>
 
     <!--Login-->
     <string name="loggin_hint_user">Nombre de usuario</string>

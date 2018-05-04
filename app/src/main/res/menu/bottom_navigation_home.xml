@@ -2,26 +2,27 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_supervisor"
+        android:id="@+id/action_home"
         android:enabled="true"
         android:icon="@drawable/supervisor"
         android:title=""
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_representative"
+        android:id="@+id/action_training"
         android:enabled="true"
-        android:icon="@drawable/casilla"
+        android:icon="@drawable/capacitacion"
         android:title=""
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/action_task"
         android:enabled="true"
-        android:icon="@drawable/visitas"
+        android:icon="@drawable/tareas"
         android:title=""
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_exit"
         android:enabled="true"
-        android:icon="@drawable/salir"
+        android:icon="@drawable/exit"
         android:title=""
         app:showAsAction="ifRoom" />
 </menu>
