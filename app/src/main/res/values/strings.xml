@@ -316,5 +316,11 @@ Página 6 de 6</string>
     <string name="start_task">Agregar Captación</string>
     <string name="title_activity_report_list">ReportList</string>
     <string name="first_report">first_report</string>
+    <string name="numer_phone">TELÉFONO</string>
+    <string name="labelcontact">INDIQUE SUS DATOS DE CONTACTO</string>
+    <string name="email">CORREO ELECTRÓNICO</string>
+    <string name="photo">TOMAR FOTO</string>
+    <string name="street_between">ENTRE CALLES</string>
+    <string name="delegacion">DELEGACIÓN</string>
 
 </resources>
