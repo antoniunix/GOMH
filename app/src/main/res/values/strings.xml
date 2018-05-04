@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">GOMH</string>
-    <string name="app_path_photo">/sdcard/GOMH/</string>
+    <string name="app_path_photo">/GOMH/</string>
     <string name="app_db_name">GOMH.db</string>
     <string name="app_share_preference_name">GOMH</string>
     <string name="network_ip">http://os.gshp-apps.com</string>
     <string name="network_context">service/rest/</string>
     <string name="app_download_apk">https://s3-us-west-1.amazonaws.com/gshpapps/OBCiudadano/GOMH.apk</string>
-    <string name="app_path_apk">sdcard/GOMH/GOMH.apk</string>
+    <string name="app_path_apk">/GOMH/GOMH.apk</string>
     <string name="network_header_name_application_json">Content-Type</string>
     <string name="network_header_application_json">application/json</string>
     <string name="network_header_multipart_data">multipart/form-data</string>
@@ -319,5 +319,10 @@ Página 6 de 6</string>
     <string name="accept">ACEPTAR</string>
     <string name="start_task">Agregar Captación</string>
     <string name="title_activity_report_list">ReportList</string>
+    <string name="first_report">first_report</string>
+    <string name="capt">CAPTAR</string>
+    <string name="pub">PUBLICIDAD</string>
+    <string name="task">TAREA</string>
+    <string name="finish_report">FIN DE REGISTRO</string>
 
 </resources>

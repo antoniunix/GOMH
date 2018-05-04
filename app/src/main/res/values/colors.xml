@@ -22,5 +22,6 @@
     <color name="colorAHBottonAccentColor">#b72a2b</color>
     <color name="colorAHBottonInactive">#b6b6b6</color>
     <color name="colorBottonNavigationBackground">#FFFFFF</color>
+    <color name="colorWhiteTxt">#FFFFFF</color>
 
 </resources>

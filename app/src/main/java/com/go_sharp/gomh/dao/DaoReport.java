@@ -6,13 +6,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
-import com.go_sharp.gomh.R;
-import com.go_sharp.gomh.contextApp.ContextApp;
+import com.go_sharp.gomh.adapter.DtoSimpleReport;
 import com.go_sharp.gomh.dto.DtoBundle;
 import com.go_sharp.gomh.dto.DtoCatalog;
+import com.go_sharp.gomh.dto.DtoPhoto;
 import com.go_sharp.gomh.dto.DtoReport;
 import com.go_sharp.gomh.dto.DtoReportToSend;
-import com.go_sharp.gomh.dto.DtoReportVisit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -393,146 +392,6 @@ public class DaoReport extends DAO {
     }
 
 
-    public List<DtoReportVisit> SelectReportVisit() {
-        db = helper.getReadableDatabase();
-
-        String queryIncomplete = "SELECT  * FROM( \n" +
-                "                SELECT DISTINCT \n" +
-                "                report.id, \n" +
-                "                report.send, \n" +
-                "                report.hash, \n" +
-                "                report.type_poll,\n" +
-                "                pdv.name, \n" +
-                "                report.id_pdv,                \n" +
-                "                CHECK_in.date  datecheckin, \n" +
-                "                CHECK_out.date datecheckout \n" +
-                "                FROM \n" +
-                "                report  \n" +
-                "                LEFT JOIN pdv ON pdv.id=report.id_pdv AND report.active=1\n" +
-                "                LEFT JOIN report_check  as CHECK_in ON CHECK_in.id_report_local = report.id   and CHECK_in.type=1 \n" +
-                "                LEFT JOIN report_check as CHECK_out on  CHECK_out.id_report_local = report.id   and CHECK_out.type=2 \n" +
-                "                WHERE report.active=1\n" +
-                "                ) as q1 \n" +
-                "                where    q1.datecheckin   is not NULL  and  q1.datecheckout   is NULL";
-
-        String queryCompleteNotSend = "SELECT  * FROM( \n" +
-                "                SELECT DISTINCT \n" +
-                "                report.id, \n" +
-                "                report.send, \n" +
-                "                report.hash, \n" +
-                "                report.type_poll,\n" +
-                "                pdv.name, \n" +
-                "                report.id_pdv,                \n" +
-                "                CHECK_in.date  datecheckin, \n" +
-                "                CHECK_out.date datecheckout \n" +
-                "                FROM \n" +
-                "                report  \n" +
-                "                LEFT JOIN pdv ON pdv.id=report.id_pdv AND report.active=1\n" +
-                "                LEFT JOIN report_check  as CHECK_in ON CHECK_in.id_report_local = report.id   and CHECK_in.type=1 \n" +
-                "                LEFT JOIN report_check as CHECK_out on  CHECK_out.id_report_local = report.id   and CHECK_out.type=2 \n" +
-                "                WHERE report.active=1\n" +
-                "                ) as q1 \n" +
-                "                where    q1.datecheckin   is not NULL  and  q1.datecheckout   is not NULL  and q1.send=0";
-
-
-        String queryCompleteSend = "SELECT  * FROM( \n" +
-                "                SELECT DISTINCT \n" +
-                "                report.id, \n" +
-                "                report.send, \n" +
-                "                report.hash, \n" +
-                "                report.type_poll,\n" +
-                "                pdv.name, \n" +
-                "                report.id_pdv,                \n" +
-                "                CHECK_in.date  datecheckin, \n" +
-                "                CHECK_out.date datecheckout \n" +
-                "                FROM \n" +
-                "                report  \n" +
-                "                LEFT JOIN pdv ON pdv.id=report.id_pdv AND report.active=1\n" +
-                "                LEFT JOIN report_check  as CHECK_in ON CHECK_in.id_report_local = report.id   and CHECK_in.type=1 \n" +
-                "                LEFT JOIN report_check as CHECK_out on  CHECK_out.id_report_local = report.id   and CHECK_out.type=2 \n" +
-                "                WHERE report.active=1\n" +
-                "                ) as q1 \n" +
-                "                where    q1.datecheckin   is not NULL  and  q1.datecheckout   is not NULL  and q1.send>0";
-
-        Log.e("send", "qry incomplete \n " + queryIncomplete + "\n not send " + queryCompleteNotSend + "\n completed " + queryCompleteSend);
-        cursor = db.rawQuery(queryIncomplete, null);
-        List<DtoReportVisit> obj = new ArrayList<>();
-        DtoReportVisit dtoReportVisit;
-        int id = cursor.getColumnIndexOrThrow("id");
-        int send = cursor.getColumnIndexOrThrow("send");
-        int nombrePdv = cursor.getColumnIndexOrThrow("name");
-        int idPdv = cursor.getColumnIndexOrThrow("id_pdv");
-        int dateCheckIn = cursor.getColumnIndexOrThrow("datecheckin");
-        int dateCheckOut = cursor.getColumnIndexOrThrow("datecheckout");
-        int hash = cursor.getColumnIndexOrThrow("hash");
-        int typePoll = cursor.getColumnIndexOrThrow("type_poll");
-        if (cursor.moveToFirst()) {
-            do {
-                dtoReportVisit = new DtoReportVisit();
-                dtoReportVisit.setId(cursor.getLong(id));
-                dtoReportVisit.setSend(cursor.getInt(send));
-                dtoReportVisit.setIdPdv(cursor.getLong(idPdv));
-                dtoReportVisit.setDateCheckIn(cursor.getLong(dateCheckIn));
-                dtoReportVisit.setDateCheckOut(cursor.getLong(dateCheckOut));
-                dtoReportVisit.setHash(cursor.getString(hash));
-                dtoReportVisit.setTypePoll(cursor.getInt(typePoll));
-                if (dtoReportVisit.getTypePoll() != ContextApp.context.getResources().getInteger(R.integer.idPollSupervisor)) {
-                    dtoReportVisit.setName(cursor.getString(nombrePdv));
-                } else {
-                    dtoReportVisit.setName(ContextApp.context.getResources().getString(R.string.supervisor));
-                }
-
-                obj.add(dtoReportVisit);
-            } while (cursor.moveToNext());
-        }
-        cursor = db.rawQuery(queryCompleteNotSend, null);
-        if (cursor.moveToFirst()) {
-            do {
-                dtoReportVisit = new DtoReportVisit();
-                dtoReportVisit.setId(cursor.getInt(id));
-                dtoReportVisit.setSend(cursor.getInt(send));
-                dtoReportVisit.setIdPdv(cursor.getLong(idPdv));
-                dtoReportVisit.setName(cursor.getString(nombrePdv));
-                dtoReportVisit.setDateCheckIn(cursor.getLong(dateCheckIn));
-                dtoReportVisit.setDateCheckOut(cursor.getLong(dateCheckOut));
-                dtoReportVisit.setHash(cursor.getString(hash));
-                dtoReportVisit.setTypePoll(cursor.getInt(typePoll));
-                if (dtoReportVisit.getTypePoll() != ContextApp.context.getResources().getInteger(R.integer.idPollSupervisor)) {
-                    dtoReportVisit.setName(cursor.getString(nombrePdv));
-                } else {
-                    dtoReportVisit.setName(ContextApp.context.getResources().getString(R.string.supervisor));
-                }
-
-                obj.add(dtoReportVisit);
-            } while (cursor.moveToNext());
-        }
-        cursor = db.rawQuery(queryCompleteSend, null);
-        if (cursor.moveToFirst()) {
-            do {
-                dtoReportVisit = new DtoReportVisit();
-                dtoReportVisit.setId(cursor.getInt(id));
-                dtoReportVisit.setSend(cursor.getInt(send));
-                dtoReportVisit.setIdPdv(cursor.getLong(idPdv));
-                dtoReportVisit.setName(cursor.getString(nombrePdv));
-                dtoReportVisit.setDateCheckIn(cursor.getLong(dateCheckIn));
-                dtoReportVisit.setDateCheckOut(cursor.getLong(dateCheckOut));
-                dtoReportVisit.setHash(cursor.getString(hash));
-                dtoReportVisit.setTypePoll(cursor.getInt(typePoll));
-                if (dtoReportVisit.getTypePoll() != ContextApp.context.getResources().getInteger(R.integer.idPollSupervisor)) {
-                    dtoReportVisit.setName(cursor.getString(nombrePdv));
-                } else {
-                    dtoReportVisit.setName(ContextApp.context.getResources().getString(R.string.supervisor));
-                }
-
-                obj.add(dtoReportVisit);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        db.close();
-        return obj;
-    }
-
-
     /**
      * Select
      */
@@ -596,7 +455,7 @@ public class DaoReport extends DAO {
                 "FROM(  \n" +
                 "SELECT DISTINCT  \n" +
                 "report.id,  \n" +
-                "CHECK_in.date  datecheckin,  \n" +
+                "CHECK_in.date datecheckin,  \n" +
                 "CHECK_out.date datecheckout  \n" +
                 "FROM  \n" +
                 "report \n" +
@@ -613,5 +472,39 @@ public class DaoReport extends DAO {
         cursor.close();
         db.close();
         return idReport;
+    }
+
+    public List<DtoSimpleReport> getCompletedReports() {
+        db = helper.getReadableDatabase();
+        String qry = "SELECT q1.id\n" +
+                "FROM(  \n" +
+                "SELECT DISTINCT  \n" +
+                "report.id,  \n" +
+                "CHECK_out.date as datecheckout  \n" +
+                "FROM  \n" +
+                "report \n" +
+                "INNER JOIN report_check as CHECK_out on CHECK_out.id_report_local = report.id and CHECK_out.type=2  \n" +
+                "WHERE report.type_poll=1 \n" +
+                ") as q1  \n" +
+                "WHERE q1.datecheckout is not NULL";
+        cursor = db.rawQuery(qry, null);
+
+        List<DtoSimpleReport> obj = new ArrayList<>(cursor.getCount());
+        DtoSimpleReport dto;
+        if (cursor.moveToFirst()) {
+            int id = cursor.getColumnIndexOrThrow("id");
+            int date = cursor.getColumnIndexOrThrow("date");
+
+            do {
+                dto = new DtoSimpleReport();
+                dto.setTitle("Captación "+cursor.getInt(id));
+                dto.setDescription("Descripción");
+                dto.setCreatedAt(cursor.getString(date));
+                obj.add(dto);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return obj;
     }
 }

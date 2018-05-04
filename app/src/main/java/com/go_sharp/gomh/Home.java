@@ -14,22 +14,20 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.go_sharp.gomh.dao.DaoReport;
 import com.go_sharp.gomh.dialog.DialogAccount;
-import com.go_sharp.gomh.dialog.DialogMessageGeneric;
 import com.go_sharp.gomh.dialog.DialogSync;
 import com.go_sharp.gomh.dto.DtoBundle;
 import com.go_sharp.gomh.geolocation.AlarmGeolocation;
 import com.go_sharp.gomh.model.ModelHome;
 import com.go_sharp.gomh.model.ModelInfoPerson;
 import com.go_sharp.gomh.util.BottomNavigationViewHelper;
-import com.go_sharp.gomh.util.ChangeFontStyle;
 import com.go_sharp.gomh.util.Config;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -49,6 +47,8 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
+    private static final String TAG = "Home";
+
     private ImageButton btnTBSettings, btnTBHelp, btnTBSync, btnTBAccount;
     private Button btnStart;
     private BottomNavigationView bottomNavigationView;
@@ -60,6 +60,7 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
 
     private SharedPreferences preferences;
     private ModelHome model;
+    DtoBundle dtoBundle;
 
     private void init() {
         btnTBSettings = findViewById(R.id.btnTBSettings);
@@ -91,9 +92,16 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        dtoBundle = new DtoBundle();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         AlarmGeolocation.getInstance();
+        dtoBundle.setIdReportLocal(model.getReportId());
     }
 
     @Override
@@ -267,10 +275,18 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
         } else if (v.getId() == btnTBSettings.getId()) {
 
         } else if (v.getId() == btnStart.getId()) {
-            DtoBundle dtoBundle = new DtoBundle();
-            dtoBundle.setIdReportLocal(new DaoReport().getIdReportIncomplete());
-            startActivity(new Intent(this, ReportList.class)
-                    .putExtra(getString(R.string.app_bundle_name), dtoBundle));
+            int statusReport = model.statusReport();
+            Log.w(TAG, "status report: " + statusReport);
+            if (statusReport == getResources().getInteger(R.integer.first_report)) {
+                startActivity(new Intent(this, MenuReport.class)
+                        .putExtra(getString(R.string.app_bundle_name), dtoBundle));
+            } else if (statusReport == getResources().getInteger(R.integer.open_report)) {
+                startActivity(new Intent(this, MenuReport.class)
+                        .putExtra(getString(R.string.app_bundle_name), dtoBundle));
+            } else if (statusReport == getResources().getInteger(R.integer.complete_report)) {
+                startActivity(new Intent(this, ReportList.class)
+                        .putExtra(getString(R.string.app_bundle_name), dtoBundle));
+            }
         }
     }
 

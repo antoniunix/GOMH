@@ -12,6 +12,7 @@ import com.go_sharp.gomh.dto.DtoBundle;
 import com.go_sharp.gomh.dto.DtoReport;
 import com.go_sharp.gomh.geolocation.ServiceCheck;
 import com.go_sharp.gomh.util.Config;
+import com.go_sharp.gomh.util.SharePreferenceCustom;
 import com.gshp.api.utils.Crypto;
 
 /**
@@ -26,10 +27,9 @@ public class ModelMenuReport {
     public ModelMenuReport(DtoBundle dtoBundle) {
         this.dtoBundle = dtoBundle;
         context = ContextApp.context;
-
     }
 
-    public void createNewReport(Activity activity) {
+    public void createNewReport() {
         String version = "";
         try {
             version = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
@@ -42,9 +42,16 @@ public class ModelMenuReport {
                 setHash(Crypto.MD5(System.currentTimeMillis() + " " + Math.random())).
                 setSend(0).setTypeReport(1).setActive(1).setTypePoll(1);
         dtoBundle.setIdReportLocal(new DaoReport().insert(dtoReport));
-        activity.startService(new Intent(context, ServiceCheck.class).
+        context.startService(new Intent(context, ServiceCheck.class).
                 putExtra(context.getString(R.string.app_bundle_name), dtoBundle).
                 putExtra("typeCheck", context.getResources().getInteger(R.integer.type_check_in)));
+
+        SharePreferenceCustom.write(R.string.app_share_preference_name, R.string.first_report, "false");
     }
 
+    public void closeReport(){
+        context.startService(new Intent(context, ServiceCheck.class).
+                putExtra(context.getString(R.string.app_bundle_name), dtoBundle).
+                putExtra("typeCheck", context.getResources().getInteger(R.integer.type_check_out)));
+    }
 }
