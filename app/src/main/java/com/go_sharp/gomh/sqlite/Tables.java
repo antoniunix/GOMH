@@ -189,7 +189,7 @@ public class Tables {
             "id_type INTEGER," +
             "description TEXT," +
             "title TEXT," +
-            "content TEXT";
+            "content TEXT)";
 
 
 }

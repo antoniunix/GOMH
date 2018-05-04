@@ -100,8 +100,12 @@
             android:name=".ReportList"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".ReportPublicity" />
+
         <activity android:name=".Training" />
         <activity android:name=".Task"></activity>
+
     </application>
 
 </manifest>
