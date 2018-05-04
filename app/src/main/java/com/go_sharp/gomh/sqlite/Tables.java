@@ -174,5 +174,22 @@ public class Tables {
             "provider TEXT," +
             "send INTEGER)";
 
+    public final String TableDownloadFile = "CREATE TABLE download_file(" +
+            "id INTEGER PRIMARY KEY NOT NULL," +
+            "ext TEXT," +
+            "end_date TEXT," +
+            "description TEXT," +
+            "title TEXT," +
+            "url TEXT," +
+            "start_date TEXT," +
+            "md5 TEXT)";
+
+    public final String TableMessage="CREATE TABLE message(" +
+            "id INTEGER," +
+            "id_type INTEGER," +
+            "description TEXT," +
+            "title TEXT," +
+            "content TEXT)";
+
 
 }

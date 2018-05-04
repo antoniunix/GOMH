@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,7 +16,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.go_sharp.gomh.listener.OnFinishThread;
-import com.go_sharp.gomh.model.ModelSplash;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -49,7 +49,7 @@ public class Splash extends AppCompatActivity implements OnFinishThread {
         if (!hasPermissions(this, PERMISSIONS)) {
             ActivityCompat.requestPermissions(this, PERMISSIONS, ALL_PERMISSIONS);
         } else {
-            File dir = new File(getString(R.string.app_path_photo));
+            File dir = new File(Environment.getExternalStorageDirectory() + getString(R.string.app_path_photo));
             if (!dir.exists()) {
                 if (!dir.mkdirs()) {
                     Log.e("INFO", "no se creo la carpeta");
@@ -66,7 +66,7 @@ public class Splash extends AppCompatActivity implements OnFinishThread {
             public void run() {
                 Splash activity = weakReference.get();
                 if (activity != null && !activity.isFinishing()) {
-                    startActivity(new Intent(Splash.this, Home.class));
+                    startActivity(new Intent(Splash.this, Login.class));
                     finish();
                 }
             }
@@ -101,7 +101,7 @@ public class Splash extends AppCompatActivity implements OnFinishThread {
                         // user rejected the permission
                         boolean showRationale = ActivityCompat.shouldShowRequestPermissionRationale(this, permission);
                         if (!showRationale) {
-                            Toast.makeText(this, "Por favor acepte todos los permisos",Toast.LENGTH_LONG).show();
+                            Toast.makeText(this, "Por favor acepte todos los permisos", Toast.LENGTH_LONG).show();
                             Intent intent = new Intent();
                             intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                             Uri uri = Uri.fromParts("package", getPackageName(), null);

@@ -14,6 +14,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -45,6 +46,8 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
         OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
+
+    private static final String TAG = "Home";
 
     private ImageButton btnTBSettings, btnTBHelp, btnTBSync, btnTBAccount;
     private Button btnStart;
@@ -104,9 +107,11 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_supervisor:
+            case R.id.action_training:
+                startActivity(new Intent(this, Training.class));
                 break;
-            case R.id.action_representative:
+            case R.id.action_task:
+                startActivity(new Intent(this, Task.class));
                 break;
             case R.id.action_exit:
                 finish();
@@ -271,13 +276,15 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
         } else if (v.getId() == btnTBSettings.getId()) {
 
         } else if (v.getId() == btnStart.getId()) {
-            if (model.statusReport() == getResources().getInteger(R.integer.first_report)) {
+            int statusReport = model.statusReport();
+            Log.w(TAG, "status report: " + statusReport);
+            if (statusReport == getResources().getInteger(R.integer.first_report)) {
                 startActivity(new Intent(this, MenuReport.class)
                         .putExtra(getString(R.string.app_bundle_name), dtoBundle));
-            } else if (model.statusReport() == getResources().getInteger(R.integer.open_report)) {
+            } else if (statusReport == getResources().getInteger(R.integer.open_report)) {
                 startActivity(new Intent(this, MenuReport.class)
                         .putExtra(getString(R.string.app_bundle_name), dtoBundle));
-            } else if (model.statusReport() == getResources().getInteger(R.integer.complete_report)) {
+            } else if (statusReport == getResources().getInteger(R.integer.complete_report)) {
                 startActivity(new Intent(this, ReportList.class)
                         .putExtra(getString(R.string.app_bundle_name), dtoBundle));
             }

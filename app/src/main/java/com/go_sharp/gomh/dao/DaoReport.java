@@ -6,13 +6,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
-import com.go_sharp.gomh.R;
-import com.go_sharp.gomh.contextApp.ContextApp;
+import com.go_sharp.gomh.adapter.DtoSimpleReport;
 import com.go_sharp.gomh.dto.DtoBundle;
 import com.go_sharp.gomh.dto.DtoCatalog;
+import com.go_sharp.gomh.dto.DtoPhoto;
 import com.go_sharp.gomh.dto.DtoReport;
 import com.go_sharp.gomh.dto.DtoReportToSend;
-import com.go_sharp.gomh.dto.DtoReportVisit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -456,7 +455,7 @@ public class DaoReport extends DAO {
                 "FROM(  \n" +
                 "SELECT DISTINCT  \n" +
                 "report.id,  \n" +
-                "CHECK_in.date  datecheckin,  \n" +
+                "CHECK_in.date datecheckin,  \n" +
                 "CHECK_out.date datecheckout  \n" +
                 "FROM  \n" +
                 "report \n" +
@@ -473,5 +472,39 @@ public class DaoReport extends DAO {
         cursor.close();
         db.close();
         return idReport;
+    }
+
+    public List<DtoSimpleReport> getCompletedReports() {
+        db = helper.getReadableDatabase();
+        String qry = "SELECT q1.id\n" +
+                "FROM(  \n" +
+                "SELECT DISTINCT  \n" +
+                "report.id,  \n" +
+                "CHECK_out.date as datecheckout  \n" +
+                "FROM  \n" +
+                "report \n" +
+                "INNER JOIN report_check as CHECK_out on CHECK_out.id_report_local = report.id and CHECK_out.type=2  \n" +
+                "WHERE report.type_poll=1 \n" +
+                ") as q1  \n" +
+                "WHERE q1.datecheckout is not NULL";
+        cursor = db.rawQuery(qry, null);
+
+        List<DtoSimpleReport> obj = new ArrayList<>(cursor.getCount());
+        DtoSimpleReport dto;
+        if (cursor.moveToFirst()) {
+            int id = cursor.getColumnIndexOrThrow("id");
+            int date = cursor.getColumnIndexOrThrow("date");
+
+            do {
+                dto = new DtoSimpleReport();
+                dto.setTitle("Captación "+cursor.getInt(id));
+                dto.setDescription("Descripción");
+                dto.setCreatedAt(cursor.getString(date));
+                obj.add(dto);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return obj;
     }
 }

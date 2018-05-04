@@ -74,7 +74,7 @@ public class ModelCensus implements OnApiGeolocation {
 
     public void saveCensus(DtoReportCensus dtoReportCensus) {
         daoReportCensus.deleteByIdReport(dtoBundle.getIdReportLocal());
-        daoReportCensus.insert(dtoReportCensus, dtoBundle.getIdReportLocal());
+        daoReportCensus.insert(dtoReportCensus);
     }
 
 
