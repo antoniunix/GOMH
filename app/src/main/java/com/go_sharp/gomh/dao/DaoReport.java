@@ -2,7 +2,6 @@ package com.go_sharp.gomh.dao;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.text.format.DateFormat;
@@ -11,7 +10,6 @@ import android.util.Log;
 import com.go_sharp.gomh.adapter.DtoSimpleReport;
 import com.go_sharp.gomh.dto.DtoBundle;
 import com.go_sharp.gomh.dto.DtoCatalog;
-import com.go_sharp.gomh.dto.DtoPhoto;
 import com.go_sharp.gomh.dto.DtoReport;
 import com.go_sharp.gomh.dto.DtoReportToSend;
 

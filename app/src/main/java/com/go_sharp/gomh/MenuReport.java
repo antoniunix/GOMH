@@ -1,5 +1,6 @@
 package com.go_sharp.gomh;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -8,6 +9,8 @@ import android.widget.LinearLayout;
 
 import com.go_sharp.gomh.dto.DtoBundle;
 import com.go_sharp.gomh.model.ModelMenuReport;
+
+import net.gshp.apiencuesta.Encuesta;
 
 public class MenuReport extends AppCompatActivity implements View.OnClickListener {
 
@@ -25,6 +28,7 @@ public class MenuReport extends AppCompatActivity implements View.OnClickListene
         opt3 = findViewById(R.id.opt3);
         opt4 = findViewById(R.id.opt4);
 
+        opt1.setOnClickListener(this);
         opt4.setOnClickListener(this);
     }
 
@@ -46,6 +50,9 @@ public class MenuReport extends AppCompatActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         if (v.getId() == opt1.getId()) {
+            startActivity(new Intent(this, Encuesta.class)
+                    .putExtra("idReporte", dtoBundle.getIdReportLocal())
+                    .putExtra("idEncuesta", 1L));
 
         } else if (v.getId() == opt2.getId()) {
 

@@ -109,7 +109,7 @@ public class Tables {
             + "idTipoPregunta INTEGER," + "obligatoria INTEGER," + "RangoMinimo TEXT," + "RangoMaximo TEXT,"
             + "orden INTEGER," + "peso INTEGER," + "operadorDependencia TEXT," + "valorDependencia1 TEXT,"
             + "valorDependencia2 TEXT," + "queryOpcionesDependencia TEXT," + "queryVisibility INTEGER,"
-            + "queryOpciones TEXT)";
+            + "queryOpciones TEXT," + "regex_val TEXT," + "regex_message TEXT)";
 
     public final String Table_EARespuesta = "CREATE TABLE EARespuesta("
             + "ida INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," + "idPregunta INTEGER, " + "idReporte INTEGER,"
@@ -183,6 +183,17 @@ public class Tables {
             "url TEXT," +
             "start_date TEXT," +
             "md5 TEXT)";
+
+    public final String TableMessage = "CREATE TABLE message(" +
+            "id INTEGER PRIMARY KEY NOT NULL," +
+            "type_id INTEGER," +
+            "description TEXT," +
+            "title TEXT," +
+            "content TEXT," +
+            "seen INTEGER," +
+            "sent INTEGER," +
+            "timestampCel TEXT," +
+            "hash TEXT)";
 
 
 }
