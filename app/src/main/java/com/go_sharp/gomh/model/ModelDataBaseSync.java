@@ -248,7 +248,7 @@ public class ModelDataBaseSync {
                     }
 
                 } catch (Exception e) {
-                    STORAGE_OK = -1; 
+                    STORAGE_OK = -1;
                     e.printStackTrace();
                 }
 
