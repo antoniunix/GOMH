@@ -1,10 +1,8 @@
 package com.go_sharp.gomh;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -29,6 +27,7 @@ import com.go_sharp.gomh.model.ModelHome;
 import com.go_sharp.gomh.model.ModelInfoPerson;
 import com.go_sharp.gomh.util.BottomNavigationViewHelper;
 import com.go_sharp.gomh.util.Config;
+import com.go_sharp.gomh.util.SharePreferenceCustom;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -58,7 +57,6 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
     private LocationRequest mLocationRequest;
     private GoogleApiClient mGoogleApiClient;
 
-    private SharedPreferences preferences;
     private ModelHome model;
     DtoBundle dtoBundle;
 
@@ -72,7 +70,6 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
         mapFrag = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
-        preferences = getSharedPreferences(getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
         new ModelInfoPerson(this).loadInfo("INICIO");
         mapFrag.getMapAsync(this);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
@@ -263,7 +260,7 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
             new DialogAccount().show(getSupportFragmentManager(), "Fragment_dialog_account");
 
         } else if (v.getId() == btnTBSync.getId()) {
-            if (preferences.getString(getString(R.string.app_share_preference_user_account), null) != null) {
+            if (SharePreferenceCustom.read(getString(R.string.app_share_preference_name), getString(R.string.app_share_preference_user_account), null) != null) {
                 DialogSync diFragmentSync = new DialogSync();
                 diFragmentSync.setCancelable(false);
                 diFragmentSync.show(getSupportFragmentManager(), "DialogFragmentSync");

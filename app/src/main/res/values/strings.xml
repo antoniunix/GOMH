@@ -3,7 +3,7 @@
     <string name="app_path_photo">/GOMH/</string>
     <string name="app_db_name">GOMH.db</string>
     <string name="app_share_preference_name">GOMH</string>
-    <string name="network_ip">http://os.gshp-apps.com</string>
+    <string name="network_ip">http://gomh.gshp-apps.com</string>
     <string name="network_context">service/rest/</string>
     <string name="app_download_apk">https://s3-us-west-1.amazonaws.com/gshpapps/OBCiudadano/GOMH.apk</string>
     <string name="app_path_apk">/GOMH/GOMH.apk</string>
@@ -334,5 +334,13 @@ Página 6 de 6</string>
     <string name="task">TAREA</string>
     <string name="finish_report">FIN DE REGISTRO</string>
 
+    <string name="msg_channel_id">MENSAJES</string>
+    <string name="channel_msg_name">Mensajes</string>
+    <string name="channel_msg_des">Recepción de mensajes importantes</string>
+    <string name="msg_id">msg_id</string>
+    <string name="sync_channel_id">SYNC</string>
+    <string name="channel_sync_name">Sincronización</string>
+    <string name="channel_sync_des">Actualizaciones</string>
+    <string name="app_share_preference_sync">must_sync</string>
 
 </resources>

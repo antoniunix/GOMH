@@ -103,9 +103,16 @@
 
         <activity android:name=".ReportPublicity" />
 
-        <activity android:name=".Training" />
         <activity android:name=".Task"></activity>
 
+        <activity
+            android:name=".Training"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".message.MessageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

@@ -1,8 +1,6 @@
 package com.go_sharp.gomh;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
+import com.go_sharp.gomh.message.ModelMessage;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -12,10 +10,10 @@ import com.google.firebase.messaging.RemoteMessage;
 
 public class MyAndroidFirebaseMsgService extends FirebaseMessagingService {
     private static final String TAG = "MyAndroidFCMService";
-    private SharedPreferences preferences;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        preferences = getSharedPreferences(getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
+        ModelMessage modelMessage = new ModelMessage();
+        modelMessage.checkForMsg();
     }
 }

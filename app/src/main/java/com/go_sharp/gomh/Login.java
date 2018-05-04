@@ -1,8 +1,6 @@
 package com.go_sharp.gomh;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -21,6 +19,7 @@ import com.go_sharp.gomh.dto.DtoPolitic;
 import com.go_sharp.gomh.listener.OnProgressSync;
 import com.go_sharp.gomh.model.ModelSincronizar;
 import com.go_sharp.gomh.util.ChangeFontStyle;
+import com.go_sharp.gomh.util.SharePreferenceCustom;
 
 import org.apache.http.HttpStatus;
 
@@ -30,7 +29,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
 
     private Button btn_sync, btn_sync_agree, btn_sync_cancel, btn_next;
     private ProgressBar id_progressbar;
-    private SharedPreferences prefs;
     private EditText edt_user_name, edt_pass;
     private RelativeLayout rlt_authentication, rlyt_delete_data, rlyt_sync;
     private TextView txtPorcent;
@@ -53,17 +51,16 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
         }
         DtoPolitic dtoPolitic = new DaoPolitic().Select();
         String version = dtoPolitic.getVersion() == null || dtoPolitic.getValue().isEmpty() ? "TERMS_1.0" : dtoPolitic.getVersion();
-        prefs = getSharedPreferences(getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
 
-        if (!prefs.getString(getResources().getString(R.string.app_share_preference_privacy_politic), "")
+        if (!SharePreferenceCustom.read(getString(R.string.app_share_preference_name), getString(R.string.app_share_preference_privacy_politic), "")
                 .equals(version)) {
             DialogPrivacyPolitics dialogPrivacyPolitics = new DialogPrivacyPolitics();
             dialogPrivacyPolitics.setCancelable(false);
             dialogPrivacyPolitics.show(getSupportFragmentManager(), "DialogPolitic");
         }
 
-        if ((System.currentTimeMillis() - prefs.getLong(getResources().getString(R.string.app_share_preference_time_synch), 0L))
-                > getResources().getInteger(R.integer.time_synch)) {
+        if ((System.currentTimeMillis() - Long.valueOf(SharePreferenceCustom.read(R.string.app_share_preference_name,
+                R.string.app_share_preference_time_synch, "0"))) > getResources().getInteger(R.integer.time_synch)) {
             id_progressbar = findViewById(R.id.id_progressbar);
             btn_sync = findViewById(R.id.btn_sync);
             btn_sync_agree = findViewById(R.id.btn_sync_agree);
@@ -79,12 +76,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
             btn_sync_agree.setOnClickListener(this);
             btn_sync_cancel.setOnClickListener(this);
             btn_next.setOnClickListener(this);
-            edt_user_name.setText(prefs.getString(getString(R.string.app_share_preference_user_account), ""));
-            edt_pass.setText(prefs.getString(getString(R.string.app_share_preference_user_pass), ""));
-            ChangeFontStyle.changeFont(btn_sync,btn_sync_agree,btn_sync_cancel,btn_next
-            ,edt_user_name,edt_pass,txtPorcent);
+            edt_user_name.setText(SharePreferenceCustom.read(getString(R.string.app_share_preference_name), getString(R.string.app_share_preference_user_account), ""));
+            edt_pass.setText(SharePreferenceCustom.read(getString(R.string.app_share_preference_name), getString(R.string.app_share_preference_user_pass), ""));
+            ChangeFontStyle.changeFont(btn_sync, btn_sync_agree, btn_sync_cancel, btn_next
+                    , edt_user_name, edt_pass, txtPorcent);
         } else {
-                startActivity(new Intent(this, Home.class));
+            startActivity(new Intent(this, Home.class));
             finish();
         }
     }
@@ -102,14 +99,14 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
                     edt_user_name.setError(getString(R.string.error_empty_user_name));
                 } else if (edt_pass.getText().toString().isEmpty()) {
                     edt_pass.setError(getString(R.string.error_empty_password));
-                } else if (prefs.getString(getString(R.string.app_share_preference_user_account), null) != null &&
-                        !prefs.getString(getString(R.string.app_share_preference_user_account), "").equals(edt_user_name.getText().toString().trim())) {
+                } else if (SharePreferenceCustom.read(getString(R.string.app_share_preference_name), getString(R.string.app_share_preference_user_account), null) != null &&
+                        !SharePreferenceCustom.read(getString(R.string.app_share_preference_name), getString(R.string.app_share_preference_user_account), "").equals(edt_user_name.getText().toString().trim())) {
                     rlt_authentication.setVisibility(View.GONE);
                     rlyt_delete_data.setVisibility(View.VISIBLE);
                     rlyt_sync.setVisibility(View.GONE);
                 } else {
-                    prefs.edit().putString(getString(R.string.app_share_preference_user_account), edt_user_name.getText().toString().trim()).apply();
-                    prefs.edit().putString(getString(R.string.app_share_preference_user_pass), edt_pass.getText().toString().trim()).apply();
+                    SharePreferenceCustom.write(getString(R.string.app_share_preference_name), getString(R.string.app_share_preference_user_account), edt_user_name.getText().toString().trim());
+                    SharePreferenceCustom.write(getString(R.string.app_share_preference_name), getString(R.string.app_share_preference_user_pass), edt_pass.getText().toString().trim());
                     rlt_authentication.setVisibility(View.GONE);
                     rlyt_delete_data.setVisibility(View.GONE);
                     rlyt_sync.setVisibility(View.VISIBLE);
@@ -122,8 +119,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
                 rlt_authentication.setVisibility(View.GONE);
                 rlyt_delete_data.setVisibility(View.GONE);
                 rlyt_sync.setVisibility(View.VISIBLE);
-                prefs.edit().putString(getString(R.string.app_share_preference_user_account), edt_user_name.getText().toString().trim()).apply();
-                prefs.edit().putString(getString(R.string.app_share_preference_user_pass), edt_pass.getText().toString().trim()).apply();
+                SharePreferenceCustom.write(getString(R.string.app_share_preference_name), getString(R.string.app_share_preference_user_account), edt_user_name.getText().toString().trim());
+                SharePreferenceCustom.write(getString(R.string.app_share_preference_name), getString(R.string.app_share_preference_user_pass), edt_pass.getText().toString().trim());
                 deleteDatabase(getResources().getString(R.string.app_db_name));
                 startActivity(new Intent(this, Splash.class));
                 finish();
@@ -136,8 +133,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
             case R.id.btn_next:
                 switch (statusSync) {
                     case HttpStatus.SC_OK:
-                        Log.w("Login","time "+prefs.getLong(getResources().getString(R.string.app_share_preference_time_synch), 0L));
-                            startActivity(new Intent(this, Home.class));
+                        Log.w("Login", "time " + SharePreferenceCustom.read(getString(R.string.app_share_preference_name), getString(R.string.app_share_preference_time_synch), "0"));
+                        startActivity(new Intent(this, Home.class));
                         finish();
                         break;
                     case HttpStatus.SC_UNAUTHORIZED:
@@ -196,8 +193,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
 //                if (!prefs.getBoolean(getString(R.string.terms_and_conditions_sharepreference_is_accepted), false)) {
 //                    startActivityForResult(new Intent(this, TermsAndConditions.class), 1);
 //                }
-                prefs.edit().putLong(getResources().getString(R.string.app_share_preference_time_synch), System.currentTimeMillis())
-                        .apply();
+                SharePreferenceCustom.write(getString(R.string.app_share_preference_name), getString(R.string.app_share_preference_time_synch), System.currentTimeMillis() + "");
                 break;
             case HttpStatus.SC_CONFLICT:
                 txtPorcent.setText(getString(R.string.network_sc_conflict));
@@ -212,7 +208,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
                 txtPorcent.setText(getString(R.string.network_forbidden));
                 break;
             case HttpStatus.SC_METHOD_FAILURE:
-                prefs.edit().putInt(getString(R.string.app_share_preference_count_unauthorized), 1).apply();
+                SharePreferenceCustom.write(getString(R.string.app_share_preference_name), getString(R.string.app_share_preference_count_unauthorized), "1");
                 txtPorcent.setText(obj.toString());
                 break;
             case HttpStatus.SC_PAYMENT_REQUIRED:

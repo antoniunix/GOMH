@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.go_sharp.gomh.R;
 import com.go_sharp.gomh.dto.DtoMessage;
+import com.go_sharp.gomh.dto.DtoTask;
 import com.go_sharp.gomh.listener.OnItemClickListenerRV;
 import com.go_sharp.gomh.util.ChangeFontStyle;
 
@@ -20,10 +21,10 @@ import java.util.List;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ViewHolder> {
 
-    private List<DtoMessage> lstMsg;
+    private List<DtoTask> lstMsg;
     private OnItemClickListenerRV onItemClickListenerRV;
 
-    public RVAdapter(List<DtoMessage> lstMsg, OnItemClickListenerRV onItemClickListenerRV) {
+    public RVAdapter(List<DtoTask> lstMsg, OnItemClickListenerRV onItemClickListenerRV) {
         this.lstMsg = lstMsg;
         this.onItemClickListenerRV = onItemClickListenerRV;
     }
@@ -37,7 +38,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        DtoMessage dtoMessage = lstMsg.get(position);
+        DtoTask dtoMessage = lstMsg.get(position);
         holder.txtTitle.setText(dtoMessage.getTitle());
 
         holder.txtTitle.setOnClickListener(new View.OnClickListener() {

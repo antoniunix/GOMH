@@ -2,8 +2,10 @@ package com.go_sharp.gomh.dao;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.text.format.DateFormat;
 import android.util.Log;
 
 import com.go_sharp.gomh.adapter.DtoSimpleReport;
@@ -14,6 +16,7 @@ import com.go_sharp.gomh.dto.DtoReport;
 import com.go_sharp.gomh.dto.DtoReportToSend;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -476,7 +479,8 @@ public class DaoReport extends DAO {
 
     public List<DtoSimpleReport> getCompletedReports() {
         db = helper.getReadableDatabase();
-        String qry = "SELECT q1.id\n" +
+        String qry = "SELECT q1.id, \n" +
+                "q1.datecheckout\n" +
                 "FROM(  \n" +
                 "SELECT DISTINCT  \n" +
                 "report.id,  \n" +
@@ -493,18 +497,44 @@ public class DaoReport extends DAO {
         DtoSimpleReport dto;
         if (cursor.moveToFirst()) {
             int id = cursor.getColumnIndexOrThrow("id");
-            int date = cursor.getColumnIndexOrThrow("date");
-
+            int date = cursor.getColumnIndexOrThrow("datecheckout");
             do {
                 dto = new DtoSimpleReport();
-                dto.setTitle("Captación "+cursor.getInt(id));
+                dto.setTitle("Captación " + cursor.getInt(id));
                 dto.setDescription("Descripción");
-                dto.setCreatedAt(cursor.getString(date));
+                dto.setCreatedAt(DateFormat.format("dd/MM/yyyy", new Date(cursor.getLong(date))).toString());
                 obj.add(dto);
             } while (cursor.moveToNext());
         }
         cursor.close();
         db.close();
         return obj;
+    }
+
+    public boolean deleteEmptyReport(long idReport) {
+        db = helper.getReadableDatabase();
+        String qry = "SELECT SUM(Q.erId + Q.rcId) AS result\n" +
+                "FROM\n" +
+                "(SELECT\n" +
+                "count(EAR.ida) AS erId,\n " +
+                "count(RC.id) AS rcId \n" +
+                "FROM report R \n" +
+                "LEFT JOIN EARespuesta EAR ON EAR.idReporteLocal = R.id \n" +
+                "LEFT JOIN report_census RC ON RC.id_report_local = R.id \n" +
+                "WHERE R.id = " + idReport + " GROUP BY R.id) AS Q";
+        cursor = db.rawQuery(qry, null);
+
+        if (cursor.moveToFirst()) {
+            int sum = cursor.getColumnIndexOrThrow("result");
+            int results = cursor.getInt(sum);
+            if (results == 0) {
+                db.delete("report_check","id_report_local = "+idReport, null);
+                deleteById(idReport);
+                return true;
+            }
+        }
+        cursor.close();
+        db.close();
+        return false;
     }
 }

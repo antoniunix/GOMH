@@ -1,6 +1,5 @@
 package com.go_sharp.gomh.model;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -49,9 +48,10 @@ public class ModelMenuReport {
         SharePreferenceCustom.write(R.string.app_share_preference_name, R.string.first_report, "false");
     }
 
-    public void closeReport(){
-        context.startService(new Intent(context, ServiceCheck.class).
-                putExtra(context.getString(R.string.app_bundle_name), dtoBundle).
-                putExtra("typeCheck", context.getResources().getInteger(R.integer.type_check_out)));
+    public void closeReport() {
+        if (!new DaoReport().deleteEmptyReport(dtoBundle.getIdReportLocal()))
+            context.startService(new Intent(context, ServiceCheck.class).
+                    putExtra(context.getString(R.string.app_bundle_name), dtoBundle).
+                    putExtra("typeCheck", context.getResources().getInteger(R.integer.type_check_out)));
     }
 }
