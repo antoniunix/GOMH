@@ -55,6 +55,7 @@ public class MenuReport extends AppCompatActivity implements View.OnClickListene
                     .putExtra("idEncuesta", 1L));
 
         } else if (v.getId() == opt2.getId()) {
+            
 
         } else if (v.getId() == opt3.getId()) {
 

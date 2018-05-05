@@ -1,5 +1,6 @@
 package com.go_sharp.gomh.dto;
 
+
 public class DtoMessage {
 
     private long id;
@@ -15,99 +16,111 @@ public class DtoMessage {
     private String timeZoneCel;
     private String hash;
 
+    public long getId() {
+        return id;
+    }
+
+    public DtoMessage setId(long id) {
+        this.id = id;
+        return this;
+    }
+
     public int getType_id() {
         return type_id;
     }
 
-    public void setType_id(int type_id) {
+    public DtoMessage setType_id(int type_id) {
         this.type_id = type_id;
+        return this;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public DtoMessage setDescription(String description) {
         this.description = description;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+        return this;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public DtoMessage setTitle(String title) {
         this.title = title;
+        return this;
     }
 
     public String getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public DtoMessage setContent(String content) {
         this.content = content;
+        return this;
     }
 
     public int getSeen() {
         return seen;
     }
 
-    public void setSeen(int seen) {
+    public DtoMessage setSeen(int seen) {
         this.seen = seen;
+        return this;
     }
 
     public long getIdMessage() {
         return idMessage;
     }
 
-    public void setIdMessage(long idMessage) {
+    public DtoMessage setIdMessage(long idMessage) {
         this.idMessage = idMessage;
+        return this;
     }
 
     public String getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(String idUser) {
+    public DtoMessage setIdUser(String idUser) {
         this.idUser = idUser;
+        return this;
     }
 
     public String getTimestampCel() {
         return timestampCel;
     }
 
-    public void setTimestampCel(String timestampCel) {
+    public DtoMessage setTimestampCel(String timestampCel) {
         this.timestampCel = timestampCel;
+        return this;
     }
 
     public String getImei() {
         return imei;
     }
 
-    public void setImei(String imei) {
+    public DtoMessage setImei(String imei) {
         this.imei = imei;
+        return this;
     }
 
     public String getTimeZoneCel() {
         return timeZoneCel;
     }
 
-    public void setTimeZoneCel(String timeZoneCel) {
+    public DtoMessage setTimeZoneCel(String timeZoneCel) {
         this.timeZoneCel = timeZoneCel;
+        return this;
     }
 
     public String getHash() {
         return hash;
     }
 
-    public void setHash(String hash) {
+    public DtoMessage setHash(String hash) {
         this.hash = hash;
+        return this;
     }
 }

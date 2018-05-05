@@ -49,7 +49,7 @@ public class DaoReportCensus extends DAO {
      * INSERT
      */
 
-    public int insert(DtoReportCensus obj, long idReportLocal) {
+    public int insert(DtoReportCensus obj) {
         db = helper.getWritableDatabase();
         ContentValues cv;
         int resp = 0;
@@ -57,7 +57,7 @@ public class DaoReportCensus extends DAO {
             db.beginTransaction();
 
             cv = new ContentValues();
-            cv.put(IDREPORTLOCAL, idReportLocal);
+            cv.put(IDREPORTLOCAL, obj.getIdReporteLocal());
             cv.put(STATE, obj.getState());
             cv.put(TOWN, obj.getTown());
             cv.put(SUBURB, obj.getSuburb());

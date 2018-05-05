@@ -7,12 +7,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.go_sharp.gomh.util.SharePreferenceCustom;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import net.gshp.APINetwork.NetworkTask;
 import com.go_sharp.gomh.Network.NetworkConfig;
 import com.go_sharp.gomh.R;
 import com.go_sharp.gomh.contextApp.ContextApp;
@@ -21,6 +15,12 @@ import com.go_sharp.gomh.dto.DtoStatus;
 import com.go_sharp.gomh.dto.DtoUpdate;
 import com.go_sharp.gomh.listener.OnProgressSync;
 import com.go_sharp.gomh.util.Config;
+import com.go_sharp.gomh.util.SharePreferenceCustom;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import net.gshp.APINetwork.NetworkTask;
 
 import org.apache.http.HttpStatus;
 
@@ -57,7 +57,7 @@ public class ModelSincronizar {
     private boolean flag = false;
     private int numReportGuardados = 0;
 
-    private final int NUMCATALOGOS = 8; //se usa para saber cuando ya se descargaron todos los catalogos y enviar mensaje de terminado
+    private final int NUMCATALOGOS = 9; //se usa para saber cuando ya se descargaron todos los catalogos y enviar mensaje de terminado
     private int numReportDownload = 0;
 
 
@@ -105,6 +105,7 @@ public class ModelSincronizar {
                 networkConfig.GET("multireport/catalog/ea_section", "ea_section");
                 networkConfig.GET("multireport/catalog/ea_answers_pdv", "ea_answers_pdv");
                 networkConfig.GET("multireport/catalog/downloadable_files", "downloadable_files");
+                networkConfig.GET("multireport/catalog/message_service_all", "message_service_all");
             }
         }.start();
     }

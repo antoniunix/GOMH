@@ -4,7 +4,11 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.go_sharp.gomh.dao.DaoDownloadableFiles;
+import com.go_sharp.gomh.dao.DaoMessage;
+import com.go_sharp.gomh.dao.DaoTask;
 import com.go_sharp.gomh.dto.DtoDownloadableFiles;
+import com.go_sharp.gomh.dto.DtoMessage;
+import com.go_sharp.gomh.dto.DtoTask;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -245,10 +249,19 @@ public class ModelDataBaseSync {
                                 typeObjectGson);
                         new DaoDownloadableFiles().delete();
                         new DaoDownloadableFiles().insert(lst);
+                    } else if (nt.getTag().equals("message_service_all")) {
+                        Log.d("SYNC", "message_service_all " + nt.getResponse());
+                        typeObjectGson = new TypeToken<List<DtoTask>>() {
+                        }.getType();
+
+                        List<DtoTask> lst = new Gson().fromJson(nt.getResponse(),
+                                typeObjectGson);
+                        new DaoTask().delete();
+                        new DaoTask().insert(lst);
                     }
 
                 } catch (Exception e) {
-                    STORAGE_OK = -1; 
+                    STORAGE_OK = -1;
                     e.printStackTrace();
                 }
 

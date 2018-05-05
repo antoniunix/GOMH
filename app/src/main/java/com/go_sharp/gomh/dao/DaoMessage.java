@@ -1,3 +1,5 @@
+
+
 package com.go_sharp.gomh.dao;
 
 import android.content.ContentValues;
@@ -10,13 +12,10 @@ import com.go_sharp.gomh.dto.DtoMessage;
 import java.util.List;
 
 public class DaoMessage extends DAO {
-
     private SQLiteDatabase db;
     private Cursor cursor;
-
     public static String TABLE_NAME = "message";
     public static String PK_FIELD = "id";
-
     private final String ID = "id";
     private final String TYPE_ID = "type_id";
     private final String DESCRIPTION = "description";
@@ -35,11 +34,8 @@ public class DaoMessage extends DAO {
         db = helper.getWritableDatabase();
         int resp = 0;
         try {
-            SQLiteStatement insStmnt = db.compileStatement("" + "INSERT INTO "
-                    + TABLE_NAME + " (" + ID + "," + TYPE_ID + "," + DESCRIPTION + "," + TITLE
-                    + "," + CONTENT + "," + SEEN + ") VALUES(?,?,?,?,?,?);");
+            SQLiteStatement insStmnt = db.compileStatement("" + "INSERT INTO " + TABLE_NAME + " (" + ID + "," + TYPE_ID + "," + DESCRIPTION + "," + TITLE + "," + CONTENT + "," + SEEN + ") VALUES(?,?,?,?,?,?);");
             db.beginTransaction();
-
             for (DtoMessage message : obj) {
                 try {
                     insStmnt.bindLong(1, message.getId());
@@ -73,7 +69,6 @@ public class DaoMessage extends DAO {
                 }
                 insStmnt.executeInsert();
             }
-
             db.setTransactionSuccessful();
         } catch (Exception e) {
             e.printStackTrace();
@@ -104,22 +99,13 @@ public class DaoMessage extends DAO {
 
     public DtoMessage selectMsg(long id) {
         db = helper.getReadableDatabase();
-        cursor = db.rawQuery("SELECT\n" +
-                TYPE_ID + ",\n" +
-                DESCRIPTION + ",\n" +
-                TITLE + ",\n" +
-                CONTENT + "\n" +
-                "FROM\n" +
-                TABLE_NAME + "\n" +
-                "WHERE " + ID + " =" + id, null);
+        cursor = db.rawQuery("SELECT\n" + TYPE_ID + ",\n" + DESCRIPTION + ",\n" + TITLE + ",\n" + CONTENT + "\n" + "FROM\n" + TABLE_NAME + "\n" + "WHERE " + ID + " =" + id, null);
         DtoMessage message = new DtoMessage();
-
         if (cursor.moveToFirst()) {
             int type_id = cursor.getColumnIndexOrThrow(TYPE_ID);
             int description = cursor.getColumnIndexOrThrow(DESCRIPTION);
             int title = cursor.getColumnIndexOrThrow(TITLE);
             int content = cursor.getColumnIndexOrThrow(CONTENT);
-
             do {
                 message.setId(id);
                 message.setType_id(cursor.getInt(type_id));
@@ -133,3 +119,4 @@ public class DaoMessage extends DAO {
         return message;
     }
 }
+
