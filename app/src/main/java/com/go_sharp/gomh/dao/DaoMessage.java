@@ -17,7 +17,7 @@ public class DaoMessage extends DAO {
     public static String TABLE_NAME = "message";
     public static String PK_FIELD = "id";
     private final String ID = "id";
-    private final String TYPE_ID = "type_id";
+    private final String TYPE_ID = "id_type";
     private final String DESCRIPTION = "description";
     private final String TITLE = "title";
     private final String CONTENT = "content";

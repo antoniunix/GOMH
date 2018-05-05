@@ -2,7 +2,6 @@ package com.go_sharp.gomh.dao;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.text.format.DateFormat;
@@ -11,7 +10,6 @@ import android.util.Log;
 import com.go_sharp.gomh.adapter.DtoSimpleReport;
 import com.go_sharp.gomh.dto.DtoBundle;
 import com.go_sharp.gomh.dto.DtoCatalog;
-import com.go_sharp.gomh.dto.DtoPhoto;
 import com.go_sharp.gomh.dto.DtoReport;
 import com.go_sharp.gomh.dto.DtoReportToSend;
 
@@ -480,10 +478,12 @@ public class DaoReport extends DAO {
     public List<DtoSimpleReport> getCompletedReports() {
         db = helper.getReadableDatabase();
         String qry = "SELECT q1.id, \n" +
+                "q1.send,\n" +
                 "q1.datecheckout\n" +
                 "FROM(  \n" +
                 "SELECT DISTINCT  \n" +
                 "report.id,  \n" +
+                "report.send,  \n" +
                 "CHECK_out.date as datecheckout  \n" +
                 "FROM  \n" +
                 "report \n" +
@@ -498,10 +498,11 @@ public class DaoReport extends DAO {
         if (cursor.moveToFirst()) {
             int id = cursor.getColumnIndexOrThrow("id");
             int date = cursor.getColumnIndexOrThrow("datecheckout");
+            int sent = cursor.getColumnIndexOrThrow("send");
             do {
                 dto = new DtoSimpleReport();
                 dto.setTitle("Captación " + cursor.getInt(id));
-                dto.setDescription("Descripción");
+                dto.setSent(cursor.getInt(sent) == 1);
                 dto.setCreatedAt(DateFormat.format("dd/MM/yyyy", new Date(cursor.getLong(date))).toString());
                 obj.add(dto);
             } while (cursor.moveToNext());

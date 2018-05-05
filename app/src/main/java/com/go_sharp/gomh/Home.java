@@ -282,6 +282,7 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
                 startActivity(new Intent(this, MenuReport.class)
                         .putExtra(getString(R.string.app_bundle_name), dtoBundle));
             } else if (statusReport == getResources().getInteger(R.integer.complete_report)) {
+                dtoBundle.setIdReportLocal(0);
                 startActivity(new Intent(this, ReportList.class)
                         .putExtra(getString(R.string.app_bundle_name), dtoBundle));
             }

@@ -31,6 +31,8 @@ public class DaoEAPregunta extends DAO {
 	static final String valorDependencia2 = "valorDependencia2";
 	static final String queryOpcionesDependencia = "queryOpcionesDependencia";
 	static final String queryOpciones = "queryOpciones";
+	static final String regex_val = "regex_val";
+	static final String regex_message = "regex_message";
 
 	public DaoEAPregunta() {
 		super(TABLE_NAME, PK_FIELD);
@@ -64,6 +66,8 @@ public class DaoEAPregunta extends DAO {
 				cv.put(valorDependencia2, obj.get(i).value_dependency2);
 				cv.put(queryOpcionesDependencia, obj.get(i).query_dependency);
 				cv.put(queryOpciones, obj.get(i).query_option);
+				cv.put(regex_val, obj.get(i).regex_val);
+				cv.put(regex_message, obj.get(i).regex_message);
 				resp = (int) db.insert(TABLE_NAME, null, cv);
 			}
 			db.setTransactionSuccessful();
@@ -82,6 +86,5 @@ public class DaoEAPregunta extends DAO {
 		db.close();
 		return resp;
 	}
-
 
 }

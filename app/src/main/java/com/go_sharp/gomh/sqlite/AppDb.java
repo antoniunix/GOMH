@@ -48,6 +48,7 @@ public class AppDb extends SQLiteOpenHelper {
         //Census
         db.execSQL(tables.TableCensus);
         db.execSQL(tables.TableDownloadFile);
+        //notifications
         db.execSQL(tables.TableMessage);
     }
 

@@ -295,9 +295,6 @@ Página 6 de 6</string>
     <string name="Splash_configuration_init">Configuración inicial, espere un momento</string>
 
     <!-- Face detection -->
-    <string name="DPI">DPI</string>
-    <string name="IMAGE_SIZE">IMAGE_SIZE</string>
-    <string name="images_ip">http://172.16.41.77:80</string>
     <string name="address">address</string>
     <string name="add_address">Guardar direccion.</string>
     <string name="postal_code">Código Postal:</string>

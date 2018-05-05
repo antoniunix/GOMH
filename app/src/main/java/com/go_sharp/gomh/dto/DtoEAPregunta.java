@@ -20,5 +20,7 @@ public class DtoEAPregunta {
 	public String value_dependency2;
 	public String query_dependency;
 	public String query_option;
+	public String regex_val;
+	public String regex_message;
 	
 }
