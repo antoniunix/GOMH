@@ -48,7 +48,7 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
 
     private static final String TAG = "Home";
 
-    private ImageButton btnTBSettings, btnTBHelp, btnTBSync, btnTBAccount;
+    private ImageButton btnTBHelp, btnTBSync, btnTBAccount;
     private Button btnStart;
     private BottomNavigationView bottomNavigationView;
 
@@ -61,7 +61,6 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
     DtoBundle dtoBundle;
 
     private void init() {
-        btnTBSettings = findViewById(R.id.btnTBSettings);
         btnTBHelp = findViewById(R.id.btnTBHelp);
         btnTBSync = findViewById(R.id.btnTBSync);
         btnTBAccount = findViewById(R.id.btnTBAccount);
@@ -73,7 +72,6 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
         new ModelInfoPerson(this).loadInfo("INICIO");
         mapFrag.getMapAsync(this);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
-        btnTBSettings.setOnClickListener(this);
         btnTBHelp.setOnClickListener(this);
         btnTBSync.setOnClickListener(this);
         btnTBAccount.setOnClickListener(this);
@@ -267,10 +265,7 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
             } else {
                 new DialogAccount().show(getSupportFragmentManager(), "Fragment_dialog_account");
             }
-
         } else if (v.getId() == btnTBHelp.getId()) {
-
-        } else if (v.getId() == btnTBSettings.getId()) {
 
         } else if (v.getId() == btnStart.getId()) {
             int statusReport = model.statusReport();

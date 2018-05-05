@@ -18,14 +18,12 @@ import com.go_sharp.gomh.util.SharePreferenceCustom;
 
 public class ModelInfoPerson {
     private TextView txtTBDate, txtTBTitle, txtTBSubTitle;
-    private DtoImageLogin dtoImageLogin;
     private Context context;
 
     public ModelInfoPerson(Activity activity) {
         txtTBDate = activity.findViewById(R.id.txtTBDate);
         txtTBTitle = activity.findViewById(R.id.txtTBTitle);
         txtTBSubTitle = activity.findViewById(R.id.txtTBSubTitle);
-        dtoImageLogin = new DaoImageLogin().selectLast();
         ChangeFontStyle.changeFont(txtTBDate,txtTBTitle,txtTBSubTitle);
         context = ContextApp.context;
     }
@@ -33,6 +31,13 @@ public class ModelInfoPerson {
     public ModelInfoPerson loadInfo(String subtitle) {
         txtTBDate.setText(Config.formatDate());
         txtTBTitle.setText(SharePreferenceCustom.read(context.getString(R.string.app_share_preference_name), context.getString(R.string.app_share_preference_user_account), "").toUpperCase());
+        txtTBSubTitle.setText(subtitle);
+        return this;
+    }
+
+    public ModelInfoPerson loadInfo(String title, String subtitle) {
+        txtTBDate.setText(Config.formatDate());
+        txtTBTitle.setText(title);
         txtTBSubTitle.setText(subtitle);
         return this;
     }

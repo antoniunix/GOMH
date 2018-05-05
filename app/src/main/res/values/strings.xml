@@ -339,5 +339,8 @@ Página 6 de 6</string>
     <string name="channel_sync_name">Sincronización</string>
     <string name="channel_sync_des">Actualizaciones</string>
     <string name="app_share_preference_sync">must_sync</string>
+    <string name="menu_report">MENÚ REPORTE</string>
+    <string name="bigadist">BRIGADISTA</string>
+    <string name="list_report">AGREGAR REPORTE</string>
 
 </resources>
