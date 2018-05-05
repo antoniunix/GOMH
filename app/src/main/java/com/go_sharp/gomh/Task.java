@@ -4,10 +4,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.go_sharp.gomh.adapter.RVAdapter;
+import com.go_sharp.gomh.dialog.DialogTask;
+import com.go_sharp.gomh.dto.DtoTask;
 import com.go_sharp.gomh.listener.OnItemClickListenerRV;
 import com.go_sharp.gomh.model.ModelTask;
 import com.go_sharp.gomh.util.ChangeFontStyle;
@@ -46,6 +49,13 @@ public class Task extends AppCompatActivity implements OnItemClickListenerRV {
 
     @Override
     public void onItemClickListener(View v, int position) {
+        DialogTask daiDialogTask = new DialogTask();
+        long id =adapter.getItemId(position);
+
+        Bundle bundle=new Bundle();
+        bundle.putLong(getString(R.string.app_bundle_name),id);
+        daiDialogTask.setArguments(bundle);
+        daiDialogTask.show(getSupportFragmentManager(), getString(R.string.label_task));
 
     }
 }

@@ -56,4 +56,15 @@ public class DtoTask {
         this.content = content;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "DtoTask{" +
+                "id=" + id +
+                ", type_id=" + type_id +
+                ", description='" + description + '\'' +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }

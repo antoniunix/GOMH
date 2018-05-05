@@ -35,28 +35,34 @@ public class DaoTask extends DAO {
         db = helper.getWritableDatabase();
         int resp = 0;
         try {
-            SQLiteStatement inssStatement = db.compileStatement("INSERT INTO " + TABLE_NAME + " (" + ID_TYPE + "," + DESCRIPTION + "," + TITLE + "," + CONTENT + ") VALUES(?,?,?,?);");
+            SQLiteStatement inssStatement = db.compileStatement("INSERT INTO " + TABLE_NAME + " (" + ID + "," + ID_TYPE + "," + DESCRIPTION + "," + TITLE + "," + CONTENT + ") VALUES(?,?,?,?,?);");
             db.beginTransaction();
             for (DtoTask dto : obj) {
+
                 try {
-                    inssStatement.bindLong(1, dto.getType_id());
+                    inssStatement.bindLong(1, dto.getId());
                 } catch (Exception e) {
                     inssStatement.bindNull(1);
                 }
                 try {
-                    inssStatement.bindString(2, dto.getDescription());
+                    inssStatement.bindLong(2, dto.getType_id());
                 } catch (Exception e) {
                     inssStatement.bindNull(2);
                 }
                 try {
-                    inssStatement.bindString(3, dto.getTitle());
+                    inssStatement.bindString(3, dto.getDescription());
                 } catch (Exception e) {
                     inssStatement.bindNull(3);
                 }
                 try {
-                    inssStatement.bindString(4, dto.getContent());
+                    inssStatement.bindString(4, dto.getTitle());
                 } catch (Exception e) {
                     inssStatement.bindNull(4);
+                }
+                try {
+                    inssStatement.bindString(5, dto.getContent());
+                } catch (Exception e) {
+                    inssStatement.bindNull(5);
                 }
                 inssStatement.executeInsert();
             }
@@ -77,7 +83,7 @@ public class DaoTask extends DAO {
                 + "message.id_type,\n"
                 + "message.description,\n"
                 + "message.title,\n"
-                + "message.content,\n"
+                + "message.content\n"
                 + "FROM\n" + TABLE_NAME, null);
         List<DtoTask> obj = new ArrayList<>(cursor.getCount());
         DtoTask dto;
@@ -100,5 +106,33 @@ public class DaoTask extends DAO {
         cursor.close();
         db.close();
         return obj;
+    }
+
+    public DtoTask selectById(long idTask) {
+        db = helper.getReadableDatabase();
+        cursor = db.rawQuery("SELECT\n"
+                + "message.id,\n"
+                + "message.id_type,\n"
+                + "message.description,\n"
+                + "message.title,\n"
+                + "message.content\n"
+                + "FROM\n" + TABLE_NAME + " WHERE message.id = " + idTask, null);
+        DtoTask dto = new DtoTask();
+        if (cursor.moveToFirst()) {
+            int id = cursor.getColumnIndexOrThrow("id");
+            int idType = cursor.getColumnIndexOrThrow("id_type");
+            int description = cursor.getColumnIndexOrThrow("description");
+            int title = cursor.getColumnIndexOrThrow("title");
+            int content = cursor.getColumnIndexOrThrow("content");
+
+            dto.setId(cursor.getLong(id));
+            dto.setType_id(cursor.getLong(idType));
+            dto.setDescription(cursor.getString(description));
+            dto.setTitle(cursor.getString(title));
+            dto.setContent(cursor.getString(content));
+        }
+        cursor.close();
+        db.close();
+        return dto;
     }
 }

@@ -1,5 +1,7 @@
 package com.go_sharp.gomh.model;
 
+import android.util.Log;
+
 import com.go_sharp.gomh.adapter.RVAdapter;
 import com.go_sharp.gomh.dao.DaoMessage;
 import com.go_sharp.gomh.dao.DaoTask;
@@ -24,6 +26,7 @@ public class ModelTask {
 
     public RVAdapter getAdapter(OnItemClickListenerRV onItemClickListenerRV) {
         lstTask = daoTask.select();
+        Log.e("task","taskm "+lstTask.toString());
         adapter = new RVAdapter(lstTask, onItemClickListenerRV);
         return adapter;
     }

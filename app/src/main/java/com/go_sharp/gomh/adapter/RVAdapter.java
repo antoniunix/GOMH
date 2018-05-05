@@ -1,6 +1,7 @@
 package com.go_sharp.gomh.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, final int position) {
         DtoTask dtoMessage = lstMsg.get(position);
         holder.txtTitle.setText(dtoMessage.getTitle());
+        holder.txtDescription.setText(dtoMessage.getDescription());
 
         holder.txtTitle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,15 +56,20 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ViewHolder> {
         return lstMsg.size();
     }
 
+    @Override
+    public long getItemId(int position) {
+        Log.e("task","task "+lstMsg.toString());
+        return lstMsg.get(position).getId();
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txtTitle,txtDescription;
+        TextView txtTitle, txtDescription;
 
         ViewHolder(View itemView) {
             super(itemView);
             txtTitle = itemView.findViewById(R.id.txtTitle);
-            txtDescription =  itemView.findViewById(R.id.txtDescription);
-            ChangeFontStyle.changeFont(txtTitle);
+            txtDescription = itemView.findViewById(R.id.txtDescription);
+            ChangeFontStyle.changeFont(txtTitle, txtDescription);
         }
 
     }
