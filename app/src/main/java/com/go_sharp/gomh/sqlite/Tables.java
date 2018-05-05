@@ -186,7 +186,7 @@ public class Tables {
 
     public final String TableMessage = "CREATE TABLE message(" +
             "id INTEGER PRIMARY KEY NOT NULL," +
-            "type_id INTEGER," +
+            "id_type INTEGER," +
             "description TEXT," +
             "title TEXT," +
             "content TEXT," +

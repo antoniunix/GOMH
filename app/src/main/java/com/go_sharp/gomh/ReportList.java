@@ -75,8 +75,8 @@ public class ReportList extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull ReportItem holder, int position) {
             holder.title.setText(reports.get(position).getTitle());
-            //holder.description.setText(reports.get(position).getDescription());
             holder.createdAt.setText(reports.get(position).getCreatedAt());
+            holder.sent.setVisibility(reports.get(position).getSent() ? View.VISIBLE : View.GONE);
         }
 
         @Override
