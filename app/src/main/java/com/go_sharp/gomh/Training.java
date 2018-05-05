@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.FileProvider;
@@ -70,7 +71,7 @@ public class Training extends AppCompatActivity implements View.OnClickListener 
 
     public void fileExist(DtoDownloadableFiles dto) {
         String typeFile = dto.getExt();
-        String nameFile = ContextApp.context.getResources().getString(R.string.app_path_photo) + dto.getMd5() + "_" + dto.getTitle() + typeFile;
+        String nameFile = Environment.getExternalStorageDirectory() + ContextApp.context.getResources().getString(R.string.app_path_photo) + dto.getMd5() + "_" + dto.getTitle() + typeFile;
 
         File file = new File(nameFile);
         dto.setNameFiel(nameFile);

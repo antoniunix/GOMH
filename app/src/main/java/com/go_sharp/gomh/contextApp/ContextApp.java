@@ -2,6 +2,7 @@ package com.go_sharp.gomh.contextApp;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Environment;
 
 import com.facebook.stetho.Stetho;
 import com.go_sharp.gomh.BuildConfig;
@@ -26,7 +27,7 @@ public class ContextApp extends Application {
             Stetho.initializeWithDefaults(this);
 
 
-        APIEncuesta.setPATH_FOTO(getString(R.string.app_path_photo));
+        APIEncuesta.setPATH_FOTO(Environment.getExternalStorageDirectory() + getString(R.string.app_path_photo));
         APIEncuesta.setApplication(this);
 
         /*Dbapi*/
