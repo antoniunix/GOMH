@@ -72,10 +72,11 @@ public class Task extends AppCompatActivity implements OnItemClickListenerRV,
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_home:
-                startActivity(new Intent(this, Home.class));
+                finish();
                 break;
             case R.id.action_training:
                 startActivity(new Intent(this, Training.class));
+                finish();
                 break;
             case R.id.action_exit:
                 finish();

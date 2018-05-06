@@ -168,10 +168,11 @@ public class Training extends AppCompatActivity implements View.OnClickListener,
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_home:
-                startActivity(new Intent(this, Home.class));
+                finish();
                 break;
             case R.id.action_task:
                 startActivity(new Intent(this, Task.class));
+                finish();
                 break;
             case R.id.action_exit:
                 finish();
