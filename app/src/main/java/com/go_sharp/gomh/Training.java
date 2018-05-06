@@ -10,11 +10,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,25 +28,30 @@ import com.go_sharp.gomh.contextApp.ContextApp;
 import com.go_sharp.gomh.dialog.DialogDownLoadFile;
 import com.go_sharp.gomh.dto.DtoDownloadableFiles;
 import com.go_sharp.gomh.model.ModelDownload;
+import com.go_sharp.gomh.model.ModelToolBar;
+import com.go_sharp.gomh.util.BottomNavigationViewHelper;
 import com.go_sharp.gomh.util.ChangeFontStyle;
 import com.go_sharp.gomh.util.MD5;
 
 import java.io.File;
 
-public class Training extends AppCompatActivity implements View.OnClickListener {
+public class Training extends AppCompatActivity implements View.OnClickListener,
+        BottomNavigationView.OnNavigationItemSelectedListener {
 
-    private TextView txtTBTitle;
     private ListView lstDownload;
     private ModelDownload model;
     private AdapterDownload adapter;
+    private BottomNavigationView bottomNavigationView;
 
     private void init() {
-        txtTBTitle = findViewById(R.id.txtTBTitle);
         lstDownload = findViewById(R.id.lstDownload);
-        txtTBTitle.setText(R.string.label_training);
+        new ModelToolBar(this).loadInfo(getString(R.string.label_training), "");
         model = new ModelDownload(this);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
 
-        ChangeFontStyle.changeFont(txtTBTitle);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
+        bottomNavigationView.setSelectedItemId(R.id.action_training);
     }
 
     @Override
@@ -154,6 +162,22 @@ public class Training extends AppCompatActivity implements View.OnClickListener 
             Toast.makeText(this, "No tiene aplicacion para ver el documento",
                     Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_home:
+                startActivity(new Intent(this, Home.class));
+                break;
+            case R.id.action_task:
+                startActivity(new Intent(this, Task.class));
+                break;
+            case R.id.action_exit:
+                finish();
+                break;
+        }
+        return true;
     }
 }
 

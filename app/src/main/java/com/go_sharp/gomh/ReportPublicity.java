@@ -89,6 +89,7 @@ public class ReportPublicity extends AppCompatActivity implements OnMapReadyCall
         edtEmail = findViewById(R.id.edt_email);
         btnSave = findViewById(R.id.btnSave);
         btnPhoto = findViewById(R.id.btnPhoto);
+        spnSuburb = findViewById(R.id.spn_suburb);
 
         spnSuburb.setOnItemSelectedListener(this);
         edtCp.addTextChangedListener(this);

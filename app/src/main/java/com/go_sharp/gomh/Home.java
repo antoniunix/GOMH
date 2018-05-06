@@ -24,7 +24,7 @@ import com.go_sharp.gomh.dialog.DialogSync;
 import com.go_sharp.gomh.dto.DtoBundle;
 import com.go_sharp.gomh.geolocation.AlarmGeolocation;
 import com.go_sharp.gomh.model.ModelHome;
-import com.go_sharp.gomh.model.ModelInfoPerson;
+import com.go_sharp.gomh.model.ModelToolBar;
 import com.go_sharp.gomh.util.BottomNavigationViewHelper;
 import com.go_sharp.gomh.util.Config;
 import com.go_sharp.gomh.util.SharePreferenceCustom;
@@ -69,9 +69,10 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
         mapFrag = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
-        new ModelInfoPerson(this).loadInfo("INICIO");
+        new ModelToolBar(this).loadInfo("INICIO");
         mapFrag.getMapAsync(this);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
+        bottomNavigationView.setSelectedItemId(R.id.action_home);
         btnTBHelp.setOnClickListener(this);
         btnTBSync.setOnClickListener(this);
         btnTBAccount.setOnClickListener(this);
