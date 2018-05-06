@@ -71,10 +71,9 @@ public class DialogPrivacyPolitics extends DialogFragment implements CompoundBut
             dismiss();
             getActivity().finish();
         } else if (view.getId() == R.id.btn_agree) {
-            sh.edit().putString(getString(R.string.app_share_preference_privacy_politic), versionPolitic).commit();
+            sh.edit().putString(getString(R.string.app_share_preference_privacy_politic), versionPolitic).apply();
             dismiss();
         }
-
     }
 
     @Override

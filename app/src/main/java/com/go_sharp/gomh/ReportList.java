@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import com.go_sharp.gomh.adapter.DtoSimpleReport;
 import com.go_sharp.gomh.adapter.ReportItem;
 import com.go_sharp.gomh.dto.DtoBundle;
+import com.go_sharp.gomh.model.ModelToolBar;
 import com.go_sharp.gomh.model.ModelReport;
 
 import java.util.List;
@@ -32,6 +34,7 @@ public class ReportList extends AppCompatActivity {
         setSupportActionBar(toolbar);*/
         dtoBundle = (DtoBundle) getIntent().getExtras().get(getString(R.string.app_bundle_name));
         modelReport = new ModelReport(dtoBundle);
+        new ModelToolBar(this).loadInfo(getString(R.string.list_report), getString(R.string.bigadist));
 
         RecyclerView mRecyclerView = findViewById(R.id.report_list);
         mRecyclerView.setHasFixedSize(true);
@@ -40,10 +43,14 @@ public class ReportList extends AppCompatActivity {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,
+                mLayoutManager.getLayoutDirection());
+        mRecyclerView.addItemDecoration(dividerItemDecoration);
+
         // specify an adapter (see also next example)
-        /*List<DtoSimpleReport> reports = modelReport.getReports();
+        List<DtoSimpleReport> reports = modelReport.getReports();
         mAdapter = new ReportAdapter(reports);
-        mRecyclerView.setAdapter(mAdapter);*/
+        mRecyclerView.setAdapter(mAdapter);
 
         FloatingActionButton fab = findViewById(R.id.add_new);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -75,8 +82,8 @@ public class ReportList extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull ReportItem holder, int position) {
             holder.title.setText(reports.get(position).getTitle());
-            //holder.description.setText(reports.get(position).getDescription());
             holder.createdAt.setText(reports.get(position).getCreatedAt());
+            holder.sent.setVisibility(reports.get(position).getSent() ? View.VISIBLE : View.GONE);
         }
 
         @Override

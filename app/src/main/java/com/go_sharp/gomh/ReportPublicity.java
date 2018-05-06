@@ -72,8 +72,8 @@ public class ReportPublicity extends AppCompatActivity implements OnMapReadyCall
     private MapView mapView;
     private GoogleMap map;
     private double lat, lon;
-    private EditText edtStreet, edtLeftStreet, edtRightStreet,  edtnumberPhone, edtEmail;
-    private Spinner spnSuburb,spnTown;
+    private EditText edtStreet, edtLeftStreet, edtRightStreet, edtnumberPhone, edtEmail;
+    private Spinner spnSuburb, spnTown, spn_type;
     private AutoCompleteTextView edtCp;
     private ModelReportPublicity modelReportPublicity;
     private DtoReportCensus dtoReportCensus;
@@ -81,7 +81,7 @@ public class ReportPublicity extends AppCompatActivity implements OnMapReadyCall
     public boolean setLocation = false;
     private Button btnPhoto, btnSave;
     private DtoBundle dtoBundle;
-    private String path="";
+    private String path = "";
 
 
     @Override
@@ -105,7 +105,9 @@ public class ReportPublicity extends AppCompatActivity implements OnMapReadyCall
         btnSave = findViewById(R.id.btnSave);
         btnPhoto = findViewById(R.id.btnPhoto);
         spnSuburb = findViewById(R.id.spn_suburb);
-        spnTown=findViewById(R.id.edt_delegacion);
+        spn_type = findViewById(R.id.spn_type);
+
+        spnTown = findViewById(R.id.edt_delegacion);
 
 
         mapView.onCreate(savedInstanceState);
@@ -115,8 +117,11 @@ public class ReportPublicity extends AppCompatActivity implements OnMapReadyCall
         edtCp.setThreshold(1);
         spnSuburb.setOnItemSelectedListener(this);
         spnTown.setOnItemSelectedListener(this);
+        spn_type.setOnItemSelectedListener(this);
         btnPhoto.setOnClickListener(this);
         btnSave.setOnClickListener(this);
+        spn_type.setAdapter(modelReportPublicity.getAdapterTypePublicity());
+
 
     }
 
@@ -270,19 +275,18 @@ public class ReportPublicity extends AppCompatActivity implements OnMapReadyCall
             Toast.makeText(this, "Ingrese la dirección", Toast.LENGTH_SHORT).show();
         } else if (edtCp.getText().toString().equals("") || spnSuburb.getCount() == 0) {
             Toast.makeText(this, "C.P. no válido", Toast.LENGTH_SHORT).show();
-        }else if(edtnumberPhone.getText().toString().isEmpty()){
+        } else if (edtnumberPhone.getText().toString().isEmpty()) {
             Toast.makeText(this, "Ingrese el Número de teléfono", Toast.LENGTH_SHORT).show();
-        }else if(edtRightStreet.getText().toString().isEmpty() || edtLeftStreet.getText().toString().isEmpty()){
+        } else if (edtRightStreet.getText().toString().isEmpty() || edtLeftStreet.getText().toString().isEmpty()) {
             Toast.makeText(this, "Ingrese entre que calles se encuentra", Toast.LENGTH_SHORT).show();
-        }
-        else {
+        } else {
 
             if (spnSuburb.getAdapter().getCount() != 0) {
                 dtoReportCensus.setSuburb(modelReportPublicity.getItemSuburb(spnSuburb.getSelectedItemPosition()).getSuburb());
                 dtoReportCensus.setState(modelReportPublicity.getItemSuburb(spnSuburb.getSelectedItemPosition()).getState());
                 //dtoReportCensus.setTown(modelReportPublicity.getItemSuburb(spnSuburb.getSelectedItemPosition()).getTown());
             }
-            if(spnTown.getAdapter().getCount() != 0){
+            if (spnTown.getAdapter().getCount() != 0) {
                 dtoReportCensus.setTown(modelReportPublicity.getItemSuburb(spnTown.getSelectedItemPosition()).getTown());
             }
 
@@ -296,6 +300,7 @@ public class ReportPublicity extends AppCompatActivity implements OnMapReadyCall
             dtoReportCensus.setNumber_phone(edtnumberPhone.getText().toString());
             dtoReportCensus.setEmail(edtEmail.getText().toString());
             dtoReportCensus.setPath(path);
+            dtoReportCensus.setIdPublicity(modelReportPublicity.getItemTypePublicity(spn_type.getSelectedItemPosition()).getId());
 
             dtoReportCensus.setHash(MD5.md5(System.currentTimeMillis() + "" + new Random().nextInt(1000) + ""));
             dtoReportCensus.setDate(System.currentTimeMillis());
@@ -323,26 +328,8 @@ public class ReportPublicity extends AppCompatActivity implements OnMapReadyCall
         lat = (marker.getPosition().latitude);
 
         try {
-            Geocoder geo = new Geocoder(ContextApp.context,Locale.getDefault());
+            Geocoder geo = new Geocoder(ContextApp.context, Locale.getDefault());
             List<Address> addresses = geo.getFromLocation(marker.getPosition().latitude, marker.getPosition().longitude, 1);
-            Log.e("adress", "Address "
-                    + "FeatureName: " + addresses.get(0).getFeatureName() + ", \n"
-                    + "County Name: " + addresses.get(0).getCountryName() + ", \n"
-                    + "Admin Area: " + addresses.get(0).getAdminArea() + ",\n "
-                    + "Locality: " + addresses.get(0).getLocality() + ", \n"
-                    + "Postal Code: " + addresses.get(0).getPostalCode() + ",\n "
-                    + "Max Adrees " + addresses.get(0).getAddressLine(0) + ", \n"
-                    + "Max Adrees " + addresses.get(0).getAddressLine(1) + ", \n"
-                    + "Max Adrees " + addresses.get(0).getAddressLine(2) + ", \n"
-                    + "Max Adrees " + addresses.get(0).getAddressLine(3) + ", \n"
-                    + "Max Adrees " + addresses.get(0).getAddressLine(4) + ", \n"
-                    + "Max Adrees " + addresses.get(0).getAddressLine(5) + ", \n"
-                    + "SubAdmin " + addresses.get(0).getSubAdminArea() + ", \n"
-                    + "SubLocality " + addresses.get(0).getSubLocality() + ", \n"
-                    + "SubThoroughfare " + addresses.get(0).getSubThoroughfare() + ", \n"
-                    + "Thoroughfare " + addresses.get(0).getThoroughfare() + ", \n"
-                    + "Locale: " + addresses.get(0).getLocale() + ", "
-                    + " size: " + addresses.size());
             if (!addresses.isEmpty()) {
                 if (addresses.size() > 0) {
                     Log.e("adress", "Address "
@@ -375,7 +362,7 @@ public class ReportPublicity extends AppCompatActivity implements OnMapReadyCall
             e.printStackTrace();
         }
 
-        Log.e("address","marker "+lon+" lat "+lat);
+        Log.e("address", "marker " + lon + " lat " + lat);
         setDirections(lat, lon);
     }
 
@@ -383,12 +370,12 @@ public class ReportPublicity extends AppCompatActivity implements OnMapReadyCall
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnPhoto:
-                path= "sdcard/" +getResources().getString(R.string.app_path_photo)+System.currentTimeMillis()+".jpg";
+                path = "sdcard/" + getResources().getString(R.string.app_path_photo) + System.currentTimeMillis() + ".jpg";
                 File file = new File(path);
                 Uri uri;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", file);
-                }else{
+                } else {
                     uri = Uri.fromFile(file);
                 }
                 Intent intent_mixta = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
@@ -400,9 +387,9 @@ public class ReportPublicity extends AppCompatActivity implements OnMapReadyCall
 
             case R.id.btnSave:
 
-                if(path.equals("") || path == null){
+                if (path.equals("") || path == null) {
                     Toast.makeText(this, "Debe tomar fotografía", Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     saveReport();
                 }
 

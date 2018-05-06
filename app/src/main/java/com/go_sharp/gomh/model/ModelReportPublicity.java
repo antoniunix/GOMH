@@ -10,7 +10,9 @@ import com.go_sharp.gomh.ReportPublicity;
 import com.go_sharp.gomh.adapter.MySpinnerAdapter;
 import com.go_sharp.gomh.dao.DaoReportCensus;
 import com.go_sharp.gomh.dao.DaoSepomex;
+import com.go_sharp.gomh.dao.DaoTypePublicity;
 import com.go_sharp.gomh.dto.DtoAgenda;
+import com.go_sharp.gomh.dto.DtoCatalog;
 import com.go_sharp.gomh.dto.DtoReportCensus;
 import com.go_sharp.gomh.dto.DtoSepomex;
 import com.go_sharp.gomh.listener.OnFinishLocation;
@@ -39,6 +41,7 @@ public class ModelReportPublicity implements OnApiGeolocation {
     private WeakReference<ReportPublicity> weakReference;
     private ReportPublicity reportPublicity;
     private List<DtoSepomex> lstSepomexes;
+    private List<DtoCatalog> lstTypePublicity;
 
     public ModelReportPublicity(Context context, OnFinishLocation onFinishLocation, ReportPublicity reportPublicity) {
         this.context = context;
@@ -85,13 +88,22 @@ public class ModelReportPublicity implements OnApiGeolocation {
         return new MySpinnerAdapter(context, R.layout.spinner_simple_list, lst);
     }
 
+    public SpinnerAdapter getAdapterTypePublicity() {
+        lstTypePublicity = new DaoTypePublicity().select();
+        List<String> lst = new ArrayList<>(lstTypePublicity.size());
+        for (DtoCatalog dto : lstTypePublicity) {
+            lst.add(dto.getValue().trim());
+        }
+        return new MySpinnerAdapter(context, R.layout.spinner_simple_list, lst);
+    }
+
     public SpinnerAdapter getAdapterDelegacion(String postalcode) {
         lstSepomexes = new DaoSepomex().Select(postalcode);
         List<String> lst = new ArrayList<>(lstSepomexes.size());
         for (DtoSepomex dto : lstSepomexes) {
             lst.add(dto.getTown().trim());
         }
-        return new MySpinnerAdapter(context,R.layout.spinner_simple_list,lst);
+        return new MySpinnerAdapter(context, R.layout.spinner_simple_list, lst);
     }
 
     public ArrayAdapter getAdapterCp() {
@@ -107,5 +119,8 @@ public class ModelReportPublicity implements OnApiGeolocation {
 
     public DtoSepomex getItemSuburb(int position) {
         return lstSepomexes.get(position);
+    }
+    public DtoCatalog getItemTypePublicity(int position){
+        return  lstTypePublicity.get(position);
     }
 }

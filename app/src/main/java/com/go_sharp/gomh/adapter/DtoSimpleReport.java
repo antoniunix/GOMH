@@ -3,7 +3,7 @@ package com.go_sharp.gomh.adapter;
 public class DtoSimpleReport {
 
     private String title;
-    private String description;
+    private boolean sent;
     private String createdAt;
 
     public String getTitle() {
@@ -14,12 +14,12 @@ public class DtoSimpleReport {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
+    public boolean getSent() {
+        return sent;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setSent(boolean sent) {
+        this.sent = sent;
     }
 
     public String getCreatedAt() {

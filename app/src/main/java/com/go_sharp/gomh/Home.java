@@ -1,10 +1,8 @@
 package com.go_sharp.gomh;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -26,9 +24,10 @@ import com.go_sharp.gomh.dialog.DialogSync;
 import com.go_sharp.gomh.dto.DtoBundle;
 import com.go_sharp.gomh.geolocation.AlarmGeolocation;
 import com.go_sharp.gomh.model.ModelHome;
-import com.go_sharp.gomh.model.ModelInfoPerson;
+import com.go_sharp.gomh.model.ModelToolBar;
 import com.go_sharp.gomh.util.BottomNavigationViewHelper;
 import com.go_sharp.gomh.util.Config;
+import com.go_sharp.gomh.util.SharePreferenceCustom;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -49,7 +48,7 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
 
     private static final String TAG = "Home";
 
-    private ImageButton btnTBSettings, btnTBHelp, btnTBSync, btnTBAccount;
+    private ImageButton btnTBHelp, btnTBSync, btnTBAccount;
     private Button btnStart;
     private BottomNavigationView bottomNavigationView;
 
@@ -58,12 +57,10 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
     private LocationRequest mLocationRequest;
     private GoogleApiClient mGoogleApiClient;
 
-    private SharedPreferences preferences;
     private ModelHome model;
     DtoBundle dtoBundle;
 
     private void init() {
-        btnTBSettings = findViewById(R.id.btnTBSettings);
         btnTBHelp = findViewById(R.id.btnTBHelp);
         btnTBSync = findViewById(R.id.btnTBSync);
         btnTBAccount = findViewById(R.id.btnTBAccount);
@@ -72,11 +69,10 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
         mapFrag = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
-        preferences = getSharedPreferences(getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
-        new ModelInfoPerson(this).loadInfo("INICIO");
+        new ModelToolBar(this).loadInfo("INICIO");
         mapFrag.getMapAsync(this);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
-        btnTBSettings.setOnClickListener(this);
+
         btnTBHelp.setOnClickListener(this);
         btnTBSync.setOnClickListener(this);
         btnTBAccount.setOnClickListener(this);
@@ -100,6 +96,7 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
     @Override
     protected void onResume() {
         super.onResume();
+        bottomNavigationView.setSelectedItemId(R.id.action_home);
         AlarmGeolocation.getInstance();
         dtoBundle.setIdReportLocal(model.getReportId());
     }
@@ -263,17 +260,14 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
             new DialogAccount().show(getSupportFragmentManager(), "Fragment_dialog_account");
 
         } else if (v.getId() == btnTBSync.getId()) {
-            if (preferences.getString(getString(R.string.app_share_preference_user_account), null) != null) {
+            if (SharePreferenceCustom.read(getString(R.string.app_share_preference_name), getString(R.string.app_share_preference_user_account), null) != null) {
                 DialogSync diFragmentSync = new DialogSync();
                 diFragmentSync.setCancelable(false);
                 diFragmentSync.show(getSupportFragmentManager(), "DialogFragmentSync");
             } else {
                 new DialogAccount().show(getSupportFragmentManager(), "Fragment_dialog_account");
             }
-
         } else if (v.getId() == btnTBHelp.getId()) {
-
-        } else if (v.getId() == btnTBSettings.getId()) {
 
         } else if (v.getId() == btnStart.getId()) {
             int statusReport = model.statusReport();
@@ -285,6 +279,7 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
                 startActivity(new Intent(this, MenuReport.class)
                         .putExtra(getString(R.string.app_bundle_name), dtoBundle));
             } else if (statusReport == getResources().getInteger(R.integer.complete_report)) {
+                dtoBundle.setIdReportLocal(0);
                 startActivity(new Intent(this, ReportList.class)
                         .putExtra(getString(R.string.app_bundle_name), dtoBundle));
             }

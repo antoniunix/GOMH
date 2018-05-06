@@ -85,6 +85,7 @@ public class ModelSend {
     private List<List<DtoReportCensus>> lstReportCensus;
 
     private List<DtoSendPhoto> lstDtoReportRespuestasFotos;
+    private List<DtoReportCensus>lstPhotoCensus;
 
 
     public ModelSend() {
@@ -220,7 +221,8 @@ public class ModelSend {
     private void sendFoto() {
         Log.e("send", "foto METHOD");
         lstDtoReportRespuestasFotos = daoeaRespuesta.SelectToSendPhotoV1();
-        SubReportFOTOAEnviar = lstDtoReportRespuestasFotos.size();
+        lstPhotoCensus=daoReportCensus.selecttoSendPhoto();
+        SubReportFOTOAEnviar = lstDtoReportRespuestasFotos.size()+lstPhotoCensus.size();
         Log.e("photo", "size " + SubReportAEnviar);
         if (SubReportFOTOAEnviar != 0) {
             new Thread() {
@@ -236,6 +238,16 @@ public class ModelSend {
                         nameValuePairs.add(new BasicNameValuePair("json", json));
                         networkConfig.multipartFile("image/save",
                                 lstDtoReportRespuestasFotos.get(i).getPath(),nameValuePairs, "rfaa" + lstDtoReportRespuestasFotos.get(i).getId(),true);
+                    }
+                    for (int i = 0; i < lstPhotoCensus.size(); i++) {
+                        String json = new Gson().toJson(lstPhotoCensus.get(i));
+                        Log.e("send", "sos photo " + json);
+                        Map<String, String> header = new HashMap<>();
+                        header.put(ContextApp.context.getString(R.string.network_header_name_application_json), ContextApp.context.getString(R.string.network_header_multipart_data));
+                        ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+                        nameValuePairs.add(new BasicNameValuePair("json", json));
+                        networkConfig.multipartFile("image/save",
+                                lstPhotoCensus.get(i).getPath(), nameValuePairs, "rfba" + lstPhotoCensus.get(i).getId(), true);
                     }
 
                 }
@@ -281,7 +293,7 @@ public class ModelSend {
                     )
                 SubReportDependienteEnviados++;
             else if (completedTask.getTag().contains("rfaa")
-
+                    || completedTask.getTag().contains("rfba")
                     )
                 SubReportesFOTOEnviados++;
 
@@ -310,6 +322,8 @@ public class ModelSend {
                 //fotos
                 else if (completedTask.getTag().contains("rfaa")) {
                     daoeaRespuesta.updatephoto(completedTask.getTag().substring(4));
+                } else if (completedTask.getTag().contains("rfba")) {
+                    daoReportCensus.updateSendPhoto(completedTask.getTag().substring(4));
                 }
 
             } else if (completedTask.getResponseStatus() == HttpStatus.SC_UNAUTHORIZED)

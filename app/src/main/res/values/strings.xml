@@ -3,7 +3,7 @@
     <string name="app_path_photo">/GOMH/</string>
     <string name="app_db_name">GOMH.db</string>
     <string name="app_share_preference_name">GOMH</string>
-    <string name="network_ip">http://os.gshp-apps.com</string>
+    <string name="network_ip">http://gomh.gshp-apps.com</string>
     <string name="network_context">service/rest/</string>
     <string name="app_download_apk">https://s3-us-west-1.amazonaws.com/gshpapps/OBCiudadano/GOMH.apk</string>
     <string name="app_path_apk">/GOMH/GOMH.apk</string>
@@ -36,6 +36,7 @@
     <string name="label_cancel">CANCELAR</string>
     <string name="label_into">ENTRAR</string>
     <string name="label_training">CAPACITACIÓN</string>
+    <string name="label_task">TAREA</string>
 
     <string name="erro_download">Error al descargar archivo.</string>
     <string name="dialog_download_file">DESCARGANDO ARCHIVO</string>
@@ -294,9 +295,6 @@ Página 6 de 6</string>
     <string name="Splash_configuration_init">Configuración inicial, espere un momento</string>
 
     <!-- Face detection -->
-    <string name="DPI">DPI</string>
-    <string name="IMAGE_SIZE">IMAGE_SIZE</string>
-    <string name="images_ip">http://172.16.41.77:80</string>
     <string name="address">address</string>
     <string name="add_address">Guardar direccion.</string>
     <string name="postal_code">Código Postal:</string>
@@ -333,5 +331,16 @@ Página 6 de 6</string>
     <string name="task">TAREA</string>
     <string name="finish_report">FIN DE REGISTRO</string>
 
+    <string name="msg_channel_id">MENSAJES</string>
+    <string name="channel_msg_name">Mensajes</string>
+    <string name="channel_msg_des">Recepción de mensajes importantes</string>
+    <string name="msg_id">msg_id</string>
+    <string name="sync_channel_id">SYNC</string>
+    <string name="channel_sync_name">Sincronización</string>
+    <string name="channel_sync_des">Actualizaciones</string>
+    <string name="app_share_preference_sync">must_sync</string>
+    <string name="menu_report">MENÚ REPORTE</string>
+    <string name="bigadist">BRIGADISTA</string>
+    <string name="list_report">AGREGAR REPORTE</string>
 
 </resources>

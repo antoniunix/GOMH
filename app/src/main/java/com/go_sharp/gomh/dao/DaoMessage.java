@@ -1,71 +1,73 @@
+
+
 package com.go_sharp.gomh.dao;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
-import com.go_sharp.gomh.dto.DtoDownloadableFiles;
 import com.go_sharp.gomh.dto.DtoMessage;
 
-import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by gnu on 4/05/18.
- */
-
 public class DaoMessage extends DAO {
-
     private SQLiteDatabase db;
     private Cursor cursor;
-
     public static String TABLE_NAME = "message";
     public static String PK_FIELD = "id";
-
     private final String ID = "id";
-    private final String ID_TYPE = "id_type";
+    private final String TYPE_ID = "id_type";
     private final String DESCRIPTION = "description";
     private final String TITLE = "title";
     private final String CONTENT = "content";
+    private final String SEEN = "seen";
+    private final String SENT = "sent";
+    private final String TIMESTAMP = "timestampCel";
+    private final String HASH = "hash";
 
     public DaoMessage() {
         super(TABLE_NAME, PK_FIELD);
     }
 
-    /**
-     * insert
-     */
     public int insert(List<DtoMessage> obj) {
         db = helper.getWritableDatabase();
         int resp = 0;
         try {
-            SQLiteStatement inssStatement = db.compileStatement("INSERT INTO "
-                    + TABLE_NAME + " (" + ID_TYPE + "," + DESCRIPTION + "," + TITLE + "," + CONTENT
-                    + ") VALUES(?,?,?,?);");
+            SQLiteStatement insStmnt = db.compileStatement("" + "INSERT INTO " + TABLE_NAME + " (" + ID + "," + TYPE_ID + "," + DESCRIPTION + "," + TITLE + "," + CONTENT + "," + SEEN + ") VALUES(?,?,?,?,?,?);");
             db.beginTransaction();
-
-            for (DtoMessage dto : obj) {
+            for (DtoMessage message : obj) {
                 try {
-                    inssStatement.bindLong(1, dto.getType_id());
+                    insStmnt.bindLong(1, message.getId());
                 } catch (Exception e) {
-                    inssStatement.bindNull(1);
+                    insStmnt.bindNull(1);
                 }
                 try {
-                    inssStatement.bindString(2, dto.getDescription());
+                    insStmnt.bindLong(2, message.getType_id());
                 } catch (Exception e) {
-                    inssStatement.bindNull(2);
+                    insStmnt.bindNull(2);
                 }
                 try {
-                    inssStatement.bindString(3, dto.getTitle());
+                    insStmnt.bindString(3, message.getDescription());
                 } catch (Exception e) {
-                    inssStatement.bindNull(3);
+                    insStmnt.bindNull(3);
                 }
                 try {
-                    inssStatement.bindString(4, dto.getContent());
+                    insStmnt.bindString(4, message.getTitle());
                 } catch (Exception e) {
-                    inssStatement.bindNull(4);
+                    insStmnt.bindNull(4);
                 }
-                inssStatement.executeInsert();
+                try {
+                    insStmnt.bindString(5, message.getContent());
+                } catch (Exception e) {
+                    insStmnt.bindNull(5);
+                }
+                try {
+                    insStmnt.bindLong(6, message.getSeen());
+                } catch (Exception e) {
+                    insStmnt.bindNull(6);
+                }
+                insStmnt.executeInsert();
             }
             db.setTransactionSuccessful();
         } catch (Exception e) {
@@ -77,39 +79,44 @@ public class DaoMessage extends DAO {
         return resp;
     }
 
-    public List<DtoMessage> select() {
+    public void updateSeen(long id, String time, String hash) {
+        db = helper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(SEEN, 1);
+        cv.put(TIMESTAMP, time);
+        cv.put(HASH, hash);
+        db.update(TABLE_NAME, cv, ID + "=" + id, null);
+        db.close();
+    }
+
+    public void updateSent(long id) {
+        db = helper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(SENT, 1);
+        db.update(TABLE_NAME, cv, ID + "=" + id, null);
+        db.close();
+    }
+
+    public DtoMessage selectMsg(long id) {
         db = helper.getReadableDatabase();
-        cursor = db.rawQuery("SELECT\n" +
-                "message.id,\n" +
-                "message.id_type,\n" +
-                "message.description,\n" +
-                "message.title,\n" +
-                "message.content,\n" +
-                "FROM\n" +
-                TABLE_NAME, null);
-
-        List<DtoMessage> obj = new ArrayList<>(cursor.getCount());
-        DtoMessage dto;
-
+        cursor = db.rawQuery("SELECT\n" + TYPE_ID + ",\n" + DESCRIPTION + ",\n" + TITLE + ",\n" + CONTENT + "\n" + "FROM\n" + TABLE_NAME + "\n" + "WHERE " + ID + " =" + id, null);
+        DtoMessage message = new DtoMessage();
         if (cursor.moveToFirst()) {
-            int id = cursor.getColumnIndexOrThrow("id");
-            int idType = cursor.getColumnIndexOrThrow("id_type");
-            int description = cursor.getColumnIndexOrThrow("description");
-            int title = cursor.getColumnIndexOrThrow("title");
-            int content = cursor.getColumnIndexOrThrow("content");
-
+            int type_id = cursor.getColumnIndexOrThrow(TYPE_ID);
+            int description = cursor.getColumnIndexOrThrow(DESCRIPTION);
+            int title = cursor.getColumnIndexOrThrow(TITLE);
+            int content = cursor.getColumnIndexOrThrow(CONTENT);
             do {
-                dto = new DtoMessage();
-                dto.setId(cursor.getLong(id));
-                dto.setType_id(cursor.getLong(idType));
-                dto.setDescription(cursor.getString(description));
-                dto.setTitle(cursor.getString(title));
-                dto.setContent(cursor.getString(content));
-                obj.add(dto);
+                message.setId(id);
+                message.setType_id(cursor.getInt(type_id));
+                message.setDescription(cursor.getString(description));
+                message.setTitle(cursor.getString(title));
+                message.setContent(cursor.getString(content));
             } while (cursor.moveToNext());
         }
         cursor.close();
         db.close();
-        return obj;
+        return message;
     }
 }
+

@@ -4,11 +4,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.go_sharp.gomh.R;
-import com.go_sharp.gomh.dto.DtoMessage;
+import com.go_sharp.gomh.dto.DtoTask;
 import com.go_sharp.gomh.listener.OnItemClickListenerRV;
 import com.go_sharp.gomh.util.ChangeFontStyle;
 
@@ -20,10 +20,10 @@ import java.util.List;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ViewHolder> {
 
-    private List<DtoMessage> lstMsg;
+    private List<DtoTask> lstMsg;
     private OnItemClickListenerRV onItemClickListenerRV;
 
-    public RVAdapter(List<DtoMessage> lstMsg, OnItemClickListenerRV onItemClickListenerRV) {
+    public RVAdapter(List<DtoTask> lstMsg, OnItemClickListenerRV onItemClickListenerRV) {
         this.lstMsg = lstMsg;
         this.onItemClickListenerRV = onItemClickListenerRV;
     }
@@ -37,10 +37,11 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        DtoMessage dtoMessage = lstMsg.get(position);
+        DtoTask dtoMessage = lstMsg.get(position);
         holder.txtTitle.setText(dtoMessage.getTitle());
+        holder.txtDescription.setText(dtoMessage.getDescription());
 
-        holder.txtTitle.setOnClickListener(new View.OnClickListener() {
+        holder.rltMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onItemClickListenerRV.onItemClickListener(view, position);
@@ -53,15 +54,21 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ViewHolder> {
         return lstMsg.size();
     }
 
+    @Override
+    public long getItemId(int position) {
+        return lstMsg.get(position).getId();
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txtTitle,txtDescription;
+        TextView txtTitle, txtDescription;
+        RelativeLayout rltMain;
 
         ViewHolder(View itemView) {
             super(itemView);
             txtTitle = itemView.findViewById(R.id.txtTitle);
-            txtDescription =  itemView.findViewById(R.id.txtDescription);
-            ChangeFontStyle.changeFont(txtTitle);
+            txtDescription = itemView.findViewById(R.id.txtDescription);
+            rltMain = itemView.findViewById(R.id.rltMain);
+            ChangeFontStyle.changeFont(txtTitle, txtDescription);
         }
 
     }

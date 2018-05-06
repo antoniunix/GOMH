@@ -38,31 +38,35 @@ public class DtoReportCensus implements Parcelable {
     private String number_phone;
     private String email;
     private String path;
+    private long idPublicity;
+    private long id;
+    private String md5;
 
-    @Override
-    public String toString() {
-        return "DtoReportCensus{" +
-                "idReporteLocal=" + idReporteLocal +
-                ", idReport=" + idReport +
-                ", lat=" + lat +
-                ", lon=" + lon +
-                ", suburb='" + suburb + '\'' +
-                ", state='" + state + '\'' +
-                ", town='" + town + '\'' +
-                ", cp='" + cp + '\'' +
-                ", externalNumber='" + externalNumber + '\'' +
-                ", hash='" + hash + '\'' +
-                ", send=" + send +
-                ", date=" + date +
-                ", address='" + address + '\'' +
-                ", provider='" + provider + '\'' +
-                ", address_left='" + address_left + '\'' +
-                ", address_right='" + address_right + '\'' +
-                ", internalNumber='" + internalNumber + '\'' +
-                ", number_phone='" + number_phone + '\'' +
-                ", email='" + email + '\'' +
-                ", path='" + path + '\'' +
-                '}';
+    public String getMd5() {
+        return md5;
+    }
+
+    public DtoReportCensus setMd5(String md5) {
+        this.md5 = md5;
+        return this;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public DtoReportCensus setId(long id) {
+        this.id = id;
+        return this;
+    }
+
+    public long getIdPublicity() {
+        return idPublicity;
+    }
+
+    public DtoReportCensus setIdPublicity(long idPublicity) {
+        this.idPublicity = idPublicity;
+        return this;
     }
 
     public String getPath() {
@@ -275,6 +279,9 @@ public class DtoReportCensus implements Parcelable {
         dest.writeString(this.number_phone);
         dest.writeString(this.email);
         dest.writeString(this.path);
+        dest.writeLong(this.idPublicity);
+        dest.writeLong(this.id);
+        dest.writeString(this.md5);
     }
 
     protected DtoReportCensus(Parcel in) {
@@ -298,6 +305,9 @@ public class DtoReportCensus implements Parcelable {
         this.number_phone = in.readString();
         this.email = in.readString();
         this.path = in.readString();
+        this.idPublicity = in.readLong();
+        this.id = in.readLong();
+        this.md5 = in.readString();
     }
 
     public static final Creator<DtoReportCensus> CREATOR = new Creator<DtoReportCensus>() {
@@ -311,4 +321,33 @@ public class DtoReportCensus implements Parcelable {
             return new DtoReportCensus[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "DtoReportCensus{" +
+                "idReporteLocal=" + idReporteLocal +
+                ", idReport=" + idReport +
+                ", lat=" + lat +
+                ", lon=" + lon +
+                ", suburb='" + suburb + '\'' +
+                ", state='" + state + '\'' +
+                ", town='" + town + '\'' +
+                ", cp='" + cp + '\'' +
+                ", externalNumber='" + externalNumber + '\'' +
+                ", hash='" + hash + '\'' +
+                ", send=" + send +
+                ", date=" + date +
+                ", address='" + address + '\'' +
+                ", provider='" + provider + '\'' +
+                ", address_left='" + address_left + '\'' +
+                ", address_right='" + address_right + '\'' +
+                ", internalNumber='" + internalNumber + '\'' +
+                ", number_phone='" + number_phone + '\'' +
+                ", email='" + email + '\'' +
+                ", path='" + path + '\'' +
+                ", idPublicity=" + idPublicity +
+                ", id=" + id +
+                ", md5='" + md5 + '\'' +
+                '}';
+    }
 }

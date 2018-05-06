@@ -109,7 +109,7 @@ public class Tables {
             + "idTipoPregunta INTEGER," + "obligatoria INTEGER," + "RangoMinimo TEXT," + "RangoMaximo TEXT,"
             + "orden INTEGER," + "peso INTEGER," + "operadorDependencia TEXT," + "valorDependencia1 TEXT,"
             + "valorDependencia2 TEXT," + "queryOpcionesDependencia TEXT," + "queryVisibility INTEGER,"
-            + "queryOpciones TEXT)";
+            + "queryOpciones TEXT," + "regex_val TEXT," + "regex_message TEXT)";
 
     public final String Table_EARespuesta = "CREATE TABLE EARespuesta("
             + "ida INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," + "idPregunta INTEGER, " + "idReporte INTEGER,"
@@ -175,6 +175,7 @@ public class Tables {
             "number_phone TEXT," +
             "path TEXT," +
             "email TEXT,"+
+            "id_publicity INTEGER,"+
             "send INTEGER)";
 
     public final String TableDownloadFile = "CREATE TABLE download_file(" +
@@ -188,11 +189,18 @@ public class Tables {
             "md5 TEXT)";
 
     public final String TableMessage = "CREATE TABLE message(" +
-            "id INTEGER," +
+            "id INTEGER PRIMARY KEY NOT NULL," +
             "id_type INTEGER," +
             "description TEXT," +
             "title TEXT," +
-            "content TEXT)";
+            "content TEXT," +
+            "seen INTEGER," +
+            "sent INTEGER," +
+            "timestampCel TEXT," +
+            "hash TEXT)";
 
+    public final String TableTypePublicity="CREATE TABLE type_publicity("+
+            "id_type INTEGER,"+
+            "value TEXT)";
 
 }
