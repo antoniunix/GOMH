@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import com.go_sharp.gomh.adapter.DtoSimpleReport;
 import com.go_sharp.gomh.adapter.ReportItem;
 import com.go_sharp.gomh.dto.DtoBundle;
-import com.go_sharp.gomh.model.ModelInfoPerson;
+import com.go_sharp.gomh.model.ModelToolBar;
 import com.go_sharp.gomh.model.ModelReport;
 
 import java.util.List;
@@ -34,7 +34,7 @@ public class ReportList extends AppCompatActivity {
         setSupportActionBar(toolbar);*/
         dtoBundle = (DtoBundle) getIntent().getExtras().get(getString(R.string.app_bundle_name));
         modelReport = new ModelReport(dtoBundle);
-        new ModelInfoPerson(this).loadInfo(getString(R.string.list_report), getString(R.string.bigadist));
+        new ModelToolBar(this).loadInfo(getString(R.string.list_report), getString(R.string.bigadist));
 
         RecyclerView mRecyclerView = findViewById(R.id.report_list);
         mRecyclerView.setHasFixedSize(true);

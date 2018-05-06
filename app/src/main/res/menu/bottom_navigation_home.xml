@@ -4,7 +4,7 @@
     <item
         android:id="@+id/action_home"
         android:enabled="true"
-        android:icon="@drawable/supervisor"
+        android:icon="@drawable/checkin"
         android:title=""
         app:showAsAction="ifRoom" />
     <item

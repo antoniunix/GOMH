@@ -500,8 +500,9 @@ public class DaoReport extends DAO {
             int date = cursor.getColumnIndexOrThrow("datecheckout");
             int sent = cursor.getColumnIndexOrThrow("send");
             do {
+                int num = cursor.getPosition() + 1;
                 dto = new DtoSimpleReport();
-                dto.setTitle("Captación " + cursor.getInt(id));
+                dto.setTitle("Captación " + num);
                 dto.setSent(cursor.getInt(sent) == 1);
                 dto.setCreatedAt(DateFormat.format("dd/MM/yyyy", new Date(cursor.getLong(date))).toString());
                 obj.add(dto);
@@ -529,7 +530,7 @@ public class DaoReport extends DAO {
             int sum = cursor.getColumnIndexOrThrow("result");
             int results = cursor.getInt(sum);
             if (results == 0) {
-                db.delete("report_check","id_report_local = "+idReport, null);
+                db.delete("report_check", "id_report_local = " + idReport, null);
                 deleteById(idReport);
                 return true;
             }
