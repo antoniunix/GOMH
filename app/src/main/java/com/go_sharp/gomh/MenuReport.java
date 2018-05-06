@@ -1,5 +1,6 @@
 package com.go_sharp.gomh;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -25,7 +26,9 @@ public class MenuReport extends AppCompatActivity implements View.OnClickListene
         opt3 = findViewById(R.id.opt3);
         opt4 = findViewById(R.id.opt4);
 
+        opt2.setOnClickListener(this);
         opt4.setOnClickListener(this);
+
     }
 
     @Override
@@ -47,8 +50,9 @@ public class MenuReport extends AppCompatActivity implements View.OnClickListene
     public void onClick(View v) {
         if (v.getId() == opt1.getId()) {
 
+
         } else if (v.getId() == opt2.getId()) {
-            
+            startActivity(new Intent(this, ReportPublicity.class).putExtra(getString(R.string.app_bundle_name), dtoBundle));
 
         } else if (v.getId() == opt3.getId()) {
 

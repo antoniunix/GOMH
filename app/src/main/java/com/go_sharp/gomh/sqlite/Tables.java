@@ -166,12 +166,15 @@ public class Tables {
             "state TEXT," +
             "cp INTEGER," +
             "external_number TEXT," +
-            "internal_number TEXT,"+
+            "internal_number TEXT," +
             "address TEXT," +
-            "address_left TEXT,"+
-            "address_right TEXT,"+
+            "address_left TEXT," +
+            "address_right TEXT," +
             "hash TEXT," +
             "provider TEXT," +
+            "number_phone TEXT," +
+            "path TEXT," +
+            "email TEXT,"+
             "send INTEGER)";
 
     public final String TableDownloadFile = "CREATE TABLE download_file(" +
@@ -184,7 +187,7 @@ public class Tables {
             "start_date TEXT," +
             "md5 TEXT)";
 
-    public final String TableMessage="CREATE TABLE message(" +
+    public final String TableMessage = "CREATE TABLE message(" +
             "id INTEGER," +
             "id_type INTEGER," +
             "description TEXT," +

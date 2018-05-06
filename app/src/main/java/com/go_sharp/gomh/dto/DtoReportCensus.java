@@ -35,6 +35,10 @@ public class DtoReportCensus implements Parcelable {
     @SerializedName("internal_number")
     private String internalNumber;
 
+    private String number_phone;
+    private String email;
+    private String path;
+
     @Override
     public String toString() {
         return "DtoReportCensus{" +
@@ -55,15 +59,18 @@ public class DtoReportCensus implements Parcelable {
                 ", address_left='" + address_left + '\'' +
                 ", address_right='" + address_right + '\'' +
                 ", internalNumber='" + internalNumber + '\'' +
+                ", number_phone='" + number_phone + '\'' +
+                ", email='" + email + '\'' +
+                ", path='" + path + '\'' +
                 '}';
     }
 
-    public long getIdReport() {
-        return idReport;
+    public String getPath() {
+        return path;
     }
 
-    public DtoReportCensus setIdReport(long idReport) {
-        this.idReport = idReport;
+    public DtoReportCensus setPath(String path) {
+        this.path = path;
         return this;
     }
 
@@ -73,6 +80,15 @@ public class DtoReportCensus implements Parcelable {
 
     public DtoReportCensus setIdReporteLocal(long idReporteLocal) {
         this.idReporteLocal = idReporteLocal;
+        return this;
+    }
+
+    public long getIdReport() {
+        return idReport;
+    }
+
+    public DtoReportCensus setIdReport(long idReport) {
+        this.idReport = idReport;
         return this;
     }
 
@@ -211,6 +227,24 @@ public class DtoReportCensus implements Parcelable {
         return this;
     }
 
+    public String getNumber_phone() {
+        return number_phone;
+    }
+
+    public DtoReportCensus setNumber_phone(String number_phone) {
+        this.number_phone = number_phone;
+        return this;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public DtoReportCensus setEmail(String email) {
+        this.email = email;
+        return this;
+    }
+
     public DtoReportCensus() {
     }
 
@@ -238,6 +272,9 @@ public class DtoReportCensus implements Parcelable {
         dest.writeString(this.address_left);
         dest.writeString(this.address_right);
         dest.writeString(this.internalNumber);
+        dest.writeString(this.number_phone);
+        dest.writeString(this.email);
+        dest.writeString(this.path);
     }
 
     protected DtoReportCensus(Parcel in) {
@@ -258,6 +295,9 @@ public class DtoReportCensus implements Parcelable {
         this.address_left = in.readString();
         this.address_right = in.readString();
         this.internalNumber = in.readString();
+        this.number_phone = in.readString();
+        this.email = in.readString();
+        this.path = in.readString();
     }
 
     public static final Creator<DtoReportCensus> CREATOR = new Creator<DtoReportCensus>() {

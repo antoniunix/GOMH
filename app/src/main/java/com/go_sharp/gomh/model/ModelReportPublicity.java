@@ -85,13 +85,24 @@ public class ModelReportPublicity implements OnApiGeolocation {
         return new MySpinnerAdapter(context, R.layout.spinner_simple_list, lst);
     }
 
-    public ArrayAdapter getAdapterCp(){
-        List<String>lst = daoSepomex.SelectCp();
+    public SpinnerAdapter getAdapterDelegacion(String postalcode) {
+        lstSepomexes = new DaoSepomex().Select(postalcode);
+        List<String> lst = new ArrayList<>(lstSepomexes.size());
+        for (DtoSepomex dto : lstSepomexes) {
+            lst.add(dto.getTown().trim());
+        }
         return new MySpinnerAdapter(context,R.layout.spinner_simple_list,lst);
     }
 
-    public int addNewReportPublicity (DtoReportCensus dto){
-        return daoReportCensus.insert(dto);
+    public ArrayAdapter getAdapterCp() {
+        List<String> lst = daoSepomex.SelectCp();
+        return new MySpinnerAdapter(context, R.layout.spinner_simple_list, lst);
+    }
+
+
+    public void addNewReportPublicity(DtoReportCensus dto) {
+        daoReportCensus.deleteByIdReport(dto.getIdReporteLocal());
+        daoReportCensus.insert(dto);
     }
 
     public DtoSepomex getItemSuburb(int position) {

@@ -58,7 +58,7 @@
                     android:layout_weight="1"
                     android:text="@string/delegacion" />
 
-                <EditText
+                <Spinner
                     android:id="@+id/edt_delegacion"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
@@ -142,22 +142,21 @@
 
             </TableRow>
 
-            <Button
-                android:id="@+id/btnPhoto"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/photo" />
-
-            <Button
-                android:id="@+id/btnSave"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/labelSave" />
-
             <TableRow>
 
+                <Button
+                    android:id="@+id/btnPhoto"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/photo" />
+
+                <Button
+                    android:id="@+id/btnSave"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/labelSave" />
 
             </TableRow>
 

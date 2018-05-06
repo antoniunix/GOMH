@@ -10,12 +10,15 @@ import android.os.Environment;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.go_sharp.gomh.listener.OnFinishThread;
+import com.go_sharp.gomh.model.ModelSplash;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -26,91 +29,49 @@ public class Splash extends AppCompatActivity implements OnFinishThread {
 
     private Timer timer;
     private WeakReference<Splash> weakReference;
-    private static final int ALL_PERMISSIONS = 200;
+    private ModelSplash modelSplash;
 
-    private void init() {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_splash);
+
+        modelSplash = new ModelSplash(this);
         timer = new Timer();
         weakReference = new WeakReference<>(this);
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
-        init();
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
-        String[] PERMISSIONS = {android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.CALL_PHONE,
-                android.Manifest.permission.GET_ACCOUNTS, android.Manifest.permission.CAMERA, android.Manifest.permission.ACCESS_FINE_LOCATION,
-                android.Manifest.permission.READ_PHONE_STATE};
-        if (!hasPermissions(this, PERMISSIONS)) {
-            ActivityCompat.requestPermissions(this, PERMISSIONS, ALL_PERMISSIONS);
+        /**
+         * si la tabla de sepomex esta vacia, se tendra que llenar, cosa que es un proceso lento, y el splash terminara una vez concluidos los inserts
+         * de lo contrario solo durara el tiempo especificado para mostrar la imagen
+         */
+        if (!modelSplash.fillSepomex()) {
+
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    Splash activity = weakReference.get();
+                    if (activity != null && !activity.isFinishing()) {
+                        startActivity(new Intent(Splash.this, Login.class));
+                        finish();
+                    }
+                }
+            };
+            timer.schedule(timerTask, 1500);
         } else {
-            File dir = new File(Environment.getExternalStorageDirectory() + getString(R.string.app_path_photo));
-            if (!dir.exists()) {
-                if (!dir.mkdirs()) {
-                    Log.e("INFO", "no se creo la carpeta");
-                }
-            }
-
-            dummyTimer();
+            Snackbar.make(findViewById(R.id.activity_splash), R.string.Splash_configuration_init, Snackbar.LENGTH_INDEFINITE)
+                    .setAction("Action", null).show();
         }
-    }
-
-    private void dummyTimer() {
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                Splash activity = weakReference.get();
-                if (activity != null && !activity.isFinishing()) {
-                    startActivity(new Intent(Splash.this, Login.class));
-                    finish();
-                }
-            }
-        };
-        timer.schedule(timerTask, 1500);
     }
 
     @Override
     public void onFinishThread() {
-        startActivity(new Intent(Splash.this, Home.class));
+        startActivity(new Intent(Splash.this, Login.class));
         finish();
-    }
-
-    private static boolean hasPermissions(Context context, String... permissions) {
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
-            for (String permission : permissions) {
-                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case ALL_PERMISSIONS: {
-                for (int i = 0, len = permissions.length; i < len; i++) {
-                    String permission = permissions[i];
-                    if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
-                        // user rejected the permission
-                        boolean showRationale = ActivityCompat.shouldShowRequestPermissionRationale(this, permission);
-                        if (!showRationale) {
-                            Toast.makeText(this, "Por favor acepte todos los permisos", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent();
-                            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                            Uri uri = Uri.fromParts("package", getPackageName(), null);
-                            intent.setData(uri);
-                            startActivity(intent);
-                        }
-                    }
-                }
-            }
-        }
     }
 }

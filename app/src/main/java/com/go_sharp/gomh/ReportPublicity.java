@@ -2,13 +2,19 @@ package com.go_sharp.gomh;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -28,6 +34,8 @@ import com.go_sharp.gomh.dto.DtoReportCensus;
 import com.go_sharp.gomh.dto.DtoSepomex;
 import com.go_sharp.gomh.listener.OnFinishLocation;
 import com.go_sharp.gomh.model.ModelReportPublicity;
+import com.go_sharp.gomh.util.Config;
+import com.go_sharp.gomh.util.MD5;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -36,18 +44,22 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.gshp.api.utils.ResizePicture;
 
-import net.gshp.api_time_module.config.Config;
-import net.gshp.api_time_module.config.MD5;
 import net.panamiur.geolocation.Geolocation;
 
 import org.w3c.dom.ProcessingInstruction;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+
+import static com.go_sharp.gomh.contextApp.ContextApp.context;
 
 /**
  * Created by leo on 3/05/18.
@@ -55,19 +67,21 @@ import java.util.Random;
 
 public class ReportPublicity extends AppCompatActivity implements OnMapReadyCallback,
         OnFinishLocation, AdapterView.OnItemSelectedListener,
-        TextWatcher, GoogleMap.OnMarkerDragListener {
+        TextWatcher, GoogleMap.OnMarkerDragListener, View.OnClickListener {
 
     private MapView mapView;
     private GoogleMap map;
     private double lat, lon;
-    private EditText edtStreet, edtLeftStreet, edtRightStreet, edtDelegacion, edtnumberPhone, edtEmail;
-    private Spinner spnSuburb;
+    private EditText edtStreet, edtLeftStreet, edtRightStreet,  edtnumberPhone, edtEmail;
+    private Spinner spnSuburb,spnTown;
     private AutoCompleteTextView edtCp;
     private ModelReportPublicity modelReportPublicity;
     private DtoReportCensus dtoReportCensus;
     private CircleOptions circleOptions;
     public boolean setLocation = false;
     private Button btnPhoto, btnSave;
+    private DtoBundle dtoBundle;
+    private String path="";
 
 
     @Override
@@ -79,6 +93,7 @@ public class ReportPublicity extends AppCompatActivity implements OnMapReadyCall
 
     private void init(Bundle savedInstanceState) {
         modelReportPublicity = new ModelReportPublicity(this, this, this);
+        dtoBundle = (DtoBundle) getIntent().getExtras().get(getResources().getString(R.string.app_bundle_name));
         dtoReportCensus = new DtoReportCensus();
         mapView = (MapView) findViewById(R.id.map);
         edtStreet = findViewById(R.id.edt_street);
@@ -89,13 +104,19 @@ public class ReportPublicity extends AppCompatActivity implements OnMapReadyCall
         edtEmail = findViewById(R.id.edt_email);
         btnSave = findViewById(R.id.btnSave);
         btnPhoto = findViewById(R.id.btnPhoto);
+        spnSuburb = findViewById(R.id.spn_suburb);
+        spnTown=findViewById(R.id.edt_delegacion);
 
-        spnSuburb.setOnItemSelectedListener(this);
-        edtCp.addTextChangedListener(this);
+
         mapView.onCreate(savedInstanceState);
         setUpMapIfNeeded();
+        edtCp.addTextChangedListener(this);
         edtCp.setAdapter(modelReportPublicity.getAdapterCp());
         edtCp.setThreshold(1);
+        spnSuburb.setOnItemSelectedListener(this);
+        spnTown.setOnItemSelectedListener(this);
+        btnPhoto.setOnClickListener(this);
+        btnSave.setOnClickListener(this);
 
     }
 
@@ -157,7 +178,7 @@ public class ReportPublicity extends AppCompatActivity implements OnMapReadyCall
 
     private void setDirections(double lat, double lon) {
         try {
-            Geocoder geo = new Geocoder(ContextApp.context, Locale.getDefault());
+            Geocoder geo = new Geocoder(context, Locale.getDefault());
             List<Address> addresses = geo.getFromLocation(lat, lon, 1);
             Log.e("address", "address " + addresses.toString());
             if (!addresses.isEmpty()) {
@@ -213,6 +234,11 @@ public class ReportPublicity extends AppCompatActivity implements OnMapReadyCall
         if (!edtCp.getText().toString().equals("") && edtCp.getText().length() > 0) {
             spnSuburb.setAdapter(modelReportPublicity.getAdapterSuburb(edtCp.getText().toString()));
         }
+
+        if (!edtCp.getText().toString().equals("") && edtCp.getText().length() > 0) {
+            spnTown.setAdapter(modelReportPublicity.getAdapterDelegacion(edtCp.getText().toString()));
+        }
+
     }
 
     @Override
@@ -241,36 +267,43 @@ public class ReportPublicity extends AppCompatActivity implements OnMapReadyCall
 
     private void saveReport() {
         if (edtStreet.getText().toString().isEmpty()) {
-            Toast.makeText(this, "Ingrese la dirección del PDV", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Ingrese la dirección", Toast.LENGTH_SHORT).show();
         } else if (edtCp.getText().toString().equals("") || spnSuburb.getCount() == 0) {
             Toast.makeText(this, "C.P. no válido", Toast.LENGTH_SHORT).show();
-        } else {
+        }else if(edtnumberPhone.getText().toString().isEmpty()){
+            Toast.makeText(this, "Ingrese el Número de teléfono", Toast.LENGTH_SHORT).show();
+        }else if(edtRightStreet.getText().toString().isEmpty() || edtLeftStreet.getText().toString().isEmpty()){
+            Toast.makeText(this, "Ingrese entre que calles se encuentra", Toast.LENGTH_SHORT).show();
+        }
+        else {
 
             if (spnSuburb.getAdapter().getCount() != 0) {
                 dtoReportCensus.setSuburb(modelReportPublicity.getItemSuburb(spnSuburb.getSelectedItemPosition()).getSuburb());
                 dtoReportCensus.setState(modelReportPublicity.getItemSuburb(spnSuburb.getSelectedItemPosition()).getState());
-                dtoReportCensus.setTown(modelReportPublicity.getItemSuburb(spnSuburb.getSelectedItemPosition()).getTown());
+                //dtoReportCensus.setTown(modelReportPublicity.getItemSuburb(spnSuburb.getSelectedItemPosition()).getTown());
+            }
+            if(spnTown.getAdapter().getCount() != 0){
+                dtoReportCensus.setTown(modelReportPublicity.getItemSuburb(spnTown.getSelectedItemPosition()).getTown());
             }
 
+            dtoReportCensus.setIdReporteLocal(dtoBundle.getIdReportLocal());
             dtoReportCensus.setAddress(edtStreet.getText().toString());
             dtoReportCensus.setAddress_left(edtLeftStreet.getText().toString());
             dtoReportCensus.setAddress_right(edtRightStreet.getText().toString());
             dtoReportCensus.setCp(edtCp.getText().toString());
             dtoReportCensus.setLat(lat);
             dtoReportCensus.setLon(lon);
+            dtoReportCensus.setNumber_phone(edtnumberPhone.getText().toString());
+            dtoReportCensus.setEmail(edtEmail.getText().toString());
+            dtoReportCensus.setPath(path);
 
             dtoReportCensus.setHash(MD5.md5(System.currentTimeMillis() + "" + new Random().nextInt(1000) + ""));
             dtoReportCensus.setDate(System.currentTimeMillis());
-
-            DtoBundle dtoBundle = new DtoBundle();
-
-            /* Si es mayor a 0 significa que se guardo exitosamente el nuevo pdv, en caso contrario que
-             * se muestre un Toast donde le diga que hubo un error en la inserción de los datos */
-
-            startActivity(new Intent(this, MenuReport.class).putExtra(getResources().getString(R.string.app_bundle_name), dtoBundle));
+            modelReportPublicity.addNewReportPublicity(dtoReportCensus);
+            finish();
         }
         modelReportPublicity.onStopGeo();
-        finish();
+
     }
 
     @Override
@@ -283,9 +316,114 @@ public class ReportPublicity extends AppCompatActivity implements OnMapReadyCall
 
     }
 
+
     @Override
     public void onMarkerDragEnd(Marker marker) {
+        lon = (marker.getPosition().longitude);
+        lat = (marker.getPosition().latitude);
 
+        try {
+            Geocoder geo = new Geocoder(ContextApp.context,Locale.getDefault());
+            List<Address> addresses = geo.getFromLocation(marker.getPosition().latitude, marker.getPosition().longitude, 1);
+            Log.e("adress", "Address "
+                    + "FeatureName: " + addresses.get(0).getFeatureName() + ", \n"
+                    + "County Name: " + addresses.get(0).getCountryName() + ", \n"
+                    + "Admin Area: " + addresses.get(0).getAdminArea() + ",\n "
+                    + "Locality: " + addresses.get(0).getLocality() + ", \n"
+                    + "Postal Code: " + addresses.get(0).getPostalCode() + ",\n "
+                    + "Max Adrees " + addresses.get(0).getAddressLine(0) + ", \n"
+                    + "Max Adrees " + addresses.get(0).getAddressLine(1) + ", \n"
+                    + "Max Adrees " + addresses.get(0).getAddressLine(2) + ", \n"
+                    + "Max Adrees " + addresses.get(0).getAddressLine(3) + ", \n"
+                    + "Max Adrees " + addresses.get(0).getAddressLine(4) + ", \n"
+                    + "Max Adrees " + addresses.get(0).getAddressLine(5) + ", \n"
+                    + "SubAdmin " + addresses.get(0).getSubAdminArea() + ", \n"
+                    + "SubLocality " + addresses.get(0).getSubLocality() + ", \n"
+                    + "SubThoroughfare " + addresses.get(0).getSubThoroughfare() + ", \n"
+                    + "Thoroughfare " + addresses.get(0).getThoroughfare() + ", \n"
+                    + "Locale: " + addresses.get(0).getLocale() + ", "
+                    + " size: " + addresses.size());
+            if (!addresses.isEmpty()) {
+                if (addresses.size() > 0) {
+                    Log.e("adress", "Address "
+                            + "FeatureName: " + addresses.get(0).getFeatureName() + ", \n"
+                            + "County Name: " + addresses.get(0).getCountryName() + ", \n"
+                            + "Admin Area: " + addresses.get(0).getAdminArea() + ",\n "
+                            + "Locality: " + addresses.get(0).getLocality() + ", \n"
+                            + "Postal Code: " + addresses.get(0).getPostalCode() + ",\n "
+                            + "Max Adrees " + addresses.get(0).getAddressLine(0) + ", \n"
+                            + "Max Adrees " + addresses.get(0).getAddressLine(1) + ", \n"
+                            + "Max Adrees " + addresses.get(0).getAddressLine(2) + ", \n"
+                            + "Max Adrees " + addresses.get(0).getAddressLine(3) + ", \n"
+                            + "Max Adrees " + addresses.get(0).getAddressLine(4) + ", \n"
+                            + "Max Adrees " + addresses.get(0).getAddressLine(5) + ", \n"
+                            + "SubAdmin " + addresses.get(0).getSubAdminArea() + ", \n"
+                            + "SubLocality " + addresses.get(0).getSubLocality() + ", \n"
+                            + "SubThoroughfare " + addresses.get(0).getSubThoroughfare() + ", \n"
+                            + "Thoroughfare " + addresses.get(0).getThoroughfare() + ", \n"
+                            + "Locale: " + addresses.get(0).getLocale() + ", "
+                            + " size: " + addresses.size());
+                    String postal = addresses.get(0).getPostalCode();
+                    String code_postal = postal.replaceAll("[^0-9]", "");
+                    edtStreet.setText(addresses.get(0).getThoroughfare());
+                    if (code_postal.length() >= 5) {
+                        edtCp.setText(code_postal);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Log.e("address","marker "+lon+" lat "+lat);
+        setDirections(lat, lon);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnPhoto:
+                path= "sdcard/" +getResources().getString(R.string.app_path_photo)+System.currentTimeMillis()+".jpg";
+                File file = new File(path);
+                Uri uri;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", file);
+                }else{
+                    uri = Uri.fromFile(file);
+                }
+                Intent intent_mixta = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                intent_mixta.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                intent_mixta.putExtra(MediaStore.EXTRA_SCREEN_ORIENTATION, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                startActivityForResult(intent_mixta, 1);
+
+                break;
+
+            case R.id.btnSave:
+
+                if(path.equals("") || path == null){
+                    Toast.makeText(this, "Debe tomar fotografía", Toast.LENGTH_SHORT).show();
+                }else {
+                    saveReport();
+                }
+
+                break;
+        }
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            File f = new File(path);
+            if (f.exists()) {
+                ResizePicture.resizeAndRotate(path, getResources().getInteger(R.integer.size_width_photo),
+                        getResources().getInteger(R.integer.size_height_photo), "Publicidad  ");
+
+            } else
+                path = "";
+        } else
+            path = "";
     }
 }
 

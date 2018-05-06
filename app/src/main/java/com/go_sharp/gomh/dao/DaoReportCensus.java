@@ -40,6 +40,9 @@ public class DaoReportCensus extends DAO {
     private final String ADDRESSLEFT = "address_left";
     private final String ADDRESSRIGHT = "address_right";
     private final String CP = "cp";
+    private final String NUMBERPHONE = "number_phone";
+    private final String EMAIL = "email";
+    private final String PATH = "path";
 
     public DaoReportCensus() {
         super(TABLE_NAME, PK_FIELD);
@@ -72,6 +75,9 @@ public class DaoReportCensus extends DAO {
             cv.put(EXTERNAL_NUMBER, obj.getExternalNumber());
             cv.put(ADDRESSLEFT, obj.getAddress_left());
             cv.put(ADDRESSRIGHT, obj.getAddress_right());
+            cv.put(EMAIL, obj.getEmail());
+            cv.put(NUMBERPHONE, obj.getNumber_phone());
+            cv.put(PATH,obj.getPath());
             resp = (int) db.insert(TABLE_NAME, null, cv);
             db.setTransactionSuccessful();
         } catch (Exception e) {
