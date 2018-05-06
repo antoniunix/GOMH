@@ -72,7 +72,7 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
         new ModelToolBar(this).loadInfo("INICIO");
         mapFrag.getMapAsync(this);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
-        bottomNavigationView.setSelectedItemId(R.id.action_home);
+
         btnTBHelp.setOnClickListener(this);
         btnTBSync.setOnClickListener(this);
         btnTBAccount.setOnClickListener(this);
@@ -96,6 +96,7 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
     @Override
     protected void onResume() {
         super.onResume();
+        bottomNavigationView.setSelectedItemId(R.id.action_home);
         AlarmGeolocation.getInstance();
         dtoBundle.setIdReportLocal(model.getReportId());
     }
