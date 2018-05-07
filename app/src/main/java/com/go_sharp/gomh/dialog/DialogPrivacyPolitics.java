@@ -19,6 +19,7 @@ import com.go_sharp.gomh.R;
 import com.go_sharp.gomh.dao.DaoPolitic;
 import com.go_sharp.gomh.dto.DtoPolitic;
 import com.go_sharp.gomh.util.ChangeFontStyle;
+import com.go_sharp.gomh.util.SharePreferenceCustom;
 
 /**
  * Created by leo on 21/08/17.
@@ -31,7 +32,6 @@ public class DialogPrivacyPolitics extends DialogFragment implements CompoundBut
     private CheckBox chbAgree;
     private TextView txtTitle;
     private Button btnAgree, btnCancel;
-    private SharedPreferences sh;
     private DaoPolitic daoPolitics;
     private DtoPolitic dtoPolitics;
     private String versionPolitic = "TERMS_1.0";
@@ -46,7 +46,6 @@ public class DialogPrivacyPolitics extends DialogFragment implements CompoundBut
         chbAgree = view.findViewById(R.id.chb_agree);
         btnAgree = view.findViewById(R.id.btn_agree);
         btnCancel = view.findViewById(R.id.btn_cancel);
-        sh = getActivity().getSharedPreferences(getString(R.string.app_share_preference_name), Context.MODE_PRIVATE);
         daoPolitics = new DaoPolitic();
         dtoPolitics = daoPolitics.Select();
 
@@ -71,7 +70,7 @@ public class DialogPrivacyPolitics extends DialogFragment implements CompoundBut
             dismiss();
             getActivity().finish();
         } else if (view.getId() == R.id.btn_agree) {
-            sh.edit().putString(getString(R.string.app_share_preference_privacy_politic), versionPolitic).apply();
+            SharePreferenceCustom.write(getString(R.string.app_share_preference_name), getString(R.string.app_share_preference_privacy_politic), versionPolitic);
             dismiss();
         }
     }

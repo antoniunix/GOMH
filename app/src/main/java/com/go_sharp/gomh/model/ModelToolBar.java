@@ -34,7 +34,6 @@ public class ModelToolBar {
     }
 
     public ModelToolBar loadInfo(String title, String subtitle) {
-        txtTBDate.setText(Config.formatDate());
         txtTBTitle.setText(title);
         txtTBSubTitle.setText(subtitle);
         return this;
