@@ -6,8 +6,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:padding="@dimen/activity_horizontal_margin">
+        android:background="@color/colorPrimary">
 
         <TextView
             android:id="@+id/txtTBDate"
@@ -16,14 +15,20 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="@dimen/activity_horizontal_margin_middle"
-            android:textColor="@color/colorWhiteTxt"
-            android:drawablePadding="@dimen/activity_horizontal_margin_middle" />
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:background="@color/colorPrimaryDark"
+            android:drawablePadding="@dimen/activity_horizontal_margin_middle"
+            android:paddingLeft="@dimen/activity_horizontal_margin_middle"
+            android:paddingRight="@dimen/activity_horizontal_margin_middle"
+            android:textColor="@color/colorWhiteTxt" />
 
 
         <TextView
             android:id="@+id/txtTBTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:ellipsize="end"
             android:maxLength="15"
             android:textColor="@color/colorWhiteTxt"
@@ -34,6 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/txtTBTitle"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_horizontal_margin_middle"
             android:textColor="@color/colorWhiteTxt"
             android:textSize="@dimen/sizeTextNormal" />
@@ -57,7 +63,10 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_below="@id/txtTBDate"
+            android:layout_marginBottom="@dimen/activity_vertical_margin_middle"
             android:layout_marginLeft="@dimen/activity_horizontal_margin_middle"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginStart="@dimen/activity_horizontal_margin_middle"
             android:background="@null"
             android:src="@drawable/help" />

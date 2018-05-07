@@ -5,7 +5,9 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:layout_marginTop="@dimen/activity_horizontal_margin_middle"
         android:id="@+id/txtTitle"
+        android:textColor="@color/colorText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/textSizeBig" />
@@ -15,6 +17,7 @@
         android:id="@+id/txtDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/colorTextEdt"
         android:textSize="@dimen/textSizeNormal" />
 
 </RelativeLayout>
