@@ -31,7 +31,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
     private ProgressBar id_progressbar;
     private EditText edt_user_name, edt_pass;
     private RelativeLayout rlt_authentication, rlyt_delete_data, rlyt_sync;
-    private TextView txtPorcent,txtLabel;
+    private TextView txtPorcent;
     private ModelSincronizar model;
     private int statusSync;
 
@@ -72,14 +72,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
             rlyt_delete_data = findViewById(R.id.rlyt_delete_data);
             rlyt_sync = findViewById(R.id.rlyt_sync);
             txtPorcent = findViewById(R.id.txtPorcent);
-            txtLabel = findViewById(R.id.txtLabel);
             btn_sync.setOnClickListener(this);
             btn_sync_agree.setOnClickListener(this);
             btn_sync_cancel.setOnClickListener(this);
             btn_next.setOnClickListener(this);
             edt_user_name.setText(SharePreferenceCustom.read(getString(R.string.app_share_preference_name), getString(R.string.app_share_preference_user_account), ""));
             edt_pass.setText(SharePreferenceCustom.read(getString(R.string.app_share_preference_name), getString(R.string.app_share_preference_user_pass), ""));
-            ChangeFontStyle.changeFont(txtLabel,btn_sync, btn_sync_agree, btn_sync_cancel, btn_next
+            ChangeFontStyle.changeFont(btn_sync, btn_sync_agree, btn_sync_cancel, btn_next
                     , edt_user_name, edt_pass, txtPorcent);
         } else {
             startActivity(new Intent(this, Home.class));
