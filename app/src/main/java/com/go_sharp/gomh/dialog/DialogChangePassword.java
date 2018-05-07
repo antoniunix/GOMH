@@ -47,7 +47,6 @@ public class DialogChangePassword extends DialogFragment implements View.OnClick
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(0));
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         v = inflater.inflate(R.layout.dialog_change_password, container);
         init();
