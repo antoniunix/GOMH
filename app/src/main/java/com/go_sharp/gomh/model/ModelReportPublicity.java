@@ -98,7 +98,7 @@ public class ModelReportPublicity implements OnApiGeolocation {
     }
 
     public SpinnerAdapter getAdapterDelegacion(String postalcode) {
-        lstSepomexes = new DaoSepomex().Select(postalcode);
+        lstSepomexes = new DaoSepomex().SelectTown(postalcode);
         List<String> lst = new ArrayList<>(lstSepomexes.size());
         for (DtoSepomex dto : lstSepomexes) {
             lst.add(dto.getTown().trim());

@@ -298,7 +298,7 @@ Página 6 de 6</string>
     <string name="address">address</string>
     <string name="add_address">Guardar direccion.</string>
     <string name="postal_code">Código Postal:</string>
-    <string name="suburb">Colonia:</string>
+    <string name="suburb">COLONIA:</string>
     <string name="street">Calle:</string>
     <string name="street_left">Calle Izquierda:</string>
     <string name="street_right">Calle Derecha:</string>
@@ -342,5 +342,9 @@ Página 6 de 6</string>
     <string name="menu_report">MENÚ REPORTE</string>
     <string name="bigadist">BRIGADISTA</string>
     <string name="list_report">AGREGAR REPORTE</string>
+    <string name="labelpublicity">COMPLETE LOS SIGUIENTES CAMPOS</string>
+    <string name="labelobligatory">TODOS LOS CAMPOS SON OBLIGATORIOS</string>
+    <string name="type_publicity">TIPO DE PUBLICIDAD</string>
+    <string name="publicity">PUBLICIDAD</string>
 
 </resources>

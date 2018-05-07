@@ -86,7 +86,7 @@ public class DaoSepomex extends DAO {
      */
     public List<DtoSepomex> Select(String postalCode) {
         db = helper.getReadableDatabase();
-        cursor = db.rawQuery("SELECT *\n" +
+        cursor = db.rawQuery("SELECT DISTINCT *\n" +
                 "FROM\n" +
                 TABLE_NAME + "\n" +
                 "WHERE " + POSTAL_CODE + "='" + postalCode + "'\n" +
@@ -100,6 +100,27 @@ public class DaoSepomex extends DAO {
                 catalogo.setSuburb(cursor.getString(cursor.getColumnIndexOrThrow(SUBURB)));
                 catalogo.setTown(cursor.getString(cursor.getColumnIndexOrThrow(TOWN)));
                 catalogo.setState(cursor.getString(cursor.getColumnIndexOrThrow(STATE)));
+                obj.add(catalogo);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return obj;
+    }
+
+    public List<DtoSepomex> SelectTown(String postalCode) {
+        db = helper.getReadableDatabase();
+        cursor = db.rawQuery("SELECT DISTINCT town\n" +
+                "FROM\n" +
+                TABLE_NAME + "\n" +
+                "WHERE " + POSTAL_CODE + "='" + postalCode + "'\n" +
+                "ORDER BY suburb ASC", null);
+        List<DtoSepomex> obj = new ArrayList<DtoSepomex>();
+        DtoSepomex catalogo;
+        if (cursor.moveToFirst()) {
+            do {
+                catalogo = new DtoSepomex();
+                catalogo.setTown(cursor.getString(cursor.getColumnIndexOrThrow(TOWN)));
                 obj.add(catalogo);
             } while (cursor.moveToNext());
         }
