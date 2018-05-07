@@ -6,6 +6,7 @@ import android.util.Log;
 import com.go_sharp.gomh.dao.DaoDownloadableFiles;
 import com.go_sharp.gomh.dao.DaoMessage;
 import com.go_sharp.gomh.dao.DaoTask;
+import com.go_sharp.gomh.dao.DaoTypePublicity;
 import com.go_sharp.gomh.dto.DtoDownloadableFiles;
 import com.go_sharp.gomh.dto.DtoMessage;
 import com.go_sharp.gomh.dto.DtoTask;
@@ -258,6 +259,13 @@ public class ModelDataBaseSync {
                                 typeObjectGson);
                         new DaoTask().delete();
                         new DaoTask().insert(lst);
+                    }else if(nt.getTag().equals("pdv_censo_publicity")){
+                        Log.e("SYNC","pdv_censo_publicity"+nt.getResponse());
+                        typeObjectGson = new TypeToken<List<DtoCatalog>>(){}.getType();
+                       List<DtoCatalog> lst = new Gson().fromJson(nt.getResponse(),typeObjectGson);
+                       new DaoTypePublicity().delete();
+                       new DaoTypePublicity().insert(lst);
+
                     }
 
                 } catch (Exception e) {

@@ -67,7 +67,7 @@
         <service android:name=".geolocation.ServiceCheck" />
 
         <activity
-            android:name=".Splash"
+            android:name=".Permissions"
             android:screenOrientation="nosensor"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -109,6 +109,13 @@
             android:name=".message.MessageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
+
+        <activity
+            android:name=".Splash"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
 </manifest>

@@ -10,6 +10,7 @@ import com.go_sharp.gomh.R;
 import com.go_sharp.gomh.contextApp.ContextApp;
 import com.go_sharp.gomh.dto.DtoReportCensus;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +41,10 @@ public class DaoReportCensus extends DAO {
     private final String ADDRESSLEFT = "address_left";
     private final String ADDRESSRIGHT = "address_right";
     private final String CP = "cp";
+    private final String NUMBERPHONE = "number_phone";
+    private final String EMAIL = "email";
+    private final String PATH = "path";
+    private final String IDPUBLICITY = "id_publicity";
 
     public DaoReportCensus() {
         super(TABLE_NAME, PK_FIELD);
@@ -72,6 +77,10 @@ public class DaoReportCensus extends DAO {
             cv.put(EXTERNAL_NUMBER, obj.getExternalNumber());
             cv.put(ADDRESSLEFT, obj.getAddress_left());
             cv.put(ADDRESSRIGHT, obj.getAddress_right());
+            cv.put(EMAIL, obj.getEmail());
+            cv.put(NUMBERPHONE, obj.getNumber_phone());
+            cv.put(PATH, obj.getPath());
+            cv.put(IDPUBLICITY,obj.getIdPublicity());
             resp = (int) db.insert(TABLE_NAME, null, cv);
             db.setTransactionSuccessful();
         } catch (Exception e) {
@@ -98,6 +107,7 @@ public class DaoReportCensus extends DAO {
                 "report_census.address,\n" +
                 "report_census.address_left,\n" +
                 "report_census.address_right,\n" +
+                "report_census.id_publicity,\n" +
                 "report_census.provider,\n" +
                 "report_census.hash,\n" +
                 "report.id_report_server\n" +
@@ -131,6 +141,7 @@ public class DaoReportCensus extends DAO {
                 catalogo.setInternalNumber(cursor.getString(cursor.getColumnIndexOrThrow(INTERNAL_NUMBER)));
                 catalogo.setExternalNumber(cursor.getString(cursor.getColumnIndexOrThrow(EXTERNAL_NUMBER)));
                 catalogo.setIdReporteLocal(cursor.getLong(cursor.getColumnIndexOrThrow(IDREPORTLOCAL)));
+                catalogo.setIdPublicity(cursor.getLong(cursor.getColumnIndexOrThrow(IDPUBLICITY)));
                 if (tmpidReport == cursor.getInt(cursor.getColumnIndexOrThrow(IDREPORTLOCAL))) {
                     subLst.add(catalogo);
                 } else if (tmpidReport != cursor.getInt(cursor.getColumnIndexOrThrow(IDREPORTLOCAL))) {
@@ -212,5 +223,62 @@ public class DaoReportCensus extends DAO {
         db.close();
         return isReportSupervisor;
 
+    }
+
+    public List<DtoReportCensus>selecttoSendPhoto(){
+        db= helper.getReadableDatabase();
+        String qry = "SELECT DISTINCT\n" +
+                "report_census.id,\n" +
+                "report_census.id_report_local,\n" +
+                "report_census.hash,\n" +
+                "report_census.send,\n" +
+                "report.id_report_server,\n" +
+                "report_census.path,\n" +
+                "report.id_report_server\n" +
+                "FROM\n" +
+                "report_census\n" +
+                "INNER JOIN report ON report.id = report_census.id_report_local AND report.id_report_server>0\n" +
+                "WHERE report_census.send = 1 \n" +
+                "ORDER BY report_census.id_report_local ASC";
+
+        cursor = db.rawQuery(qry, null);
+        List<DtoReportCensus> obj = new ArrayList<>();
+        DtoReportCensus catalogo;
+        if (cursor.moveToFirst()) {
+            int id = cursor.getColumnIndexOrThrow("id");
+            int id_report_local = cursor.getColumnIndexOrThrow("id_report_local");
+            int id_report_server = cursor.getColumnIndexOrThrow("id_report_server");
+            int path = cursor.getColumnIndexOrThrow("path");
+            int hash = cursor.getColumnIndexOrThrow("hash");
+
+            do {
+                catalogo = new DtoReportCensus();
+                catalogo.setIdReporteLocal(cursor.getInt(id_report_local));
+                catalogo.setId(cursor.getInt(id));
+                catalogo.setHash(cursor.getString(hash));
+                catalogo.setIdReport(cursor.getInt(id_report_server));
+                catalogo.setPath(cursor.getString(path));
+
+                if (new File(catalogo.getPath()).exists()) {
+                    String md5= null;
+
+                    md5 = Crypto.MD5CheckSum(catalogo.getPath());
+
+                    catalogo.setMd5(md5);
+                    obj.add(catalogo);
+                }
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return obj;
+    }
+
+    public void updateSendPhoto(String id) {
+        db = helper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("send", 2);
+        db.update(TABLE_NAME, cv, "id=" + id, null);
+        db.close();
     }
 }

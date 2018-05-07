@@ -50,6 +50,7 @@ public class AppDb extends SQLiteOpenHelper {
         db.execSQL(tables.TableDownloadFile);
         //notifications
         db.execSQL(tables.TableMessage);
+        db.execSQL(tables.TableTypePublicity);
     }
 
     @Override

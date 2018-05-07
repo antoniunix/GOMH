@@ -166,12 +166,16 @@ public class Tables {
             "state TEXT," +
             "cp INTEGER," +
             "external_number TEXT," +
-            "internal_number TEXT,"+
+            "internal_number TEXT," +
             "address TEXT," +
-            "address_left TEXT,"+
-            "address_right TEXT,"+
+            "address_left TEXT," +
+            "address_right TEXT," +
             "hash TEXT," +
             "provider TEXT," +
+            "number_phone TEXT," +
+            "path TEXT," +
+            "email TEXT,"+
+            "id_publicity INTEGER,"+
             "send INTEGER)";
 
     public final String TableDownloadFile = "CREATE TABLE download_file(" +
@@ -195,5 +199,8 @@ public class Tables {
             "timestampCel TEXT," +
             "hash TEXT)";
 
+    public final String TableTypePublicity="CREATE TABLE type_publicity("+
+            "id_type INTEGER,"+
+            "value TEXT)";
 
 }

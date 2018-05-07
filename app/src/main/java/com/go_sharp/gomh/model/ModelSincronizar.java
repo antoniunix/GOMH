@@ -57,7 +57,7 @@ public class ModelSincronizar {
     private boolean flag = false;
     private int numReportGuardados = 0;
 
-    private final int NUMCATALOGOS = 9; //se usa para saber cuando ya se descargaron todos los catalogos y enviar mensaje de terminado
+    private final int NUMCATALOGOS = 10; //se usa para saber cuando ya se descargaron todos los catalogos y enviar mensaje de terminado
     private int numReportDownload = 0;
 
 
@@ -106,6 +106,7 @@ public class ModelSincronizar {
                 networkConfig.GET("multireport/catalog/ea_answers_pdv", "ea_answers_pdv");
                 networkConfig.GET("multireport/catalog/downloadable_files", "downloadable_files");
                 networkConfig.GET("multireport/catalog/message_service_all", "message_service_all");
+                networkConfig.GET("multireport/catalog/pdv_censo_publicity","pdv_censo_publicity");
             }
         }.start();
     }
