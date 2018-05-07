@@ -1,6 +1,5 @@
 package com.go_sharp.gomh;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -10,7 +9,6 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -25,16 +23,13 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.go_sharp.gomh.contextApp.ContextApp;
 import com.go_sharp.gomh.dto.DtoBundle;
 import com.go_sharp.gomh.dto.DtoReportCensus;
-import com.go_sharp.gomh.dto.DtoSepomex;
 import com.go_sharp.gomh.listener.OnFinishLocation;
 import com.go_sharp.gomh.model.ModelReportPublicity;
-import com.go_sharp.gomh.util.Config;
 import com.go_sharp.gomh.util.MD5;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -44,14 +39,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.gshp.api.utils.ResizePicture;
-
-import net.panamiur.geolocation.Geolocation;
-
-import org.w3c.dom.ProcessingInstruction;
 
 import java.io.File;
 import java.io.IOException;
@@ -271,15 +261,27 @@ public class ReportPublicity extends AppCompatActivity implements OnMapReadyCall
     }
 
     private void saveReport() {
-        if (edtStreet.getText().toString().isEmpty()) {
+        if(spn_type.getAdapter().getCount()==0){
+            Toast.makeText(this, "No cuenta con el tipo de publicidad", Toast.LENGTH_SHORT).show();
+        }else if (path.equals("") || path == null) {
+            Toast.makeText(this, "Debe tomar fotografía", Toast.LENGTH_SHORT).show();
+        }else if (edtStreet.getText().toString().isEmpty()) {
             Toast.makeText(this, "Ingrese la dirección", Toast.LENGTH_SHORT).show();
         } else if (edtCp.getText().toString().equals("") || spnSuburb.getCount() == 0) {
             Toast.makeText(this, "C.P. no válido", Toast.LENGTH_SHORT).show();
         } else if (edtnumberPhone.getText().toString().isEmpty()) {
-            Toast.makeText(this, "Ingrese el Número de teléfono", Toast.LENGTH_SHORT).show();
-        } else if (edtRightStreet.getText().toString().isEmpty() || edtLeftStreet.getText().toString().isEmpty()) {
+            Toast.makeText(this, "Ingrese el número de teléfono", Toast.LENGTH_SHORT).show();
+        }else if(!modelReportPublicity.isValidateNumberPhone((edtnumberPhone.getText().toString()))){
+            Toast.makeText(this, "Ingrese un número de teléfono válido", Toast.LENGTH_SHORT).show();
+        }else if (edtRightStreet.getText().toString().isEmpty() || edtLeftStreet.getText().toString().isEmpty()) {
             Toast.makeText(this, "Ingrese entre que calles se encuentra", Toast.LENGTH_SHORT).show();
-        } else {
+        }else if (edtEmail.getText().toString().isEmpty() ){
+            Toast.makeText(this, "Ingrese correo electrónico", Toast.LENGTH_SHORT).show();
+        }else if( !modelReportPublicity.
+                isValidateEmail(edtEmail.getText().toString())){
+            Toast.makeText(this, "Ingrese correo electrónico válido", Toast.LENGTH_SHORT).show();
+        }
+        else {
 
             if (spnSuburb.getAdapter().getCount() != 0) {
                 dtoReportCensus.setSuburb(modelReportPublicity.getItemSuburb(spnSuburb.getSelectedItemPosition()).getSuburb());
@@ -387,11 +389,9 @@ public class ReportPublicity extends AppCompatActivity implements OnMapReadyCall
 
             case R.id.btnSave:
 
-                if (path.equals("") || path == null) {
-                    Toast.makeText(this, "Debe tomar fotografía", Toast.LENGTH_SHORT).show();
-                } else {
+
                     saveReport();
-                }
+
 
                 break;
         }

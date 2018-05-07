@@ -60,6 +60,7 @@
     <style name="style_edt_publicity">
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">14sp</item>
+        <item name="android:singleLine">true</item>
     </style>
 
 </resources>

@@ -24,6 +24,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
+import java.util.regex.Pattern;
 
 /**
  * Created by leo on 4/05/18.
@@ -123,4 +124,20 @@ public class ModelReportPublicity implements OnApiGeolocation {
     public DtoCatalog getItemTypePublicity(int position){
         return  lstTypePublicity.get(position);
     }
+
+    public boolean isValidateEmail(String email){
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+        String emailPattern2 =  "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+\\.+[a-z]+";
+       if(email.matches(emailPattern) || email.matches(emailPattern2)){
+           return true;
+       }else {
+           return false;
+       }
+
+    }
+
+    public boolean isValidateNumberPhone(String numberPhone){
+        return (numberPhone.length()>=8)?true:false;
+    }
+
 }
