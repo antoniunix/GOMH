@@ -128,16 +128,12 @@ public class ModelReportPublicity implements OnApiGeolocation {
     public boolean isValidateEmail(String email){
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
         String emailPattern2 =  "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+\\.+[a-z]+";
-       if(email.matches(emailPattern) || email.matches(emailPattern2)){
-           return true;
-       }else {
-           return false;
-       }
+        return email.matches(emailPattern) || email.matches(emailPattern2);
 
     }
 
     public boolean isValidateNumberPhone(String numberPhone){
-        return (numberPhone.length()>=8)?true:false;
+        return numberPhone.length() >= 8;
     }
 
 }

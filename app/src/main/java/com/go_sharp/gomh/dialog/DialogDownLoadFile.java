@@ -51,7 +51,6 @@ public class DialogDownLoadFile extends DialogFragment implements View.OnClickLi
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(0));
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         view = inflater.inflate(R.layout.dialog_fragment_download, container);
         dtodownload = (DtoDownloadableFiles) getArguments().getParcelable(ContextApp.context.getResources().getString(R.string.app_bundle_name));

@@ -173,7 +173,7 @@ public class ModelMessage {
                     || nt.getResponseStatus() == HttpStatus.SC_CREATED)) {
                 long id = Long.valueOf(nt.getTag().substring(nt.getTag().indexOf("f") + 1));
                 DaoMessage daoMessage = new DaoMessage();
-                daoMessage.deleteById(id);
+                //daoMessage.deleteById(id);
             }
         }
     }

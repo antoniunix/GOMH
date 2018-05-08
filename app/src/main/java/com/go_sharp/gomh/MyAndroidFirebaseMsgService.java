@@ -1,5 +1,7 @@
 package com.go_sharp.gomh;
 
+import android.util.Log;
+
 import com.go_sharp.gomh.message.ModelMessage;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -13,7 +15,7 @@ public class MyAndroidFirebaseMsgService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        ModelMessage modelMessage = new ModelMessage();
-        modelMessage.checkForMsg();
+        Log.w("INFO","message "+remoteMessage.getData().toString());
+        new ModelMessage().checkForMsg();
     }
 }

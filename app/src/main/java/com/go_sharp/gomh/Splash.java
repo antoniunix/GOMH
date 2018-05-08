@@ -3,24 +3,16 @@ package com.go_sharp.gomh;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.go_sharp.gomh.listener.OnFinishThread;
 import com.go_sharp.gomh.model.ModelSplash;
 
-import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -30,6 +22,7 @@ public class Splash extends AppCompatActivity implements OnFinishThread {
     private Timer timer;
     private WeakReference<Splash> weakReference;
     private ModelSplash modelSplash;
+    private static final int ALL_PERMISSIONS = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,26 +39,28 @@ public class Splash extends AppCompatActivity implements OnFinishThread {
     @Override
     protected void onResume() {
         super.onResume();
-        /**
-         * si la tabla de sepomex esta vacia, se tendra que llenar, cosa que es un proceso lento, y el splash terminara una vez concluidos los inserts
-         * de lo contrario solo durara el tiempo especificado para mostrar la imagen
-         */
-        if (!modelSplash.fillSepomex()) {
-
-            TimerTask timerTask = new TimerTask() {
-                @Override
-                public void run() {
-                    Splash activity = weakReference.get();
-                    if (activity != null && !activity.isFinishing()) {
-                        startActivity(new Intent(Splash.this, Login.class));
-                        finish();
-                    }
-                }
-            };
-            timer.schedule(timerTask, 1500);
+        String[] PERMISSIONS = {android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.CALL_PHONE,
+                android.Manifest.permission.GET_ACCOUNTS, android.Manifest.permission.CAMERA, android.Manifest.permission.ACCESS_FINE_LOCATION,
+                android.Manifest.permission.READ_PHONE_STATE, android.Manifest.permission.ACCESS_COARSE_LOCATION};
+        if (!hasPermissions(this, PERMISSIONS)) {
+            ActivityCompat.requestPermissions(this, PERMISSIONS, ALL_PERMISSIONS);
         } else {
-            Snackbar.make(findViewById(R.id.activity_splash), R.string.Splash_configuration_init, Snackbar.LENGTH_INDEFINITE)
-                    .setAction("Action", null).show();
+            if (!modelSplash.fillSepomex()) {
+                TimerTask timerTask = new TimerTask() {
+                    @Override
+                    public void run() {
+                        Splash activity = weakReference.get();
+                        if (activity != null && !activity.isFinishing()) {
+                            startActivity(new Intent(Splash.this, Login.class));
+                            finish();
+                        }
+                    }
+                };
+                timer.schedule(timerTask, 1500);
+            } else {
+                Snackbar.make(findViewById(R.id.activity_splash), R.string.Splash_configuration_init, Snackbar.LENGTH_INDEFINITE)
+                        .setAction("Action", null).show();
+            }
         }
     }
 
@@ -73,5 +68,16 @@ public class Splash extends AppCompatActivity implements OnFinishThread {
     public void onFinishThread() {
         startActivity(new Intent(Splash.this, Login.class));
         finish();
+    }
+
+    private static boolean hasPermissions(Context context, String... permissions) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

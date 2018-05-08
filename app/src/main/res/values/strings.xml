@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">GOMH</string>
     <string name="app_path_photo">/GOMH/</string>
     <string name="app_db_name">GOMH.db</string>
@@ -295,28 +295,28 @@ Página 6 de 6</string>
     <string name="Splash_configuration_init">Configuración inicial, espere un momento</string>
 
     <!-- Face detection -->
-    <string name="address">address</string>
-    <string name="add_address">Guardar direccion.</string>
+    <string name="address" tools:keep="@string/address">address</string>
+    <string name="add_address" tools:keep="@string/add_address">Guardar direccion.</string>
     <string name="postal_code">Código Postal:</string>
     <string name="suburb">COLONIA:</string>
     <string name="street">Calle:</string>
-    <string name="street_left">Calle Izquierda:</string>
-    <string name="street_right">Calle Derecha:</string>
-    <string name="number_out">Número Exterior:</string>
-    <string name="number_in">Número Inerior:</string>
-    <string name="info_manual">No se pudo obtener dirección, favor de ingresarla manual.</string>
-    <string name="title_info_manual">UBICACIÓN NO OBTENIDA</string>
-    <string name="empty_street">Ingrese la Direccion.</string>
-    <string name="empty_street_left">Ingrese Calle Izquierda.</string>
-    <string name="empty_street_right">Ingrese Calle Derecha</string>
-    <string name="empty_numberout">Ingresar Número Externo.</string>
-    <string name="providerManual">Manual</string>
-    <string name="latlon">latlon</string>
-    <string name="dialog_delete_census">¿Desea eliminar Ubicación?</string>
-    <string name="supervisor">SUPERVISOR</string>
-    <string name="accept">ACEPTAR</string>
+    <string name="street_left" tools:keep="@string/street_left">Calle Izquierda:</string>
+    <string name="street_right" tools:keep="@string/street_right">Calle Derecha:</string>
+    <string name="number_out" tools:keep="@string/number_out">Número Exterior:</string>
+    <string name="number_in" tools:keep="@string/number_in">Número Inerior:</string>
+    <string name="info_manual" tools:keep="@string/info_manual">No se pudo obtener dirección, favor de ingresarla manual.</string>
+    <string name="title_info_manual" tools:keep="@string/title_info_manual">UBICACIÓN NO OBTENIDA</string>
+    <string name="empty_street" tools:keep="@string/empty_street">Ingrese la Direccion.</string>
+    <string name="empty_street_left" tools:keep="@string/empty_street_left">Ingrese Calle Izquierda.</string>
+    <string name="empty_street_right" tools:keep="@string/empty_street_right">Ingrese Calle Derecha</string>
+    <string name="empty_numberout" tools:keep="@string/empty_numberout">Ingresar Número Externo.</string>
+    <string name="providerManual" tools:keep="@string/providerManual">Manual</string>
+    <string name="latlon" tools:keep="@string/latlon">latlon</string>
+    <string name="dialog_delete_census" tools:keep="@string/dialog_delete_census">¿Desea eliminar Ubicación?</string>
+    <string name="supervisor" tools:keep="@string/supervisor">SUPERVISOR</string>
+    <string name="accept" tools:keep="@string/accept">ACEPTAR</string>
     <string name="start_task">Agregar Captación</string>
-    <string name="title_activity_report_list">ReportList</string>
+    <string name="title_activity_report_list" tools:keep="@string/title_activity_report_list">ReportList</string>
     <string name="first_report">first_report</string>
 
     <string name="numer_phone">TELÉFONO</string>
@@ -328,16 +328,16 @@ Página 6 de 6</string>
 
     <string name="capt">CAPTAR</string>
     <string name="pub">PUBLICIDAD</string>
-    <string name="task">TAREA</string>
+    <string name="task" tools:keep="@string/task">TAREA</string>
     <string name="finish_report">FIN DE REGISTRO</string>
 
     <string name="msg_channel_id">MENSAJES</string>
-    <string name="channel_msg_name">Mensajes</string>
-    <string name="channel_msg_des">Recepción de mensajes importantes</string>
+    <string name="channel_msg_name" tools:keep="@string/channel_msg_name">Mensajes</string>
+    <string name="channel_msg_des" tools:keep="@string/channel_msg_des">Recepción de mensajes importantes</string>
     <string name="msg_id">msg_id</string>
     <string name="sync_channel_id">SYNC</string>
-    <string name="channel_sync_name">Sincronización</string>
-    <string name="channel_sync_des">Actualizaciones</string>
+    <string name="channel_sync_name" tools:keep="@string/channel_sync_name">Sincronización</string>
+    <string name="channel_sync_des" tools:keep="@string/channel_sync_des">Actualizaciones</string>
     <string name="app_share_preference_sync">must_sync</string>
     <string name="menu_report">MENÚ REPORTE</string>
     <string name="bigadist">BRIGADISTA</string>
@@ -345,6 +345,6 @@ Página 6 de 6</string>
     <string name="labelpublicity">COMPLETE LOS SIGUIENTES CAMPOS</string>
     <string name="labelobligatory">TODOS LOS CAMPOS SON OBLIGATORIOS</string>
     <string name="type_publicity">TIPO DE PUBLICIDAD</string>
-    <string name="publicity">PUBLICIDAD</string>
+    <string name="publicity" tools:keep="@string/publicity">PUBLICIDAD</string>
 
 </resources>

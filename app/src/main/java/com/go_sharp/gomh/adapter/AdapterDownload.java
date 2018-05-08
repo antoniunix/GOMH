@@ -61,7 +61,6 @@ public class AdapterDownload extends BaseAdapter implements Filterable {
         View v = convertView;
         final TextView txt_title;
         final TextView txt_description;
-        final ImageView btn_download;
         final LinearLayout lyt_row;
         ImageView img_type;
 
@@ -69,20 +68,18 @@ public class AdapterDownload extends BaseAdapter implements Filterable {
             v = layoutInflater.inflate(R.layout.row_list_download, null);
             txt_description = v.findViewById(R.id.txt_description);
             txt_title = v.findViewById(R.id.txt_title);
-            btn_download = v.findViewById(R.id.btn_download);
             img_type = v.findViewById(R.id.img_type);
             lyt_row = v.findViewById(R.id.lyt_row);
-            v.setTag(new ViewHolder(txt_title, txt_description, btn_download, img_type,lyt_row));
+            v.setTag(new ViewHolder(txt_title, txt_description, img_type, lyt_row));
             lyt_row.setOnClickListener(onClickListener);
         } else {
             ViewHolder vh = (ViewHolder) v.getTag();
             txt_description = vh.txt_description;
             txt_title = vh.txt_title;
-            btn_download = vh.btn_download;
             img_type = vh.img_type;
-            lyt_row=vh.lyt_row;
+            lyt_row = vh.lyt_row;
         }
-        ChangeFontStyle.changeFont(txt_description, txt_title, btn_download);
+        ChangeFontStyle.changeFont(txt_description, txt_title);
         DtoDownloadableFiles dto = (DtoDownloadableFiles) getItem(position);
 
         txt_title.setTag(dto);
@@ -155,17 +152,15 @@ public class AdapterDownload extends BaseAdapter implements Filterable {
     private class ViewHolder {
         TextView txt_title;
         TextView txt_description;
-        ImageView btn_download;
         ImageView img_type;
         LinearLayout lyt_row;
 
-        public ViewHolder(TextView txt_title, TextView txt_description, ImageView btn_download, ImageView img_type,LinearLayout lyt_row) {
+        public ViewHolder(TextView txt_title, TextView txt_description, ImageView img_type, LinearLayout lyt_row) {
             super();
             this.txt_title = txt_title;
             this.txt_description = txt_description;
-            this.btn_download = btn_download;
             this.img_type = img_type;
-            this.lyt_row=lyt_row;
+            this.lyt_row = lyt_row;
         }
     }
 }
