@@ -97,7 +97,11 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
     protected void onResume() {
         super.onResume();
         bottomNavigationView.setSelectedItemId(R.id.action_home);
-        AlarmGeolocation.getInstance();
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            AlarmGeolocation.getInstance();
+        }
+
         dtoBundle.setIdReportLocal(model.getReportId());
     }
 

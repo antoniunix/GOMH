@@ -62,7 +62,7 @@ public class ReportPublicity extends AppCompatActivity implements OnMapReadyCall
     private MapView mapView;
     private GoogleMap map;
     private double lat, lon;
-    private EditText edtStreet, edtLeftStreet, edtRightStreet, edtnumberPhone, edtEmail;
+    private EditText edtStreet, edtLeftStreet, edtRightStreet, edtnumberPhone, edtEmail, edt_number_in, edt_number_out;
     private Spinner spnSuburb, spnTown, spn_type;
     private AutoCompleteTextView edtCp;
     private ModelReportPublicity modelReportPublicity;
@@ -91,6 +91,8 @@ public class ReportPublicity extends AppCompatActivity implements OnMapReadyCall
         edtRightStreet = findViewById(R.id.edt_street_right);
         edtCp = findViewById(R.id.edt_cp);
         edtnumberPhone = findViewById(R.id.edt_number_phone);
+        edt_number_in = findViewById(R.id.edt_number_in);
+        edt_number_out = findViewById(R.id.edt_number_out);
         edtEmail = findViewById(R.id.edt_email);
         btnSave = findViewById(R.id.btnSave);
         btnPhoto = findViewById(R.id.btnPhoto);
@@ -199,6 +201,7 @@ public class ReportPublicity extends AppCompatActivity implements OnMapReadyCall
                     String postal = addresses.get(0).getPostalCode();
                     String code_postal = postal.replaceAll("[^0-9]", "");
                     edtStreet.setText(addresses.get(0).getThoroughfare());
+                    edt_number_out.setText(addresses.get(0).getFeatureName());
                     if (code_postal.length() >= 5) {
                         edtCp.setText(code_postal);
                     }
@@ -261,35 +264,32 @@ public class ReportPublicity extends AppCompatActivity implements OnMapReadyCall
     }
 
     private void saveReport() {
-        if(spn_type.getAdapter().getCount()==0){
+        Log.e("path", "leo save" + path);
+        if (spn_type.getAdapter().getCount() == 0) {
             Toast.makeText(this, "No cuenta con el tipo de publicidad", Toast.LENGTH_SHORT).show();
-        }else if (path.equals("") || path == null) {
+        } else if (path.equals("") || path == null) {
             Toast.makeText(this, "Debe tomar fotografía", Toast.LENGTH_SHORT).show();
-        }else if (edtStreet.getText().toString().isEmpty()) {
+        } else if (edtStreet.getText().toString().isEmpty()) {
             Toast.makeText(this, "Ingrese la dirección", Toast.LENGTH_SHORT).show();
         } else if (edtCp.getText().toString().equals("") || spnSuburb.getCount() == 0) {
             Toast.makeText(this, "C.P. no válido", Toast.LENGTH_SHORT).show();
-        } else if (edtnumberPhone.getText().toString().isEmpty()) {
-            Toast.makeText(this, "Ingrese el número de teléfono", Toast.LENGTH_SHORT).show();
-        }else if(!modelReportPublicity.isValidateNumberPhone((edtnumberPhone.getText().toString()))){
+        } else if (!edtnumberPhone.getText().toString().isEmpty() &&
+                !modelReportPublicity.isValidateNumberPhone((edtnumberPhone.getText().toString()))) {
             Toast.makeText(this, "Ingrese un número de teléfono válido", Toast.LENGTH_SHORT).show();
-        }else if (edtRightStreet.getText().toString().isEmpty() || edtLeftStreet.getText().toString().isEmpty()) {
+        } else if (edtRightStreet.getText().toString().isEmpty() || edtLeftStreet.getText().toString().isEmpty()) {
             Toast.makeText(this, "Ingrese entre que calles se encuentra", Toast.LENGTH_SHORT).show();
-        }else if (edtEmail.getText().toString().isEmpty() ){
-            Toast.makeText(this, "Ingrese correo electrónico", Toast.LENGTH_SHORT).show();
-        }else if( !modelReportPublicity.
-                isValidateEmail(edtEmail.getText().toString())){
+        }else if (!edtEmail.getText().toString().isEmpty() &&
+                !modelReportPublicity.isValidateEmail(edtEmail.getText().toString())) {
             Toast.makeText(this, "Ingrese correo electrónico válido", Toast.LENGTH_SHORT).show();
-        }
-        else {
+        } else {
 
             if (spnSuburb.getAdapter().getCount() != 0) {
                 dtoReportCensus.setSuburb(modelReportPublicity.getItemSuburb(spnSuburb.getSelectedItemPosition()).getSuburb());
-                dtoReportCensus.setState(modelReportPublicity.getItemSuburb(spnSuburb.getSelectedItemPosition()).getState());
+                //dtoReportCensus.setState(modelReportPublicity.getItemSuburb(spnSuburb.getSelectedItemPosition()).getState());
                 //dtoReportCensus.setTown(modelReportPublicity.getItemSuburb(spnSuburb.getSelectedItemPosition()).getTown());
             }
             if (spnTown.getAdapter().getCount() != 0) {
-                dtoReportCensus.setTown(modelReportPublicity.getItemSuburb(spnTown.getSelectedItemPosition()).getTown());
+                dtoReportCensus.setState(modelReportPublicity.getItemSuburb(spnTown.getSelectedItemPosition()).getTown());
             }
 
             dtoReportCensus.setIdReporteLocal(dtoBundle.getIdReportLocal());
@@ -329,7 +329,7 @@ public class ReportPublicity extends AppCompatActivity implements OnMapReadyCall
         lon = (marker.getPosition().longitude);
         lat = (marker.getPosition().latitude);
 
-        try {
+       /* try {
             Geocoder geo = new Geocoder(ContextApp.context, Locale.getDefault());
             List<Address> addresses = geo.getFromLocation(marker.getPosition().latitude, marker.getPosition().longitude, 1);
             if (!addresses.isEmpty()) {
@@ -362,7 +362,7 @@ public class ReportPublicity extends AppCompatActivity implements OnMapReadyCall
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
         Log.e("address", "marker " + lon + " lat " + lat);
         setDirections(lat, lon);
@@ -390,7 +390,7 @@ public class ReportPublicity extends AppCompatActivity implements OnMapReadyCall
             case R.id.btnSave:
 
 
-                    saveReport();
+                saveReport();
 
 
                 break;
@@ -411,6 +411,9 @@ public class ReportPublicity extends AppCompatActivity implements OnMapReadyCall
                 path = "";
         } else
             path = "";
+
+        Log.e("path ", "leo " + path);
     }
+
 }
 

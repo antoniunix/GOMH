@@ -2,6 +2,7 @@ package com.go_sharp.gomh;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -44,7 +45,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
 
     private void init() {
 
-        File f = new File(getString(R.string.app_path_photo));
+        String path= "/sdcard" +getString(R.string.app_path_photo);
+        File f = new File(path);
         if (!f.exists()) {
             if (!f.mkdirs()) {
             }
