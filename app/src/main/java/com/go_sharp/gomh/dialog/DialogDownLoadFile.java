@@ -5,11 +5,13 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.go_sharp.gomh.BuildConfig;
 import com.go_sharp.gomh.R;
 import com.go_sharp.gomh.contextApp.ContextApp;
 import com.go_sharp.gomh.dto.DtoDownloadableFiles;
@@ -147,18 +150,25 @@ public class DialogDownLoadFile extends DialogFragment implements View.OnClickLi
     public void openFile(DtoDownloadableFiles dto) {
         String typeFile = dto.getExt();
         File file = new File(dto.getNameFiel());
-        Uri path = Uri.fromFile(file);
+        Uri path;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            path = FileProvider.getUriForFile(ContextApp.context, BuildConfig.APPLICATION_ID + ".provider", file);
+
+        }else {
+            path = Uri.fromFile(file);
+        }
         Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         if (typeFile.equals(".pdf")) {
             intent.setDataAndType(path, "application/pdf");
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
         } else if (typeFile.equals(".mp4") || typeFile.equals(".avi") || typeFile.equals(".mpg")) {
             intent.setDataAndType(path, "video/*");
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
 
         } else if (typeFile.equals(".png") || typeFile.equals(".jpg")) {
             intent.setDataAndType(path, "image/*");
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
         }
 
         try {
