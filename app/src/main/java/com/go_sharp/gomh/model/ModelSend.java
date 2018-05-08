@@ -241,9 +241,9 @@ public class ModelSend {
                     }
                     for (int i = 0; i < lstPhotoCensus.size(); i++) {
                         String json = new Gson().toJson(lstPhotoCensus.get(i));
-                        Log.e("send", "sos photo " + json);
+                        Log.e("send", "publicity photo " + json);
                         Map<String, String> header = new HashMap<>();
-                        header.put(ContextApp.context.getString(R.string.network_header_name_application_json), ContextApp.context.getString(R.string.network_header_multipart_data));
+                       // header.put(ContextApp.context.getString(R.string.network_header_name_application_json), ContextApp.context.getString(R.string.network_header_multipart_data));
                         ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
                         nameValuePairs.add(new BasicNameValuePair("json", json));
                         networkConfig.multipartFile("image/save",

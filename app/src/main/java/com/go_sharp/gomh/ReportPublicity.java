@@ -372,7 +372,7 @@ public class ReportPublicity extends AppCompatActivity implements OnMapReadyCall
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnPhoto:
-                path = "sdcard/" + getResources().getString(R.string.app_path_photo) + System.currentTimeMillis() + ".jpg";
+                path = "/sdcard" + getResources().getString(R.string.app_path_photo) + System.currentTimeMillis() + ".jpg";
                 File file = new File(path);
                 Uri uri;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

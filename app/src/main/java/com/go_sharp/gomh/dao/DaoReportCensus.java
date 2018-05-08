@@ -80,7 +80,7 @@ public class DaoReportCensus extends DAO {
             cv.put(EMAIL, obj.getEmail());
             cv.put(NUMBERPHONE, obj.getNumber_phone());
             cv.put(PATH, obj.getPath());
-            cv.put(IDPUBLICITY,obj.getIdPublicity());
+            cv.put(IDPUBLICITY, obj.getIdPublicity());
             resp = (int) db.insert(TABLE_NAME, null, cv);
             db.setTransactionSuccessful();
         } catch (Exception e) {
@@ -225,8 +225,8 @@ public class DaoReportCensus extends DAO {
 
     }
 
-    public List<DtoReportCensus>selecttoSendPhoto(){
-        db= helper.getReadableDatabase();
+    public List<DtoReportCensus> selecttoSendPhoto() {
+        db = helper.getReadableDatabase();
         String qry = "SELECT DISTINCT\n" +
                 "report_census.id,\n" +
                 "report_census.id_report_local,\n" +
@@ -234,7 +234,8 @@ public class DaoReportCensus extends DAO {
                 "report_census.send,\n" +
                 "report.id_report_server,\n" +
                 "report_census.path,\n" +
-                "report.id_report_server\n" +
+                "report.id_report_server,\n" +
+                "report.id_pdv\n" +
                 "FROM\n" +
                 "report_census\n" +
                 "INNER JOIN report ON report.id = report_census.id_report_local AND report.id_report_server>0\n" +
@@ -250,6 +251,7 @@ public class DaoReportCensus extends DAO {
             int id_report_server = cursor.getColumnIndexOrThrow("id_report_server");
             int path = cursor.getColumnIndexOrThrow("path");
             int hash = cursor.getColumnIndexOrThrow("hash");
+            int id_pdv = cursor.getColumnIndexOrThrow("id_pdv");
 
             do {
                 catalogo = new DtoReportCensus();
@@ -258,9 +260,15 @@ public class DaoReportCensus extends DAO {
                 catalogo.setHash(cursor.getString(hash));
                 catalogo.setIdReport(cursor.getInt(id_report_server));
                 catalogo.setPath(cursor.getString(path));
+                catalogo.setPlaceId(1);
+                catalogo.setUserId("@user");
+                catalogo.setTableName("report_pdv_censo");
+                catalogo.setVersion(1);
+                catalogo.setPersonId("@person");
+                catalogo.setDescription("<Description>");
 
                 if (new File(catalogo.getPath()).exists()) {
-                    String md5= null;
+                    String md5 = null;
 
                     md5 = Crypto.MD5CheckSum(catalogo.getPath());
 
