@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/GOMH.iml" filepath="$PROJECT_DIR$/GOMH.iml" />
       <module fileurl="file://$PROJECT_DIR$/GOMH_github.iml" filepath="$PROJECT_DIR$/GOMH_github.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
