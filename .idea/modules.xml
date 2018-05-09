@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/GOMH_github.iml" filepath="$PROJECT_DIR$/GOMH_github.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/go_mh.iml" filepath="$PROJECT_DIR$/go_mh.iml" />
     </modules>
   </component>
 </project>
