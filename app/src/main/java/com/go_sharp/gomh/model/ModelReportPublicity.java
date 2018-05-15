@@ -2,6 +2,7 @@ package com.go_sharp.gomh.model;
 
 import android.content.Context;
 import android.location.Location;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
 
@@ -99,7 +100,7 @@ public class ModelReportPublicity implements OnApiGeolocation {
     }
 
     public SpinnerAdapter getAdapterDelegacion(String postalcode) {
-        lstSepomexes = new DaoSepomex().SelectTown(postalcode);
+        lstSepomexes = new DaoSepomex().Select(postalcode);
         List<String> lst = new ArrayList<>(lstSepomexes.size());
         for (DtoSepomex dto : lstSepomexes) {
             lst.add(dto.getTown().trim());
@@ -119,6 +120,7 @@ public class ModelReportPublicity implements OnApiGeolocation {
     }
 
     public DtoSepomex getItemSuburb(int position) {
+        Log.e("leo","lstsepomex "+lstSepomexes.get(position).getSuburb());
         return lstSepomexes.get(position);
     }
     public DtoCatalog getItemTypePublicity(int position){

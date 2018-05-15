@@ -41,6 +41,102 @@ public class DtoReportCensus implements Parcelable {
     private long idPublicity;
     private long id;
     private String md5;
+    private long placeId;
+    private String tableName;
+    private String userId;
+    private String description;
+    private int version;
+    private String personId;
+
+
+    @Override
+    public String toString() {
+        return "DtoReportCensus{" +
+                "idReporteLocal=" + idReporteLocal +
+                ", idReport=" + idReport +
+                ", lat=" + lat +
+                ", lon=" + lon +
+                ", suburb='" + suburb + '\'' +
+                ", state='" + state + '\'' +
+                ", town='" + town + '\'' +
+                ", cp='" + cp + '\'' +
+                ", externalNumber='" + externalNumber + '\'' +
+                ", hash='" + hash + '\'' +
+                ", send=" + send +
+                ", date=" + date +
+                ", address='" + address + '\'' +
+                ", provider='" + provider + '\'' +
+                ", address_left='" + address_left + '\'' +
+                ", address_right='" + address_right + '\'' +
+                ", internalNumber='" + internalNumber + '\'' +
+                ", number_phone='" + number_phone + '\'' +
+                ", email='" + email + '\'' +
+                ", path='" + path + '\'' +
+                ", idPublicity=" + idPublicity +
+                ", id=" + id +
+                ", md5='" + md5 + '\'' +
+                ", placeId=" + placeId +
+                ", tableName='" + tableName + '\'' +
+                ", userId='" + userId + '\'' +
+                ", description='" + description + '\'' +
+                ", version=" + version +
+                ", personId='" + personId + '\'' +
+                '}';
+    }
+
+    public String getPersonId() {
+        return personId;
+    }
+
+    public DtoReportCensus setPersonId(String personId) {
+        this.personId = personId;
+        return this;
+    }
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public DtoReportCensus setTableName(String tableName) {
+        this.tableName = tableName;
+        return this;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public DtoReportCensus setUserId(String userId) {
+        this.userId = userId;
+        return this;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public DtoReportCensus setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public DtoReportCensus setVersion(int version) {
+        this.version = version;
+        return this;
+    }
+
+    public long getPlaceId() {
+        return placeId;
+    }
+
+    public DtoReportCensus setPlaceId(long placeId) {
+        this.placeId = placeId;
+        return this;
+    }
 
     public String getMd5() {
         return md5;
@@ -282,6 +378,12 @@ public class DtoReportCensus implements Parcelable {
         dest.writeLong(this.idPublicity);
         dest.writeLong(this.id);
         dest.writeString(this.md5);
+        dest.writeLong(this.placeId);
+        dest.writeString(this.tableName);
+        dest.writeString(this.userId);
+        dest.writeString(this.description);
+        dest.writeInt(this.version);
+        dest.writeString(this.personId);
     }
 
     protected DtoReportCensus(Parcel in) {
@@ -308,6 +410,12 @@ public class DtoReportCensus implements Parcelable {
         this.idPublicity = in.readLong();
         this.id = in.readLong();
         this.md5 = in.readString();
+        this.placeId = in.readLong();
+        this.tableName = in.readString();
+        this.userId = in.readString();
+        this.description = in.readString();
+        this.version = in.readInt();
+        this.personId = in.readString();
     }
 
     public static final Creator<DtoReportCensus> CREATOR = new Creator<DtoReportCensus>() {
@@ -321,33 +429,4 @@ public class DtoReportCensus implements Parcelable {
             return new DtoReportCensus[size];
         }
     };
-
-    @Override
-    public String toString() {
-        return "DtoReportCensus{" +
-                "idReporteLocal=" + idReporteLocal +
-                ", idReport=" + idReport +
-                ", lat=" + lat +
-                ", lon=" + lon +
-                ", suburb='" + suburb + '\'' +
-                ", state='" + state + '\'' +
-                ", town='" + town + '\'' +
-                ", cp='" + cp + '\'' +
-                ", externalNumber='" + externalNumber + '\'' +
-                ", hash='" + hash + '\'' +
-                ", send=" + send +
-                ", date=" + date +
-                ", address='" + address + '\'' +
-                ", provider='" + provider + '\'' +
-                ", address_left='" + address_left + '\'' +
-                ", address_right='" + address_right + '\'' +
-                ", internalNumber='" + internalNumber + '\'' +
-                ", number_phone='" + number_phone + '\'' +
-                ", email='" + email + '\'' +
-                ", path='" + path + '\'' +
-                ", idPublicity=" + idPublicity +
-                ", id=" + id +
-                ", md5='" + md5 + '\'' +
-                '}';
-    }
 }
