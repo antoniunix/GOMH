@@ -16,4 +16,7 @@
     <integer name="complete_report">3000</integer>
     <integer name="size_width_photo">800</integer>
     <integer name="size_height_photo">600</integer>
+
+    <integer name="geo_start">30</integer>
+    <integer name="geo_start_end">60</integer>
 </resources>

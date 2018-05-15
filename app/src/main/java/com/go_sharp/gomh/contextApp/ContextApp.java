@@ -11,8 +11,6 @@ import com.gosharp.apis.db.DBAPI;
 
 import net.gshp.apiencuesta.APIEncuesta;
 
-import java.io.File;
-
 /**
  * Created by gnu on 13/02/18.
  */
@@ -36,12 +34,5 @@ public class ContextApp extends Application {
         DBAPI dbapi = DBAPI.getInstance();
         dbapi.loadPropertiesFromFile(this.getApplicationContext().getResources());
         dbapi.createDB(this.getApplicationContext());
-
-        String path= "/sdcard" +getString(R.string.app_path_photo);
-        File f = new File(path);
-        if (!f.exists()) {
-            if (!f.mkdirs()) {
-            }
-        }
     }
 }

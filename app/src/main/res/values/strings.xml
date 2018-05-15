@@ -26,6 +26,7 @@
     <string name="app_share_preference_user_account">user_account</string>
     <string name="app_share_preference_user_pass">user_pass</string>
     <string name="app_share_preference_count_unauthorized">count_unauthorized</string>
+    <string name="app_share_preference_last_geo">last_geo</string>
 
     <string name="error_empty_user_name">Ingrese nombre de usuario</string>
     <string name="error_empty_password">Ingrese su contraseña</string>

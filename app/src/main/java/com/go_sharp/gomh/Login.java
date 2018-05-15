@@ -44,13 +44,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, On
     }
 
     private void init() {
-
-        String path= "/sdcard" +getString(R.string.app_path_photo);
-        File f = new File(path);
-        if (!f.exists()) {
-            if (!f.mkdirs()) {
-            }
-        }
         DtoPolitic dtoPolitic = new DaoPolitic().Select();
         String version = dtoPolitic.getVersion() == null || dtoPolitic.getValue().isEmpty() ? "TERMS_1.0" : dtoPolitic.getVersion();
 

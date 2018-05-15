@@ -54,5 +54,6 @@ dependencies {
         transitive = true
     }
     implementation "me.leolin:ShortcutBadger:1.1.21@aar"
+    implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
 }
 apply plugin: 'com.google.gms.google-services'

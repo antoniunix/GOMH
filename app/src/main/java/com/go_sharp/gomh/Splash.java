@@ -5,14 +5,17 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.WindowManager;
 
 import com.go_sharp.gomh.listener.OnFinishThread;
 import com.go_sharp.gomh.model.ModelSplash;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -45,6 +48,13 @@ public class Splash extends AppCompatActivity implements OnFinishThread {
         if (!hasPermissions(this, PERMISSIONS)) {
             ActivityCompat.requestPermissions(this, PERMISSIONS, ALL_PERMISSIONS);
         } else {
+            File dir = new File(Environment.getExternalStorageDirectory()+getString(R.string.app_path_photo));
+            if (!dir.exists()) {
+                if (!dir.mkdirs()) {
+                    Log.w("INFO", "no se creo la carpeta "+dir.getAbsolutePath());
+                }
+            }
+
             if (!modelSplash.fillSepomex()) {
                 TimerTask timerTask = new TimerTask() {
                     @Override
